@@ -76,37 +76,37 @@ async function addModelAnchor(targetIndex, modelUrl, transform) {
 }
 
 await Promise.all([
-  addModelAnchor(0, "models/0_unicorn.gltf", {
+  addModelAnchor(0, "models/00_unicorn.gltf", {
     rotation: [25, 25, 0],
     position: [0, 0, 0],
     scale: [0.2, 0.2, 0.2]
   }),
-  addModelAnchor(1, "models/1_man-with-book.gltf", {
+  addModelAnchor(1, "models/01_man-with-book.gltf", {
     rotation: [0, 80, 0],
     position: [0, 0, 0],
     scale: [0.2, 0.2, 0.2]
   }),
-  addModelAnchor(2, "models/2_dog.gltf", {
+  addModelAnchor(2, "models/02_dog.gltf", {
     rotation: [45, 0, 0],
     position: [0, 0, 0],
     scale: [0.2, 0.2, 0.2]
   }),
-  addModelAnchor(3, "models/6_monsterdog.gltf", {
+  addModelAnchor(3, "models/06_monsterdog.gltf", {
     rotation: [0, 140, 0],
     position: [0, 0, 0],
     scale: [0.4, 0.4, 0.4]
   }),
-  addModelAnchor(4, "models/7_zanner.gltf", {
+  addModelAnchor(4, "models/07_zanner.gltf", {
     rotation: [0, 100, 0],
     position: [0, 0, 0],
     scale: [0.3, 0.3, 0.3]
   }),
-  addModelAnchor(5, "models/8_human-skeleton.gltf", {
+  addModelAnchor(5, "models/08_human-skeleton.gltf", {
     rotation: [0, -50, 0],
     position: [0, 0, 0],
     scale: [0.2, 0.2, 0.2]
   }),
-  addModelAnchor(6, "models/9_dog-with-rabbit.gltf", {
+  addModelAnchor(6, "models/09_dog-with-rabbit.gltf", {
     rotation: [0, 50, 0],
     position: [0, 0, 0],
     scale: [0.2, 0.2, 0.2]
@@ -127,7 +127,9 @@ await Promise.all([
     scale: [0.4, 0.4, 0.4]
   }),
   addModelAnchor(11, "models/15_man-with-jug.gltf", {
-    position: [0, -1.0, 0]
+    rotation: [0, 50, 0],
+    position: [0, -1.0, 0],
+    scale: [0.2, 0.2, 0.2]
   }),
   addModelAnchor(12, "models/16_knight.gltf", {
     rotation: [0, 150, 0],
