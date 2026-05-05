@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- TODO: remove -->
+
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+
+      #container {
+        width: 100vw;
+        height: 90vh;
+        position: relative;
+        overflow: hidden;
+      }
+
+      #ui {
+        position: absolute;
+      }
+      #infoWS {
+        opacity: 1;
+      }
+
+      canvas {
+        z-index: 100 !important;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <div id="container"></div>
+
+    <div style="position: absolute">
+      <button id="pause-button" class="buttonFunctions">Pause</button>
+      <button id="unpause-button" class="buttonFunctions">Zurück</button>
+      <button id="info-button" class="buttonFunctions">
+        <i class="fa-solid fa-info"></i>
+      </button>
+      <div class="unpause-container">
+        <p id="text-unpause"></p>
+      </div>
+    </div>
+
+    <div id="infoWS" class="info-background">
+      <div class="info-container">
+        <div class="info-content">
+          <span class="close">&times;</span>
+          <p id="info-text" class="info-text"></p>
+        </div>
+      </div>
+    </div>
+    <p id="showme"></p>
+  </body>
+  <script type="module" src="src/app.js"></script>
+  <script
+    src="https://kit.fontawesome.com/34c3e261b7.js"
+    crossorigin="anonymous"
+  ></script>
+  <script src="src/buttons.js"></script>
+</html>
