@@ -19,7 +19,9 @@
     "vite": "^8.0.10"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.0",
     "mind-ar": "1.2.5",
+    "tailwindcss": "^4.3.0",
     "three": "0.149.0"
   }
 }
