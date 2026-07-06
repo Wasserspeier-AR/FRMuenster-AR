@@ -16,3 +16,5 @@ Das Projekt nutzt [Vite](https://vite.dev/) als Build Tool und Bundler. Näheres
 3. `npm run dev` ausführen und dem Link in der Ausgabe folgen
 
 > Anmerkung: Der Entwicklungs-Server wird für die AR-Funktion im HTTPS-Modus gestartet, allerdings wird kein gültiges Zertifikat verwendet. Die Seite wird damit als "unsicher" angezeigt. Einfach auf "Zur Seite fortfahren" drücken.
+
+ <!--test-->
