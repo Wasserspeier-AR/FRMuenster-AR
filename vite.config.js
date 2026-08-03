@@ -11,5 +11,6 @@ export default defineConfig({
     https: true,
     host: true,
     sourcemap: false
-  }
+  },
+  base: '/FRMuenster-AR/'
 });
