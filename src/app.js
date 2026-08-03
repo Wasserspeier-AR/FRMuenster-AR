@@ -14,7 +14,7 @@ const models = {
   7: import.meta.env.BASE_URL + "models/10_griffin.glb",
   8: import.meta.env.BASE_URL + "models/11_fish.glb",
   9: import.meta.env.BASE_URL + "models/12_devilry.glb",
-  11: import.meta.env.BASE_URL + "models/15_man-with-jug.glb",
+  11: import.meta.env.BASE_URL + "models/15_man_with_jug.glb",
   12: import.meta.env.BASE_URL + "models/16_knight.glb"
 };
 const mindarThree = new MindARThree({
