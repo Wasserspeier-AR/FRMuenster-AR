@@ -4,24 +4,25 @@ import { MindARThree } from "mind-ar/dist/mindar-image-three.prod.js";
 
 let activePivot = null;
 const models = {
-  0: "models/00_unicorn.gltf",
-  1: "models/01_man-with-book.gltf",
-  2: "models/02_dog.gltf",
-  3: "models/06_monsterdog.gltf",
-  4: "models/07_zanner.gltf",
-  5: "models/08_human-skeleton.gltf",
-  6: "models/09_dog-with-rabbit.gltf",
-  7: "models/10_griffin.gltf",
-  8: "models/11_fish.gltf",
-  9: "models/12_devilry.gltf",
-  11: "models/15_man-with-jug.gltf",
-  12: "models/16_knight.gltf"
+  0: "models/0_unicorn.glb",
+  1: "models/1_man_with_book.glb",
+  2: "models/2_dog.glb",
+  3: "models/6_monster_dog.glb",
+  4: "models/7_zanner.glb",
+  5: "models/8_human_skeleton.glb",
+  6: "models/9_dog_with_rabbit.glb",
+  7: "models/10_griffin.glb",
+  8: "models/11_fish.glb",
+  9: "models/12_devilry.glb",
+  11: "models/15_man-with-jug.glb",
+  12: "models/16_knight.glb"
 };
 const mindarThree = new MindARThree({
   container: document.querySelector("#container"),
   imageTargetSrc: "/mind_ar/WS_all_Marker2.mind",
   filterMinCF: 0.001,
-  filterBeta: 0.001
+  filterBeta: 0.001,
+  warmupTolerance: 3
 });
 const { renderer, scene, camera } = mindarThree;
 renderer.setAnimationLoop(() => {
@@ -110,7 +111,7 @@ function initTouchControls() {
     if (e.touches.length === 0) {
       lastX = null; lastY = null; lastDist = null;
     } else if (e.touches.length === 1) {
-      // Lifted one finger from pinch — resume single-finger tracking cleanly
+      // Lifted one finger from pinch - resume single-finger tracking cleanly
       lastDist = null;
       lastX = e.touches[0].clientX;
       lastY = e.touches[0].clientY;

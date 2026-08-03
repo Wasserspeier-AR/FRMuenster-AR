@@ -1,41 +1,104 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Impressum</title>
-  </head>
+<html lang="de">
 
-  <body>
-    <h2 id="titleImpressum">Impressum</h2>
-    <div class="impressumContainer">
-      <p>
-        Diese WebAR-Anwendung wurde ursprünglich im Rahmen einer Bachelorarbeit
-        an der Hochschule Furtwangen entwickelt. Im Rahmen eines HiWi-Projektes
-        wurde sie weiterentwickelt.
-      </p>
-      <b>Entwicklung der WebAR-Anwendung:</b>
-      <p>Bao Han Nguyen<br />Jérôme Hosp</p>
-      <b>Erstellung der Wasserspeier 3D-Modelle:</b>
-      <p>Moreli Andrea Paredes Gonzalez</p>
-      <b>Unterstützt von:</b>
-      <p>
-        Hochschule Furtwangen University, Prof. Dr. Uwe Hahne und Freiburger
-        Münsterbauverein e. V., Lena Hipp
-      </p>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Impressum</title>
+</head>
+
+<body class="min-h-screen bg-stone-100 flex items-center justify-center p-6">
+
+  <main class="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-8">
+
+    <h1 class="text-3xl font-bold text-stone-800 mb-6">
+      Impressum
+    </h1>
+
+    <p class="text-stone-600 leading-relaxed mb-6">
+      Diese WebAR-Anwendung wurde ursprünglich im Rahmen einer Bachelorarbeit
+      an der Hochschule Furtwangen entwickelt. Im Rahmen eines HiWi-Projektes
+      wurde sie anschließend weiterentwickelt.
+    </p>
+
+    <div class="space-y-5 text-stone-700">
+      <div>
+        <h2 class="font-semibold text-stone-900">
+          Entwicklung der WebAR-Anwendung
+        </h2>
+        <p class="mt-1">
+          Bao Han Nguyen<br>
+          Jérôme Hosp
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-semibold text-stone-900">
+          Erstellung der Wasserspeier 3D-Modelle
+        </h2>
+        <p class="mt-1">
+          Moreli Andrea Paredes Gonzalez<br>
+          Erstellungsmethode: Luma AI, nachbearbeitet mit Blender
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-semibold text-stone-900">
+          Projektbetreuung
+        </h2>
+        <p class="mt-1">
+          Hochschule Furtwangen University<br>
+          Prof. Dr. Uwe Hahne
+        </p>
+
+        <p class="mt-3">
+          Freiburger Münsterbauverein e. V.<br>
+          Lena Hipp
+        </p>
+      </div>
     </div>
-    <div id="logoContainer">
-      <a href="https://www.hs-furtwangen.de/"
-        ><img src="src/assets/Logo_Hochschule_Furtwangen_HFU.png" id="logoHFU"
-      /></a>
-      <a href="https://muensterbauverein-freiburg.de/"
-        ><img
-          src="src/assets/Logo_Bauverein.png"
-          class="logoBackground"
-          id="muensterImpressum"
-      /></a>
+
+    <div class="mt-10 border-t border-stone-200 pt-6 space-y-8">
+      <div>
+        <h3 class="text-sm font-semibold text-stone-500 uppercase tracking-wide mb-4 text-center">
+          Projektpartner
+        </h3>
+
+        <div class="flex justify-center items-center gap-10 flex-wrap">
+          <a href="https://www.hs-furtwangen.de/" target="_blank">
+            <img src="src/assets/Logo_Hochschule_Furtwangen_HFU.png" class="h-12 object-contain">
+          </a>
+
+          <a href="https://muensterbauverein-freiburg.de/" target="_blank" rel="noopener noreferrer"
+            class="bg-stone-700 rounded-lg p-3 transition">
+            <img src="src/assets/Logo_Bauverein.png" class="h-12 object-contain">
+          </a>
+        </div>
+      </div>
+
+      <!-- URL to sponsors? -->
+      <div>
+        <h3 class="text-sm font-semibold text-stone-500 uppercase tracking-wide mb-4 text-center">
+          Gefördert durch
+        </h3>
+
+        <div class="flex justify-center items-center gap-10 flex-wrap">
+          <a target="_blank">
+            <img src="src/assets/Logo_BBBank.png" class="h-14 object-contain">
+          </a>
+
+          <a target="_blank">
+            <img src="src/assets/Logo_Erzbischof_Hermann.png" class="h-12 object-contain">
+          </a>
+        </div>
+      </div>
+
     </div>
-    <script type="module" src="/src/style.js"></script>
-  </body>
+
+  </main>
+
+  <script type="module" src="/src/style.js"></script>
+</body>
+
 </html>
