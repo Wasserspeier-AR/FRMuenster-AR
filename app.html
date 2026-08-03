@@ -72,23 +72,23 @@
                 py-3 shadow-xl backdrop-blur-xl">
       <button id="guide-button" class="flex flex-col items-center text-gray-600">
         <i class="fa-solid fa-book-open text-xl"></i>
-        <span class="text-[11px]">Anleitung</span>
+        <span class="text-[11px]" data-i18n="app.guide-button"></span>
       </button>
       <button id="map-button" class="flex flex-col items-center text-gray-600">
         <i class="fa-solid fa-map text-xl"></i>
-        <span class="text-[11px]">Karte</span>
+        <span class="text-[11px]" data-i18n="app.map-button"></span>
       </button>
       <button id="pause-button" class="flex flex-col items-center text-gray-600">
         <i class="fa-solid fa-circle-pause text-xl"></i>
-        <span class="text-[11px]">Pause</span>
+        <span class="text-[11px]" data-i18n="app.pause-button"></span>
       </button>
       <button id="info-button" class="flex flex-col items-center text-gray-600">
         <i class="fa-solid fa-circle-info text-xl"></i>
-        <span class="text-[11px]">Info</span>
+        <span class="text-[11px]" data-i18n="app.info-button"></span>
       </button>
       <button id="unpause-button" class="flex flex-col items-center text-gray-600">
         <i class="fa-solid fa-play text-xl"></i>
-        <span class="text-[11px]">Zurück</span>
+        <span class="text-[11px]"  data-i18n="app.back-button"></span>
       </button>
     </nav>
   </div>
@@ -106,10 +106,9 @@
     </div>
   </div>
   <p id="showme"></p>
+  <script type="module" src="src/app.js"></script>
+  <script src="https://kit.fontawesome.com/34c3e261b7.js" crossorigin="anonymous"></script>
+  <script type="module" src="src/style.js"></script>
+  <script type="module" src="src/main.js"></script>
 </body>
-<script type="module" src="src/app.js"></script>
-<script src="https://kit.fontawesome.com/34c3e261b7.js" crossorigin="anonymous"></script>
-<script type="module" src="/src/style.js"></script>
-<script type="module" src="src/buttons.js"></script>
-
 </html>
