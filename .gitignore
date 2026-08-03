@@ -148,3 +148,5 @@ vite.config.ts.timestamp-*
 *.local
 # Refactor folder
 _archive/
+
+.venv/
