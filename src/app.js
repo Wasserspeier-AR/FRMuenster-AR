@@ -4,22 +4,22 @@ import { MindARThree } from "mind-ar/dist/mindar-image-three.prod.js";
 
 let activePivot = null;
 const models = {
-  0: "models/0_unicorn.glb",
-  1: "models/1_man_with_book.glb",
-  2: "models/2_dog.glb",
-  3: "models/6_monster_dog.glb",
-  4: "models/7_zanner.glb",
-  5: "models/8_human_skeleton.glb",
-  6: "models/9_dog_with_rabbit.glb",
-  7: "models/10_griffin.glb",
-  8: "models/11_fish.glb",
-  9: "models/12_devilry.glb",
-  11: "models/15_man-with-jug.glb",
-  12: "models/16_knight.glb"
+  0: import.meta.env.BASE_URL + "models/0_unicorn.glb",
+  1: import.meta.env.BASE_URL + "models/1_man_with_book.glb",
+  2: import.meta.env.BASE_URL + "models/2_dog.glb",
+  3: import.meta.env.BASE_URL + "models/6_monster_dog.glb",
+  4: import.meta.env.BASE_URL + "models/7_zanner.glb",
+  5: import.meta.env.BASE_URL + "models/8_human_skeleton.glb",
+  6: import.meta.env.BASE_URL + "models/9_dog_with_rabbit.glb",
+  7: import.meta.env.BASE_URL + "models/10_griffin.glb",
+  8: import.meta.env.BASE_URL + "models/11_fish.glb",
+  9: import.meta.env.BASE_URL + "models/12_devilry.glb",
+  11: import.meta.env.BASE_URL + "models/15_man-with-jug.glb",
+  12: import.meta.env.BASE_URL + "models/16_knight.glb"
 };
 const mindarThree = new MindARThree({
   container: document.querySelector("#container"),
-  imageTargetSrc: "/mind_ar/WS_all_Marker2.mind",
+  imageTargetSrc: import.meta.env.BASE_URL + "/mind_ar/WS_all_Marker2.mind",
   filterMinCF: 0.001,
   filterBeta: 0.001,
   warmupTolerance: 3
