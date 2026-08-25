@@ -1,12 +1,6 @@
 // based on the Event Handlings in the MindAR Documentation: https://hiukim.github.io/mind-ar-js-doc/examples/events-handling/
 
 document.addEventListener("DOMContentLoaded", function () {
-  const sceneEl = document.querySelector("a-scene");
-  let arSystem;
-  sceneEl.addEventListener("loaded", function () {
-    arSystem = sceneEl.systems["mindar-image-system"];
-  });
-
   const pauseButton = document.querySelector("#pause-button");
   const unpauseButton = document.querySelector("#unpause-button");
   const infoButton = document.querySelector("#info-button");

@@ -3,23 +3,24 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MindARThree } from "mind-ar/dist/mindar-image-three.prod.js";
 
 let activePivot = null;
+const base = import.meta.env.BASE_URL;
 const models = {
-  0: import.meta.env.BASE_URL + "models/0_unicorn.glb",
-  1: import.meta.env.BASE_URL + "models/1_man_with_book.glb",
-  2: import.meta.env.BASE_URL + "models/2_dog.glb",
-  3: import.meta.env.BASE_URL + "models/6_monster_dog.glb",
-  4: import.meta.env.BASE_URL + "models/7_zanner.glb",
-  5: import.meta.env.BASE_URL + "models/8_human_skeleton.glb",
-  6: import.meta.env.BASE_URL + "models/9_dog_with_rabbit.glb",
-  7: import.meta.env.BASE_URL + "models/10_griffin.glb",
-  8: import.meta.env.BASE_URL + "models/11_fish.glb",
-  9: import.meta.env.BASE_URL + "models/12_devilry.glb",
-  11: import.meta.env.BASE_URL + "models/15_man-with-jug.glb",
-  12: import.meta.env.BASE_URL + "models/16_knight.glb"
+  0: `${base}models/0_unicorn.glb`,
+  1: `${base}models/1_man_with_book.glb`,
+  2: `${base}models/2_dog.glb`,
+  3: `${base}models/6_monster_dog.glb`,
+  4: `${base}models/7_zanner.glb`,
+  5: `${base}models/8_human_skeleton.glb`,
+  6: `${base}models/9_dog_with_rabbit.glb`,
+  7: `${base}models/10_griffin.glb`,
+  8: `${base}models/11_fish.glb`,
+  9: `${base}models/12_devilry.glb`,
+  11: `${base}models/15_man_with_jug.glb`,
+  12: `${base}models/16_knight.glb`
 };
 const mindarThree = new MindARThree({
   container: document.querySelector("#container"),
-  imageTargetSrc: import.meta.env.BASE_URL + "/mind_ar/WS_all_Marker2.mind",
+  imageTargetSrc: `${base}mind_ar/WS_all_Marker2.mind`,
   filterMinCF: 0.001,
   filterBeta: 0.001,
   warmupTolerance: 3
@@ -48,7 +49,7 @@ async function addModelAnchor(index, modelURI) {
 
   // Center the model
   model.position.sub(box.getCenter(new THREE.Vector3()));
-  
+
   // Normalize scale
   const size = new THREE.Vector3();
   box.getSize(size);
@@ -141,3 +142,20 @@ async function stop() {
   await mindarThree.stop();
   renderer.setAnimationLoop(null);
 }
+
+const pauseButton = document.querySelector("#pause-button");
+const unpauseButton = document.querySelector("#unpause-button");
+const infoButton = document.querySelector("#info-button");
+
+
+pauseButton.addEventListener("click", () => {
+  mindarThree.pause(true); // pause tracking + video (equivalent of arSystem.pause(true))
+  const textElement = document.getElementById("text-unpause");
+
+  if (!textElement.hasChildNodes()) {
+    const textnode = document.createTextNode(
+      "Richten Sie die Kamera wieder auf dem Marker, um Zurückzukehren."
+    );
+    textElement.appendChild(textnode);
+  }
+});
