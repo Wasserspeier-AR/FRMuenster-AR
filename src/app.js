@@ -3,8 +3,39 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MindARThree } from "mind-ar/dist/mindar-image-three.prod.js";
 import { t } from "./i18n.js";
 
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
+
+
+// Leaflet's default marker icon paths break under bundlers; point them
+// at the bundled asset URLs instead.
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
+
+const SITE_LOCATION = [47.995437, 7.85285];
+const PAN_BOUNDS = L.latLngBounds(
+  [47.99, 7.8490], // southwest corner
+  [47.9983, 7.8563]  // northeast corner
+);
+
+let map = null;
+let userMarker = null;
+let geoWatchId = null;
+let imageOverlayLayer = null; // placeholder group for a future image layer
+
+
+
+
+
 let activePivot = null;
-let currentIndex = null; // index of the last recognized target, used by the info popup
+let currentIndex = null;
 const anchorGroups = {}; // index -> anchor.group
 let currentAnchorIndex = null;
 let isPaused = false;
@@ -185,17 +216,38 @@ function initUI() {
   const infoText = document.querySelector("#info-text");
   const closeBtn = infoWS.querySelector(".close");
 
+  const mapWS = document.querySelector("#mapWS");
+  const mapCloseBtn = mapWS.querySelector(".map-close");
+
   infoWS.style.display = "none";
+  mapWS.style.display = "none";
+
+  let infoModalOpen = false;
+  let mapModalOpen = false;
 
   function showModal(text) {
     infoText.textContent = text;
     infoWS.style.display = "flex";
-    isHidden = false;
+    infoModalOpen = true;
   }
 
   function hideModal() {
     infoWS.style.display = "none";
-    isHidden = true;
+    infoModalOpen = false;
+  }
+
+  function showMapModal() {
+    mapWS.style.display = "flex";
+    mapModalOpen = true;
+    initMap("map"); // lazy: builds the map once, reuses it after
+    // Leaflet can't measure a display:none container, so nudge it
+    // to recompute its size right after becoming visible.
+    requestAnimationFrame(() => map.invalidateSize());
+  }
+
+  function hideMapModal() {
+    mapWS.style.display = "none";
+    mapModalOpen = false;
   }
 
   infoWS.addEventListener("click", (e) => {
@@ -203,42 +255,87 @@ function initUI() {
   });
   closeBtn.addEventListener("click", hideModal);
 
+  mapWS.addEventListener("click", (e) => {
+    if (e.target === mapWS) hideMapModal();
+  });
+  mapCloseBtn.addEventListener("click", hideMapModal);
+
   guideButton.addEventListener("click", () => {
-    if (isHidden) {
-      showModal(t("app.guide-text"));
-    } else {
-      hideModal();
-    }
+    infoModalOpen ? hideModal() : showModal(t("app.guide-text"));
   });
 
   infoButton.addEventListener("click", () => {
-    // if (currentIndex === null) {
-    //   showModal(t("app.info.none"));
-    //   return;
-    // }
-
-    if (isHidden) {
-      showModal(t(`app.info.${currentIndex}`));
-    } else {
-      hideModal();
-    }
+    infoModalOpen ? hideModal() : showModal(t(`app.info.${currentIndex}`));
   });
 
   mapButton.addEventListener("click", () => {
-    // TODO: open Leaflet map popup
+    mapModalOpen ? hideMapModal() : showMapModal();
   });
 
   pauseButton.addEventListener("click", () => {
-    if (isPaused) {
-      unpauseTracking();
-    } else {
-      pauseTracking();
-      // TODO: add icon toggle
-      // TODO: fix "background tracking"
-    }
+    isPaused ? unpauseTracking() : pauseTracking();
   });
 
   backButton.addEventListener("click", () => {
     window.location.href = base;
   });
+}
+
+function initMap(containerId) {
+  if (map) return map;
+
+  map = L.map(containerId, {
+      maxBounds: PAN_BOUNDS,
+      maxBoundsViscosity: 0.8
+    }).setView(SITE_LOCATION, 18);
+
+  // "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png", '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>' -> Looks better, but requires a key (free)
+  // "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" --> Just works
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    minZoom: 16,
+    maxZoom: 19,
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  }).addTo(map);
+
+  // Reserved layer for a future image overlay (floor plan, historic map, etc.)
+  imageOverlayLayer = L.layerGroup().addTo(map);
+  // Later:
+  // const bounds = [[47.9954, 7.8524], [47.9959, 7.8529]];
+  // L.imageOverlay('path/to/image.png', bounds).addTo(imageOverlayLayer);
+
+  startLiveLocation();
+
+  return map;
+}
+
+function startLiveLocation() {
+  if (!navigator.geolocation || geoWatchId !== null) return;
+
+  geoWatchId = navigator.geolocation.watchPosition(
+    (pos) => {
+      const { latitude, longitude } = pos.coords;
+      const latlng = [latitude, longitude];
+
+      if (!userMarker) {
+        userMarker = L.circleMarker(latlng, {
+          radius: 8,
+          color: "#1d4ed8",
+          fillColor: "#3b82f6",
+          fillOpacity: 0.9,
+        }).addTo(map);
+      } else {
+        userMarker.setLatLng(latlng);
+      }
+    },
+    (err) => console.warn("Geolocation unavailable:", err.message),
+    { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
+  );
+}
+
+function stopLiveLocation() {
+  if (geoWatchId !== null) {
+    navigator.geolocation.clearWatch(geoWatchId);
+    geoWatchId = null;
+  }
 }
