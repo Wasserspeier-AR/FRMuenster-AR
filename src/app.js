@@ -1,8 +1,15 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MindARThree } from "mind-ar/dist/mindar-image-three.prod.js";
+import { t } from "./i18n.js";
 
 let activePivot = null;
+let currentIndex = null; // index of the last recognized target, used by the info popup
+const anchorGroups = {}; // index -> anchor.group
+let currentAnchorIndex = null;
+let isPaused = false;
+let isHidden = true;
+
 const base = import.meta.env.BASE_URL;
 const models = {
   0: `${base}models/0_unicorn.glb`,
@@ -30,10 +37,10 @@ renderer.setAnimationLoop(() => {
   renderer.render(scene, camera);
 });
 
-
 initMindAR();
 initScene();
 initTouchControls();
+initUI();
 await Promise.all(
   Object.entries(models).map(([index, path]) =>
     addModelAnchor(Number(index), path)
@@ -47,10 +54,8 @@ async function addModelAnchor(index, modelURI) {
   const model = (await new GLTFLoader().loadAsync(modelURI)).scene;
   const box = new THREE.Box3().setFromObject(model);
 
-  // Center the model
   model.position.sub(box.getCenter(new THREE.Vector3()));
 
-  // Normalize scale
   const size = new THREE.Vector3();
   box.getSize(size);
   const scale = 0.2 / Math.max(...size);
@@ -60,10 +65,36 @@ async function addModelAnchor(index, modelURI) {
   pivot.add(model);
   anchor.group.add(pivot);
 
-  anchor.onTargetFound = () => activePivot = pivot;
-  anchor.onTargetLost = () => activePivot = null;
+  anchorGroups[index] = anchor.group;
+
+  anchor.onTargetFound = () => {
+    if (isPaused) return; // ignore tracking events while paused
+    activePivot = pivot;
+    currentAnchorIndex = index;
+  };
+  anchor.onTargetLost = () => {
+    if (isPaused) return;
+    activePivot = null;
+  };
 
   return anchor;
+}
+
+function pauseTracking() {
+  if (isPaused || !activePivot) return;
+  isPaused = true;
+
+  scene.attach(activePivot);
+}
+
+function unpauseTracking() {
+  if (!isPaused) return;
+  isPaused = false;
+
+  const group = anchorGroups[currentAnchorIndex];
+  if (group && activePivot) {
+    group.attach(activePivot); // reparent back, will snap to live tracking pose
+  }
 }
 
 function initTouchControls() {
@@ -128,10 +159,9 @@ function initScene() {
   dirLight.position.set(1, 2, 1);
   scene.add(dirLight);
 
-  // Might add in, if performance ends up not being a problem:
-  // const rimLight = new THREE.DirectionalLight(0xffffff, 0.75);
-  // rimLight.position.set(-3, 1, -3);
-  // scene.add(rimLight);
+  const rimLight = new THREE.DirectionalLight(0xffffff, 0.75);
+  rimLight.position.set(-3, 1, -3);
+  scene.add(rimLight);
 }
 
 async function initMindAR() {
@@ -139,23 +169,76 @@ async function initMindAR() {
 }
 
 async function stop() {
-  await mindarThree.stop();
+  mindarThree.stop();
   renderer.setAnimationLoop(null);
 }
 
-const pauseButton = document.querySelector("#pause-button");
-const unpauseButton = document.querySelector("#unpause-button");
-const infoButton = document.querySelector("#info-button");
+// --- UI wiring ---
+function initUI() {
+  const guideButton = document.querySelector("#guide-button");
+  const mapButton = document.querySelector("#map-button");
+  const pauseButton = document.querySelector("#pause-button");
+  const infoButton = document.querySelector("#info-button");
+  const backButton = document.querySelector("#unpause-button");
 
+  const infoWS = document.querySelector("#infoWS");
+  const infoText = document.querySelector("#info-text");
+  const closeBtn = infoWS.querySelector(".close");
 
-pauseButton.addEventListener("click", () => {
-  mindarThree.pause(true); // pause tracking + video (equivalent of arSystem.pause(true))
-  const textElement = document.getElementById("text-unpause");
+  infoWS.style.display = "none";
 
-  if (!textElement.hasChildNodes()) {
-    const textnode = document.createTextNode(
-      "Richten Sie die Kamera wieder auf dem Marker, um Zurückzukehren."
-    );
-    textElement.appendChild(textnode);
+  function showModal(text) {
+    infoText.textContent = text;
+    infoWS.style.display = "flex";
+    isHidden = false;
   }
-});
+
+  function hideModal() {
+    infoWS.style.display = "none";
+    isHidden = true;
+  }
+
+  infoWS.addEventListener("click", (e) => {
+    if (e.target === infoWS) hideModal();
+  });
+  closeBtn.addEventListener("click", hideModal);
+
+  guideButton.addEventListener("click", () => {
+    if (isHidden) {
+      showModal(t("app.guide-text"));
+    } else {
+      hideModal();
+    }
+  });
+
+  infoButton.addEventListener("click", () => {
+    // if (currentIndex === null) {
+    //   showModal(t("app.info.none"));
+    //   return;
+    // }
+
+    if (isHidden) {
+      showModal(t(`app.info.${currentIndex}`));
+    } else {
+      hideModal();
+    }
+  });
+
+  mapButton.addEventListener("click", () => {
+    // TODO: open Leaflet map popup
+  });
+
+  pauseButton.addEventListener("click", () => {
+    if (isPaused) {
+      unpauseTracking();
+    } else {
+      pauseTracking();
+      // TODO: add icon toggle
+      // TODO: fix "background tracking"
+    }
+  });
+
+  backButton.addEventListener("click", () => {
+    window.location.href = base;
+  });
+}

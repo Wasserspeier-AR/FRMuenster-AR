@@ -29,6 +29,11 @@ function applyTranslations(lang) {
   });
 }
 
+export function t(key) {
+  const dict = translations[getLang()] || translations.de;
+  return dict[key] || key;
+}
+
 export function initI18n() {
   const lang = getLang();
   document.documentElement.lang = lang;
