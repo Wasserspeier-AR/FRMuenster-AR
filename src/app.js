@@ -8,7 +8,7 @@ import "leaflet/dist/leaflet.css";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
-
+import floorPlanImg from "./assets/Grundriss_ausgerichtet.png";
 
 // Leaflet's default marker icon paths break under bundlers; point them
 // at the bundled asset URLs instead.
@@ -16,23 +16,24 @@ delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
   iconUrl: markerIcon,
-  shadowUrl: markerShadow,
+  shadowUrl: markerShadow
 });
 
 const SITE_LOCATION = [47.995437, 7.85285];
 const PAN_BOUNDS = L.latLngBounds(
-  [47.99, 7.8490], // southwest corner
-  [47.9983, 7.8563]  // northeast corner
+  [47.99, 7.849], // southwest corner
+  [47.9983, 7.8563] // northeast corner
 );
+const FLOOR_PLAN_BOUNDS = [
+  [47.995067, 7.851915], // south-west corner of the image
+  [47.99606, 7.853915], // north-east corner of the image
+];
 
 let map = null;
 let userMarker = null;
 let geoWatchId = null;
 let imageOverlayLayer = null; // placeholder group for a future image layer
-
-
-
-
+let floorPlanLayer = null;
 
 let activePivot = null;
 let currentIndex = null;
@@ -77,7 +78,6 @@ await Promise.all(
     addModelAnchor(Number(index), path)
   )
 );
-
 
 // = Functions =
 async function addModelAnchor(index, modelURI) {
@@ -130,56 +130,72 @@ function unpauseTracking() {
 
 function initTouchControls() {
   const el = renderer.domElement;
-  let lastX = null, lastY = null, lastDist = null;
+  let lastX = null,
+    lastY = null,
+    lastDist = null;
 
-  el.addEventListener("touchstart", (e) => {
-    if (e.touches.length === 1) {
-      lastX = e.touches[0].clientX;
-      lastY = e.touches[0].clientY;
-    } else if (e.touches.length === 2) {
-      lastDist = Math.hypot(
-        e.touches[0].clientX - e.touches[1].clientX,
-        e.touches[0].clientY - e.touches[1].clientY
-      );
-    }
-  }, { passive: true });
+  el.addEventListener(
+    "touchstart",
+    (e) => {
+      if (e.touches.length === 1) {
+        lastX = e.touches[0].clientX;
+        lastY = e.touches[0].clientY;
+      } else if (e.touches.length === 2) {
+        lastDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+      }
+    },
+    { passive: true }
+  );
 
-  el.addEventListener("touchmove", (e) => {
-    if (!activePivot) return;
+  el.addEventListener(
+    "touchmove",
+    (e) => {
+      if (!activePivot) return;
 
-    if (e.touches.length === 1 && lastX !== null) {
-      const dx = e.touches[0].clientX - lastX;
-      const dy = e.touches[0].clientY - lastY;
-      lastX = e.touches[0].clientX;
-      lastY = e.touches[0].clientY;
+      if (e.touches.length === 1 && lastX !== null) {
+        const dx = e.touches[0].clientX - lastX;
+        const dy = e.touches[0].clientY - lastY;
+        lastX = e.touches[0].clientX;
+        lastY = e.touches[0].clientY;
 
-      activePivot.rotation.y += dx * 0.01;
-      activePivot.rotation.x = THREE.MathUtils.clamp(
-        activePivot.rotation.x + dy * 0.01,
-        -Math.PI / 2,
-        Math.PI / 2
-      );
-    } else if (e.touches.length === 2 && lastDist !== null) {
-      const newDist = Math.hypot(
-        e.touches[0].clientX - e.touches[1].clientX,
-        e.touches[0].clientY - e.touches[1].clientY
-      );
-      activePivot.scale.multiplyScalar(newDist / lastDist);
-      activePivot.scale.clampScalar(0.2, 5);
-      lastDist = newDist;
-    }
-  }, { passive: true });
+        activePivot.rotation.y += dx * 0.01;
+        activePivot.rotation.x = THREE.MathUtils.clamp(
+          activePivot.rotation.x + dy * 0.01,
+          -Math.PI / 2,
+          Math.PI / 2
+        );
+      } else if (e.touches.length === 2 && lastDist !== null) {
+        const newDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        activePivot.scale.multiplyScalar(newDist / lastDist);
+        activePivot.scale.clampScalar(0.2, 5);
+        lastDist = newDist;
+      }
+    },
+    { passive: true }
+  );
 
-  el.addEventListener("touchend", (e) => {
-    if (e.touches.length === 0) {
-      lastX = null; lastY = null; lastDist = null;
-    } else if (e.touches.length === 1) {
-      // Lifted one finger from pinch - resume single-finger tracking cleanly
-      lastDist = null;
-      lastX = e.touches[0].clientX;
-      lastY = e.touches[0].clientY;
-    }
-  }, { passive: true });
+  el.addEventListener(
+    "touchend",
+    (e) => {
+      if (e.touches.length === 0) {
+        lastX = null;
+        lastY = null;
+        lastDist = null;
+      } else if (e.touches.length === 1) {
+        // Lifted one finger from pinch - resume single-finger tracking cleanly
+        lastDist = null;
+        lastX = e.touches[0].clientX;
+        lastY = e.touches[0].clientY;
+      }
+    },
+    { passive: true }
+  );
 }
 
 function initScene() {
@@ -285,9 +301,9 @@ function initMap(containerId) {
   if (map) return map;
 
   map = L.map(containerId, {
-      maxBounds: PAN_BOUNDS,
-      maxBoundsViscosity: 0.8
-    }).setView(SITE_LOCATION, 18);
+    maxBounds: PAN_BOUNDS,
+    maxBoundsViscosity: 0.8
+  }).setView(SITE_LOCATION, 18);
 
   // "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png", '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>' -> Looks better, but requires a key (free)
   // "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" --> Just works
@@ -295,7 +311,7 @@ function initMap(containerId) {
     minZoom: 16,
     maxZoom: 19,
     attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
 
   // Reserved layer for a future image overlay (floor plan, historic map, etc.)
@@ -303,6 +319,9 @@ function initMap(containerId) {
   // Later:
   // const bounds = [[47.9954, 7.8524], [47.9959, 7.8529]];
   // L.imageOverlay('path/to/image.png', bounds).addTo(imageOverlayLayer);
+  floorPlanLayer = L.imageOverlay(floorPlanImg, FLOOR_PLAN_BOUNDS, {
+    opacity: 0.85
+  }).addTo(imageOverlayLayer);
 
   startLiveLocation();
 
@@ -322,7 +341,7 @@ function startLiveLocation() {
           radius: 8,
           color: "#1d4ed8",
           fillColor: "#3b82f6",
-          fillOpacity: 0.9,
+          fillOpacity: 0.9
         }).addTo(map);
       } else {
         userMarker.setLatLng(latlng);
