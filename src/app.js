@@ -176,10 +176,18 @@ async function stop() {
 // --- UI wiring ---
 function initUI() {
   const guideButton = document.querySelector("#guide-button");
+  const guideWS = document.querySelector("#guideWS");
+  const guideClose = guideWS.querySelector(".guide-close");
+
   const mapButton = document.querySelector("#map-button");
   const pauseButton = document.querySelector("#pause-button");
   const infoButton = document.querySelector("#info-button");
   const backButton = document.querySelector("#unpause-button");
+
+   function setButtonActive(button, active) {
+    button.classList.toggle("text-[rgb(118,23,23)]", active);
+    button.classList.toggle("text-gray-600", !active);
+  }
 
   const infoWS = document.querySelector("#infoWS");
   const infoText = document.querySelector("#info-text");
@@ -198,16 +206,36 @@ function initUI() {
     isHidden = true;
   }
 
+  function showGuide() {
+    guideWS.classList.remove("hidden");
+    guideWS.classList.add("flex");
+  }
+
+  function hideGuide() {
+    guideWS.classList.remove("flex");
+    guideWS.classList.add("hidden");
+  }
+
   infoWS.addEventListener("click", (e) => {
     if (e.target === infoWS) hideModal();
   });
   closeBtn.addEventListener("click", hideModal);
 
   guideButton.addEventListener("click", () => {
-    if (isHidden) {
-      showModal(t("app.guide-text"));
-    } else {
-      hideModal();
+  if (guideWS.classList.contains("hidden")) {
+    showGuide();
+    
+  } else {
+    hideGuide();
+   
+  }
+});
+
+  guideClose.addEventListener("click", hideGuide);
+
+  guideWS.addEventListener("click", (e) => {
+    if (e.target === guideWS) {
+      hideGuide();
     }
   });
 
@@ -219,8 +247,10 @@ function initUI() {
 
     if (isHidden) {
       showModal(t(`app.info.${currentIndex}`));
+      setButtonActive(infoButton, true);
     } else {
       hideModal();
+      setButtonActive(infoButton, false);
     }
   });
 
@@ -231,8 +261,10 @@ function initUI() {
   pauseButton.addEventListener("click", () => {
     if (isPaused) {
       unpauseTracking();
+      setButtonActive(pauseButton, false);
     } else {
       pauseTracking();
+      setButtonActive(pauseButton, true);
       // TODO: add icon toggle
       // TODO: fix "background tracking"
     }

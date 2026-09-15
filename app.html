@@ -71,25 +71,30 @@
     <nav class="flex justify-around items-center
                 bg-white/90 rounded-2xl
                 py-3 shadow-xl backdrop-blur-xl">
-      <button id="guide-button" class="flex flex-col items-center text-gray-600">
+      <button id="guide-button"
+        class="app-button flex flex-col items-center text-gray-600 transition-colors duration-200">
         <i class="fa-solid fa-book-open text-xl"></i>
         <span class="text-[11px]" data-i18n="app.guide-button"></span>
       </button>
-      <button id="map-button" class="flex flex-col items-center text-gray-600">
+      <button id="map-button"
+        class="app-button flex flex-col items-center text-gray-600 transition-colors duration-200">
         <i class="fa-solid fa-map text-xl"></i>
         <span class="text-[11px]" data-i18n="app.map-button"></span>
       </button>
-      <button id="pause-button" class="flex flex-col items-center text-gray-600">
+      <button id="pause-button"
+        class="app-button flex flex-col items-center text-gray-600 transition-colors duration-200">
         <i class="fa-solid fa-circle-pause text-xl"></i>
         <span class="text-[11px]" data-i18n="app.pause-button"></span>
       </button>
-      <button id="info-button" class="flex flex-col items-center text-gray-600">
+      <button id="info-button"
+        class="app-button flex flex-col items-center text-gray-600 transition-colors duration-200">
         <i class="fa-solid fa-circle-info text-xl"></i>
         <span class="text-[11px]" data-i18n="app.info-button"></span>
       </button>
-      <button id="unpause-button" class="flex flex-col items-center text-gray-600">
+      <button id="unpause-button"
+        class="app-button flex flex-col items-center text-gray-600 transition-colors duration-200">
         <i class="fa-solid fa-play text-xl"></i>
-        <span class="text-[11px]"  data-i18n="app.back-button"></span>
+        <span class="text-[11px]" data-i18n="app.back-button"></span>
       </button>
     </nav>
   </div>
@@ -107,142 +112,79 @@
     </div>
   </div>
 
-  <!-- Anleitung Bottom Sheet -->
-<div
-  id="guideWS"
-  class="fixed inset-0 z-1010 hidden items-end justify-center
-         bg-black/30 px-4 pb-24 pt-6 backdrop-blur-sm"
->
-  <div
-    class="relative flex max-h-[75vh] w-full max-w-md
-           flex-col overflow-hidden rounded-t-4xl
-           bg-white shadow-2xl"
-  >
-    <!-- Griff oben -->
-    <div class="flex justify-center pt-3">
+  <div id="guideWS" class="fixed inset-0 z-1010 hidden items-end justify-center bg-black/30 pb-4 pt-6 backdrop-blur-sm">
+    <div class="relative flex max-h-[85vh] w-full max-w-md
+         flex-col overflow-hidden rounded-t-4xl
+         bg-white shadow-2xl">
+
+      <!-- top gray bar -->
+      <!-- <div class="flex justify-center pt-3">
       <div class="h-1 w-9 rounded-full bg-gray-400"></div>
-    </div>
+    </div> -->
 
-    <!-- Schließen-Button -->
-    <button
-      class="guide-close absolute right-4 top-4 z-10
-             flex h-8 w-8 items-center justify-center
+      <button class="guide-close absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center
              rounded-full bg-white/80 text-2xl text-gray-500
-             hover:bg-gray-100"
-      aria-label="Schließen"
-    >
-      &times;
-    </button>
+             hover:bg-gray-100" aria-label="Schließen">
+        &times;
+      </button>
 
-    <!-- Scrollbarer Inhalt -->
-    <div class="overflow-y-auto px-6 pb-6 pt-4">
+      <div class="overflow-y-auto px-6 pb-6 pt-4">
+        <h2 data-i18n="index.start" class="text-xl font-semibold text-stone-900">
+          So funktioniert's
+        </h2>
+        <p data-i18n="index.swipe" class="mb-4 mt-1 text-sm text-stone-500">
+          Nach links wischen zum nächsten Schritt.
+        </p>
+        <div id="guide-slider" class="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-4">
 
-      <h2
-        data-i18n="index.start"
-        class="text-xl font-semibold text-stone-900"
-      >
-        So funktioniert's
-      </h2>
-
-      <p
-        data-i18n="index.swipe"
-        class="mb-4 mt-1 text-sm text-stone-500"
-      >
-        Nach links wischen zum nächsten Schritt.
-      </p>
-
-      <!-- Anleitung Slider -->
-      <div
-        id="guide-slider"
-        class="flex snap-x snap-mandatory gap-4
-               overflow-x-auto scroll-smooth pb-4"
-      >
-
-        <!-- Schritt 1 -->
-        <div class="min-w-full snap-center">
-          <div class="overflow-hidden rounded-2xl">
-            <img
-              src="src/assets/Anleitung_Wasserspeier_Schritt_1.jpg"
-              class="w-full object-contain"
-              alt="Schritt 1: Wandfläche scannen"
-            />
+          <div class="min-w-full snap-center">
+            <div class="overflow-hidden rounded-2xl">
+              <img src="src/assets/Anleitung_Wasserspeier_Schritt_1.jpg" class="w-full object-contain"/>
+            </div>
+            <div class="mt-4">
+              <h3 data-i18n="index.manual-first-step" class="text-lg font-semibold text-stone-900">
+                1. Wandfläche scannen
+              </h3>
+              <p data-i18n="index.manual-first-step-text" class="mt-2 text-stone-600">
+                Suche eine passende Wandfläche am Münster und richte deine Kamera darauf.
+              </p>
+            </div>
           </div>
 
-          <div class="mt-4">
-            <h3
-              data-i18n="index.manual-first-step"
-              class="text-lg font-semibold text-stone-900"
-            >
-              1. Wandfläche scannen
-            </h3>
-
-            <p
-              data-i18n="index.manual-first-step-text"
-              class="mt-2 text-stone-600"
-            >
-              Suche eine passende Wandfläche am Münster und richte deine Kamera darauf.
-            </p>
+        
+          <div class="min-w-full snap-center">
+            <div class="overflow-hidden rounded-2xl">
+              <img src="src/assets/Anleitung_Wasserspeier.png" class="w-full object-contain"/>
+            </div>
+            <div class="mt-4">
+              <h3 data-i18n="index.manual-second-step" class="text-lg font-semibold text-stone-900">
+                2. Wasserspeier entdecken
+              </h3>
+              <p data-i18n="index.manual-second-step-text" class="mt-2 text-stone-600">
+                Scanne die Wandfläche, bis das 3D-Modell erscheint.
+              </p>
+            </div>
           </div>
+
+      
+          <div class="min-w-full snap-center">
+            <div class="overflow-hidden rounded-2xl">
+              <img src="src/assets/Anleitung_Wasserspeier.png" class="w-full object-contain"/>
+            </div>
+            <div class="mt-4">
+              <h3 data-i18n="index.manual-third-step" class="text-lg font-semibold text-stone-900">
+                3. Mehr erfahren
+              </h3>
+              <p data-i18n="index.manual-third-step-text" class="mt-2 text-stone-600">
+                Tippe auf den Info-Button und erfahre mehr über den Wasserspeier.
+              </p>
+            </div>
+          </div>
+
         </div>
-
-        <!-- Schritt 2 -->
-        <div class="min-w-full snap-center">
-          <div class="overflow-hidden rounded-2xl">
-            <img
-              src="src/assets/Anleitung_Wasserspeier.png"
-              class="w-full object-contain"
-              alt="Schritt 2: Wasserspeier entdecken"
-            />
-          </div>
-
-          <div class="mt-4">
-            <h3
-              data-i18n="index.manual-second-step"
-              class="text-lg font-semibold text-stone-900"
-            >
-              2. Wasserspeier entdecken
-            </h3>
-
-            <p
-              data-i18n="index.manual-second-step-text"
-              class="mt-2 text-stone-600"
-            >
-              Scanne die Wandfläche, bis das 3D-Modell erscheint.
-            </p>
-          </div>
-        </div>
-
-        <!-- Schritt 3 -->
-        <div class="min-w-full snap-center">
-          <div class="overflow-hidden rounded-2xl">
-            <img
-              src="src/assets/Anleitung_Wasserspeier.png"
-              class="w-full object-contain"
-              alt="Schritt 3: Mehr erfahren"
-            />
-          </div>
-
-          <div class="mt-4">
-            <h3
-              data-i18n="index.manual-third-step"
-              class="text-lg font-semibold text-stone-900"
-            >
-              3. Mehr erfahren
-            </h3>
-
-            <p
-              data-i18n="index.manual-third-step-text"
-              class="mt-2 text-stone-600"
-            >
-              Tippe auf den Info-Button und erfahre mehr über den Wasserspeier.
-            </p>
-          </div>
-        </div>
-
       </div>
     </div>
   </div>
-</div>
 
   <p id="showme"></p>
   <script type="module" src="src/app.js"></script>
@@ -250,4 +192,5 @@
   <script type="module" src="src/style.js"></script>
   <script type="module" src="src/main.js"></script>
 </body>
+
 </html>
