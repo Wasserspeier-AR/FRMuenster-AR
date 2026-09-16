@@ -33,6 +33,7 @@
     "app.pause-button": "Pause",
     "app.info-button": "Info",
     "app.back-button": "Zurück",
+    "app.info.none": "Bitte scanne einen Wasserspeier, um Infos über ihn zu erhalten.",
     "app.info.0": "TODO",
     "app.info.1": "TODO",
     "app.info.2": "TODO",

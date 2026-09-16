@@ -26,7 +26,7 @@ const PAN_BOUNDS = L.latLngBounds(
 );
 const FLOOR_PLAN_BOUNDS = [
   [47.995067, 7.851915], // south-west corner of the image
-  [47.99606, 7.853915], // north-east corner of the image
+  [47.99606, 7.853915] // north-east corner of the image
 ];
 
 let map = null;
@@ -36,11 +36,9 @@ let imageOverlayLayer = null; // placeholder group for a future image layer
 let floorPlanLayer = null;
 
 let activePivot = null;
-let currentIndex = null;
-const anchorGroups = {}; // index -> anchor.group
-let currentAnchorIndex = null;
+const anchorGroups = {};
+let currentTargetIdx = null;
 let isPaused = false;
-let isHidden = true;
 
 const base = import.meta.env.BASE_URL;
 const models = {
@@ -101,7 +99,7 @@ async function addModelAnchor(index, modelURI) {
   anchor.onTargetFound = () => {
     if (isPaused) return; // ignore tracking events while paused
     activePivot = pivot;
-    currentAnchorIndex = index;
+    currentTargetIdx = index;
   };
   anchor.onTargetLost = () => {
     if (isPaused) return;
@@ -122,7 +120,7 @@ function unpauseTracking() {
   if (!isPaused) return;
   isPaused = false;
 
-  const group = anchorGroups[currentAnchorIndex];
+  const group = anchorGroups[currentTargetIdx];
   if (group && activePivot) {
     group.attach(activePivot); // reparent back, will snap to live tracking pose
   }
@@ -255,9 +253,7 @@ function initUI() {
   function showMapModal() {
     mapWS.style.display = "flex";
     mapModalOpen = true;
-    initMap("map"); // lazy: builds the map once, reuses it after
-    // Leaflet can't measure a display:none container, so nudge it
-    // to recompute its size right after becoming visible.
+    initMap("map");
     requestAnimationFrame(() => map.invalidateSize());
   }
 
@@ -277,19 +273,50 @@ function initUI() {
   mapCloseBtn.addEventListener("click", hideMapModal);
 
   guideButton.addEventListener("click", () => {
-    infoModalOpen ? hideModal() : showModal(t("app.guide-text"));
+    if (infoModalOpen) {
+      hideModal();
+      setActive(guideButton, false);
+    } else {
+      showModal(t("app.guide-text"));
+      setActive(guideButton, true);
+    }
   });
 
   infoButton.addEventListener("click", () => {
-    infoModalOpen ? hideModal() : showModal(t(`app.info.${currentIndex}`));
+    if (infoModalOpen) {
+      hideModal();
+      setActive(infoButton, false);
+      return;
+    }
+    if (currentTargetIdx === null) {
+      showModal(t("app.info.none"));
+    } else {
+      showModal(t(`app.info.${currentTargetIdx}`));
+    }
+    setActive(infoButton, true);
   });
 
   mapButton.addEventListener("click", () => {
     mapModalOpen ? hideMapModal() : showMapModal();
+    setActive(mapButton, mapModalOpen);
   });
 
   pauseButton.addEventListener("click", () => {
     isPaused ? unpauseTracking() : pauseTracking();
+    setActive(pauseButton, isPaused);
+  });
+
+  // Guide and Info share one modal, so opening one should visually
+  // deactivate the other if it was previously toggled active.
+  closeBtn.addEventListener("click", () => {
+    setActive(guideButton, false);
+    setActive(infoButton, false);
+  });
+  infoWS.addEventListener("click", (e) => {
+    if (e.target === infoWS) {
+      setActive(guideButton, false);
+      setActive(infoButton, false);
+    }
   });
 
   backButton.addEventListener("click", () => {
@@ -357,4 +384,8 @@ function stopLiveLocation() {
     navigator.geolocation.clearWatch(geoWatchId);
     geoWatchId = null;
   }
+}
+
+function setActive(button, active) {
+  button.classList.toggle("active", active);
 }

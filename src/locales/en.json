@@ -33,6 +33,7 @@
     "app.pause-button": "Pause",
     "app.info-button": "Info",
     "app.back-button": "Back",
+    "app.info.none": "Please scan a gargoyle to get information about it.",
     "app.info.0": "TODO",
     "app.info.1": "TODO",
     "app.info.2": "TODO",
