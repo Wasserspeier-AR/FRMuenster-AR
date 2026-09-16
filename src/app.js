@@ -334,7 +334,7 @@ function initUI() {
     mapModalOpen = false;
   }
 
-  }
+  
 
   infoWS.addEventListener("click", (e) => {
     if (e.target === infoWS) closeTextModal();
@@ -363,9 +363,7 @@ function initUI() {
       currentTargetIdx === null
         ? t("app.info.none")
         : t(`app.info.${currentTargetIdx}`);
-      setButtonActive(infoButton, true);
     openTextModal(infoButton, text);
-      setButtonActive(infoButton, false);
   });
 
   mapButton.addEventListener("click", () => {
