@@ -1,3 +1,6 @@
+import * as yaml from "js-yaml";
+import configRaw from "../config.yaml?raw";
+
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MindARThree } from "mind-ar/dist/mindar-image-three.prod.js";
@@ -20,27 +23,14 @@ L.Icon.Default.mergeOptions({
 
 // = Constants =
 const base = import.meta.env.BASE_URL;
-const models = {
-  0: `${base}models/0_unicorn.glb`,
-  1: `${base}models/1_man_with_book.glb`,
-  2: `${base}models/2_dog.glb`,
-  3: `${base}models/6_monster_dog.glb`,
-  4: `${base}models/7_zanner.glb`,
-  5: `${base}models/8_human_skeleton.glb`,
-  6: `${base}models/9_dog_with_rabbit.glb`,
-  7: `${base}models/10_griffin.glb`,
-  8: `${base}models/11_fish.glb`,
-  9: `${base}models/12_devilry.glb`,
-  11: `${base}models/15_man_with_jug.glb`,
-  12: `${base}models/16_knight.glb`
-};
+const config = yaml.load(configRaw).filter((m) => m.enabled);
 
-const SITE_LOCATION = [47.995437, 7.85285];
-const PAN_BOUNDS = L.latLngBounds(
+const mapCenter = [47.995437, 7.85285];
+const panBounds = L.latLngBounds(
   [47.99, 7.849], // southwest corner
   [47.9983, 7.8563] // northeast corner
 );
-const FLOOR_PLAN_BOUNDS = [
+const floorplanBounds = [
   [47.995067, 7.851915], // south-west corner of the image
   [47.99606, 7.853915] // north-east corner of the image
 ];
@@ -75,9 +65,7 @@ initScene();
 initTouchControls();
 initUI();
 await Promise.all(
-  Object.entries(models).map(([index, path]) =>
-    addModelAnchor(Number(index), path)
-  )
+  config.map((entry) => addModelAnchor(entry.id, `${base}${entry.model_path}`))
 );
 
 // = AR Functions =
@@ -224,9 +212,9 @@ function initMap(containerId) {
   if (map) return map;
 
   map = L.map(containerId, {
-    maxBounds: PAN_BOUNDS,
+    maxBounds: panBounds,
     maxBoundsViscosity: 0.8
-  }).setView(SITE_LOCATION, 18);
+  }).setView(mapCenter, 18);
 
   // "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png", '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>' -> Looks better, but requires a key (free)
   // "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" --> Just works
@@ -237,15 +225,18 @@ function initMap(containerId) {
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
 
-  // Reserved layer for a future image overlay (floor plan, historic map, etc.)
   const imageOverlayLayer = L.layerGroup().addTo(map);
-  // Later:
-  // const bounds = [[47.9954, 7.8524], [47.9959, 7.8529]];
-  // L.imageOverlay('path/to/image.png', bounds).addTo(imageOverlayLayer);
-  L.imageOverlay(floorPlanImg, FLOOR_PLAN_BOUNDS, {
+  L.imageOverlay(floorPlanImg, floorplanBounds, {
     opacity: 0.85
   }).addTo(imageOverlayLayer);
 
+  config
+    .filter(
+      (entry) => entry.coordinates[0] !== null && entry.coordinates[1] !== null
+    )
+    .forEach((entry) => {
+      L.marker(entry.coordinates, { opacity: 0.75 }).addTo(map).bindPopup(entry.name);
+    });
   startLiveLocation();
 
   return map;

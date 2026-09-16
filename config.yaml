@@ -1,0 +1,107 @@
+- id: 0
+  name: Unicorn
+  coordinates: [47.99538, 7.85242]
+  model_path: models/0_unicorn.glb
+  enabled: true
+
+- id: 1
+  name: Man with an open book
+  coordinates: [47.99538, 7.85252]
+  model_path: models/1_man_with_book.glb
+  enabled: true
+
+- id: 2
+  name: Dog
+  coordinates: [47.99539, 7.85259]
+  model_path: models/2_dog.glb
+  enabled: true
+
+- id: 3
+  name: Horse
+  coordinates: [47.99539, 7.85280]
+  model_path: models/3_horse.glb
+  enabled: true
+
+- id: 4
+  name: Fantastic beast
+  coordinates: [47.99541, 7.85337]
+  model_path: models/4_fantasy_dog.glb
+  enabled: true
+
+- id: 5
+  name: Fantastic beast with feathers
+  coordinates: [47.99547, 7.85367]
+  model_path: models/5_feathered_dog.glb
+  enabled: true
+
+- id: 6
+  name: Monstrous Dog
+  coordinates: [47.99549, 7.85368]
+  model_path: models/6_monster_dog.glb
+  enabled: true
+
+- id: 7
+  name: Acrobat
+  coordinates: [47.99571, 7.85351]
+  model_path: models/7_zanner.glb
+  enabled: true
+
+- id: 8
+  name: Skeleton
+  coordinates: [47.99571, 7.85331]
+  model_path: models/8_human_skeleton.glb
+  enabled: true
+
+- id: 9
+  name:  Hound with a captured har
+  coordinates: [47.99574, 7.85327]
+  model_path: models/9_dog_with_rabbit.glb
+  enabled: true
+
+- id: 10
+  name: Griffin
+  coordinates: [47.99571, 7.85323]
+  model_path: models/10_griffin.glb
+  enabled: true
+
+- id: 11
+  name: Fish-like beast
+  coordinates: [47.99572, 7.85269]
+  model_path: models/11_fish.glb
+  enabled: true
+
+- id: 12
+  name: Demon critter
+  coordinates: [47.99573, 7.85264]
+  model_path: models/12_devilry.glb
+  enabled: true
+
+- id: 13
+  name: Ram
+  coordinates: [47.99570, 7.85229]
+  model_path: models/13_ram.glb
+  enabled: false
+
+- id: 14
+  name: Billy goat
+  coordinates: [47.99569, 7.85226]
+  model_path: modesl/14_billy_goat.glb
+  enabled: false
+
+- id: 15
+  name: Man in a hood, holding a flagon
+  coordinates: [47.99549, 7.85206]
+  model_path: models/15_man_with_jug.glb
+  enabled: true
+
+- id: 16
+  name: Knight "Pride"
+  coordinates: [47.99546, 7.85216]
+  model_path: models/16_knight.glb
+  enabled: true
+
+- id: 17
+  name: Boar "Gluttony"
+  coordinates: [null, null]
+  model_path: null
+  enabled: false

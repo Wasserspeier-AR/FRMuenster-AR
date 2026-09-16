@@ -4,21 +4,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- TODO: remove -->
-
   <style>
-    html,
-    body {
-      margin: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-
     #container {
       position: fixed;
       inset: 0;
+    }
+    #container video,
+    #container canvas {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover;
     }
 
     .mindar-ui-scanning .scanning .inner {
@@ -26,39 +23,20 @@
       overflow: hidden;
     }
 
-    #ui {
-      position: fixed;
-      inset: 0;
-      z-index: 999;
-      pointer-events: none;
-
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      padding: 0.7rem;
-    }
-
     #ui nav {
       width: min(90%, 380px);
-
       pointer-events: auto;
     }
-
     #ui button.active,
     #ui button.active i {
       color: rgb(118, 23, 23);
     }
-
     #ui button:disabled {
       opacity: 0.4;
       pointer-events: none;
     }
 
-    #infoWS {
-      opacity: 1;
-      z-index: 1010 !important;
-    }
-
+    /* Needed statically for OSM */
     #map {
       width: 100vw;
       height: 70vh;
@@ -68,24 +46,13 @@
       z-index: 100 !important;
       touch-action: none !important;
     }
-
-    #container video,
-    #container canvas {
-      position: absolute !important;
-      inset: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
-      object-fit: cover;
-    }
   </style>
 </head>
 
-<body>
+<body class="h-full w-full m-0 overflow-hidden pointer-events-none">
   <div id="container"></div>
-  <div id="ui">
-    <nav class="flex justify-around items-center
-                bg-white/90 rounded-2xl
-                py-3 shadow-xl backdrop-blur-xl">
+  <div id="ui" class="fixed inset-0 z-999 flex items-end justify-center p-0.7">
+    <nav class="flex justify-around items-center bg-white/90 rounded-2xl py-3 shadow-xl backdrop-blur-xl">
       <button id="guide-button" class="flex flex-col items-center text-gray-600">
         <i class="fa-solid fa-book-open text-xl"></i>
         <span class="text-[11px]" data-i18n="app.guide-button"></span>
@@ -113,7 +80,7 @@
     <p id="text-unpause"></p>
   </div>
 
-  <div id="infoWS" class="info-background absolute bottom-1/6 bg-white">
+  <div id="infoWS" class="info-background absolute bottom-1/6 z-200 bg-white">
     <div class="info-container">
       <div class="info-content">
         <span class="close">&times;</span>
@@ -131,9 +98,9 @@
     </div>
   </div>
   <p id="showme"></p>
-  <script type="module" src="src/app.js"></script>
-  <script src="https://kit.fontawesome.com/34c3e261b7.js" crossorigin="anonymous"></script>
   <script type="module" src="src/style.js"></script>
   <script type="module" src="src/main.js"></script>
+  <script type="module" src="src/app.js"></script>
+  <script src="https://kit.fontawesome.com/34c3e261b7.js" crossorigin="anonymous"></script>
 </body>
 </html>
