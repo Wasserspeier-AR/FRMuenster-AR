@@ -4,55 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- TODO: remove -->
-
   <style>
-    html,
-    body {
-      margin: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-
     #container {
       position: fixed;
       inset: 0;
     }
-
-    .mindar-ui-scanning .scanning .inner {
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    #ui {
-      position: fixed;
-      inset: 0;
-      z-index: 999;
-      pointer-events: none;
-
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      padding: 0.7rem;
-    }
-
-    #ui nav {
-      width: min(90%, 380px);
-
-      pointer-events: auto;
-    }
-
-    #infoWS {
-      opacity: 1;
-    }
-
-    canvas {
-      z-index: 100 !important;
-      touch-action: none !important;
-    }
-
     #container video,
     #container canvas {
       position: absolute !important;
@@ -61,34 +17,66 @@
       height: 100% !important;
       object-fit: cover;
     }
+
+    .mindar-ui-scanning .scanning .inner {
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    #ui nav {
+      width: min(90%, 380px);
+      pointer-events: auto;
+    }
+    #ui button.active,
+    #ui button.active i {
+      color: rgb(118, 23, 23);
+    }
+    #ui button:disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    /* Needed statically for OSM */
+    #map {
+      width: 100vw;
+      height: 70vh;
+    }
+
+    canvas {
+      z-index: 100 !important;
+      touch-action: none !important;
+    }
   </style>
 </head>
 
-<body>
+<body class="h-full w-full m-0 overflow-hidden pointer-events-none">
   <div id="container"></div>
-  <div id="ui">
-    <nav class="flex justify-around items-center
-                bg-white/90 rounded-2xl
-                py-3 shadow-xl backdrop-blur-xl">
-      <button id="guide-button" class="flex flex-col items-center text-gray-600">
+  <div id="ui" class="fixed inset-0 z-999 flex items-end justify-center p-0.7">
+    <nav class="flex justify-around items-center bg-white/90 rounded-2xl py-3 shadow-xl backdrop-blur-xl">
+      <button id="guide-button"
+        class="app-button flex flex-col items-center text-gray-600 transition-colors duration-200">
         <i class="fa-solid fa-book-open text-xl"></i>
         <span class="text-[11px]" data-i18n="app.guide-button"></span>
       </button>
-      <button id="map-button" class="flex flex-col items-center text-gray-600">
+      <button id="map-button"
+        class="app-button flex flex-col items-center text-gray-600 transition-colors duration-200">
         <i class="fa-solid fa-map text-xl"></i>
         <span class="text-[11px]" data-i18n="app.map-button"></span>
       </button>
-      <button id="pause-button" class="flex flex-col items-center text-gray-600">
+      <button id="pause-button"
+        class="app-button flex flex-col items-center text-gray-600 transition-colors duration-200">
         <i class="fa-solid fa-circle-pause text-xl"></i>
         <span class="text-[11px]" data-i18n="app.pause-button"></span>
       </button>
-      <button id="info-button" class="flex flex-col items-center text-gray-600">
+      <button id="info-button"
+        class="app-button flex flex-col items-center text-gray-600 transition-colors duration-200">
         <i class="fa-solid fa-circle-info text-xl"></i>
         <span class="text-[11px]" data-i18n="app.info-button"></span>
       </button>
-      <button id="unpause-button" class="flex flex-col items-center text-gray-600">
+      <button id="unpause-button"
+        class="app-button flex flex-col items-center text-gray-600 transition-colors duration-200">
         <i class="fa-solid fa-play text-xl"></i>
-        <span class="text-[11px]"  data-i18n="app.back-button"></span>
+        <span class="text-[11px]" data-i18n="app.back-button"></span>
       </button>
     </nav>
   </div>
@@ -97,7 +85,7 @@
     <p id="text-unpause"></p>
   </div>
 
-  <div id="infoWS" class="info-background">
+  <div id="infoWS" class="info-background absolute bottom-1/6 z-200 bg-white">
     <div class="info-container">
       <div class="info-content">
         <span class="close">&times;</span>
@@ -105,10 +93,95 @@
       </div>
     </div>
   </div>
+
+  <div id="mapWS" class="map-background bg-white">
+    <div class="map-container">
+      <div class="map-content">
+        <span class="close map-close">&times;</span>
+        <div id="map"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="guideWS" class="fixed inset-0 z-1010 hidden items-end justify-center bg-black/30 pb-4 pt-6 backdrop-blur-sm">
+    <div class="relative flex max-h-[85vh] w-full max-w-md
+         flex-col overflow-hidden rounded-t-4xl
+         bg-white shadow-2xl">
+
+      <!-- top gray bar -->
+      <!-- <div class="flex justify-center pt-3">
+      <div class="h-1 w-9 rounded-full bg-gray-400"></div>
+    </div> -->
+
+      <button class="guide-close absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center
+             rounded-full bg-white/80 text-2xl text-gray-500
+             hover:bg-gray-100" aria-label="Schließen">
+        &times;
+      </button>
+
+      <div class="overflow-y-auto px-6 pb-6 pt-4">
+        <h2 data-i18n="index.start" class="text-xl font-semibold text-stone-900">
+          So funktioniert's
+        </h2>
+        <p data-i18n="index.swipe" class="mb-4 mt-1 text-sm text-stone-500">
+          Nach links wischen zum nächsten Schritt.
+        </p>
+        <div id="guide-slider" class="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-4">
+
+          <div class="min-w-full snap-center">
+            <div class="overflow-hidden rounded-2xl">
+              <img src="src/assets/Anleitung_Wasserspeier_Schritt_1.jpg" class="w-full object-contain"/>
+            </div>
+            <div class="mt-4">
+              <h3 data-i18n="index.manual-first-step" class="text-lg font-semibold text-stone-900">
+                1. Wandfläche scannen
+              </h3>
+              <p data-i18n="index.manual-first-step-text" class="mt-2 text-stone-600">
+                Suche eine passende Wandfläche am Münster und richte deine Kamera darauf.
+              </p>
+            </div>
+          </div>
+
+        
+          <div class="min-w-full snap-center">
+            <div class="overflow-hidden rounded-2xl">
+              <img src="src/assets/Anleitung_Wasserspeier.png" class="w-full object-contain"/>
+            </div>
+            <div class="mt-4">
+              <h3 data-i18n="index.manual-second-step" class="text-lg font-semibold text-stone-900">
+                2. Wasserspeier entdecken
+              </h3>
+              <p data-i18n="index.manual-second-step-text" class="mt-2 text-stone-600">
+                Scanne die Wandfläche, bis das 3D-Modell erscheint.
+              </p>
+            </div>
+          </div>
+
+      
+          <div class="min-w-full snap-center">
+            <div class="overflow-hidden rounded-2xl">
+              <img src="src/assets/Anleitung_Wasserspeier.png" class="w-full object-contain"/>
+            </div>
+            <div class="mt-4">
+              <h3 data-i18n="index.manual-third-step" class="text-lg font-semibold text-stone-900">
+                3. Mehr erfahren
+              </h3>
+              <p data-i18n="index.manual-third-step-text" class="mt-2 text-stone-600">
+                Tippe auf den Info-Button und erfahre mehr über den Wasserspeier.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
   <p id="showme"></p>
-  <script type="module" src="src/app.js"></script>
-  <script src="https://kit.fontawesome.com/34c3e261b7.js" crossorigin="anonymous"></script>
   <script type="module" src="src/style.js"></script>
   <script type="module" src="src/main.js"></script>
+  <script type="module" src="src/app.js"></script>
+  <script src="https://kit.fontawesome.com/34c3e261b7.js" crossorigin="anonymous"></script>
 </body>
+
 </html>

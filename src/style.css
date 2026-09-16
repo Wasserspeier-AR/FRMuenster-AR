@@ -3,3 +3,8 @@
 [data-i18n] {
   white-space: pre-line;
 }
+
+[data-lang-switch].active {
+  color: rgb(118, 23, 23);
+  font-weight: 600;
+}

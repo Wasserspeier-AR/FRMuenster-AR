@@ -12,6 +12,13 @@ function setLang(lang) {
   localStorage.setItem(STORAGE_KEY, lang);
   applyTranslations(lang);
   document.documentElement.lang = lang;
+  updateActiveLangButton(lang);
+}
+
+function updateActiveLangButton(lang) {
+  document.querySelectorAll('[data-lang-switch]').forEach((btn) => {
+    btn.classList.toggle('active', btn.getAttribute('data-lang-switch') === lang);
+  });
 }
 
 function applyTranslations(lang) {
@@ -29,10 +36,16 @@ function applyTranslations(lang) {
   });
 }
 
+export function t(key) {
+  const dict = translations[getLang()] || translations.de;
+  return dict[key] || key;
+}
+
 export function initI18n() {
   const lang = getLang();
   document.documentElement.lang = lang;
   applyTranslations(lang);
+  updateActiveLangButton(lang);
 
   document.querySelectorAll('[data-lang-switch]').forEach((btn) => {
     btn.addEventListener('click', () => {
