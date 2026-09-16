@@ -1,5 +1,5 @@
 import * as yaml from "js-yaml";
-import configRaw from "../config.yaml?raw";
+import configRaw from "../CONFIG.yaml?raw";
 
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
