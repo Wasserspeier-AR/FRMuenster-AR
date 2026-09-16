@@ -274,10 +274,18 @@ function setActive(button, active) {
 
 function initUI() {
   const guideButton = document.querySelector("#guide-button");
+  const guideWS = document.querySelector("#guideWS");
+  const guideClose = guideWS.querySelector(".guide-close");
+
   const mapButton = document.querySelector("#map-button");
   const pauseButton = document.querySelector("#pause-button");
   const infoButton = document.querySelector("#info-button");
   const backButton = document.querySelector("#unpause-button");
+
+   function setButtonActive(button, active) {
+    button.classList.toggle("text-[rgb(118,23,23)]", active);
+    button.classList.toggle("text-gray-600", !active);
+  }
 
   const infoWS = document.querySelector("#infoWS");
   const infoText = document.querySelector("#info-text");
@@ -325,6 +333,8 @@ function initUI() {
     mapWS.style.display = "none";
     mapModalOpen = false;
   }
+
+  
 
   infoWS.addEventListener("click", (e) => {
     if (e.target === infoWS) closeTextModal();

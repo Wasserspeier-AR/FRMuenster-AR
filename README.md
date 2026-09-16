@@ -42,7 +42,13 @@ Sollte sich die Anzahl der Wasserspeier grundlegend ändern (etwa durch einscann
 
 Das Projekt ist als statische Webanwendung konzipiert, die mit minimalen externen Abhängigkeiten möglichst aufwandsarm unterhalten werden soll.
 
-## Abhängigkeiten
+### Voraussetzungen
+
+- [Node.js](https://nodejs.org/) (empfohlene LTS-Version)
+- npm (wird normalerweise zusammen mit Node.js installiert)
+- Ein moderner Webbrowser mit Unterstützung für Kamera-Zugriff und WebAR
+
+### Abhängigkeiten
 
 - AR-Backend: [MindAR](https://github.com/hiukim/mind-ar-js)
 - Grafik: [Three.js](https://threejs.org/)
@@ -51,7 +57,7 @@ Das Projekt ist als statische Webanwendung konzipiert, die mit minimalen externe
 - [OpenStreetmap](https://www.openstreetmap.org) Integration: [Leaflet](https://leafletjs.com/)
 - Vereinfachte Konfiguration: [js-yaml](https://www.npmjs.com/package/js-yaml)
 
-## Projektstruktur
+### Projektstruktur
 
 ```toml
 # Einige Dateien wurden für bessere Übersicht weggelassen
@@ -83,7 +89,7 @@ Das Projekt ist als statische Webanwendung konzipiert, die mit minimalen externe
 └── README.md
 ```
 
-## Schnellstart
+### Schnellstart
 
 1. Klone dieses Repository und gehe ins Stammverzeichnis
 2. `npm install` ausführen
