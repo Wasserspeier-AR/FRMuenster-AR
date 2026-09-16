@@ -10,8 +10,7 @@ import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import floorPlanImg from "./assets/Grundriss_ausgerichtet.png";
 
-// Leaflet's default marker icon paths break under bundlers; point them
-// at the bundled asset URLs instead.
+// Leaflet's default marker icon paths break under bundlers
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
@@ -19,27 +18,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow
 });
 
-const SITE_LOCATION = [47.995437, 7.85285];
-const PAN_BOUNDS = L.latLngBounds(
-  [47.99, 7.849], // southwest corner
-  [47.9983, 7.8563] // northeast corner
-);
-const FLOOR_PLAN_BOUNDS = [
-  [47.995067, 7.851915], // south-west corner of the image
-  [47.99606, 7.853915] // north-east corner of the image
-];
-
-let map = null;
-let userMarker = null;
-let geoWatchId = null;
-let imageOverlayLayer = null; // placeholder group for a future image layer
-let floorPlanLayer = null;
-
-let activePivot = null;
-const anchorGroups = {};
-let currentTargetIdx = null;
-let isPaused = false;
-
+// = Constants =
 const base = import.meta.env.BASE_URL;
 const models = {
   0: `${base}models/0_unicorn.glb`,
@@ -55,6 +34,30 @@ const models = {
   11: `${base}models/15_man_with_jug.glb`,
   12: `${base}models/16_knight.glb`
 };
+
+const SITE_LOCATION = [47.995437, 7.85285];
+const PAN_BOUNDS = L.latLngBounds(
+  [47.99, 7.849], // southwest corner
+  [47.9983, 7.8563] // northeast corner
+);
+const FLOOR_PLAN_BOUNDS = [
+  [47.995067, 7.851915], // south-west corner of the image
+  [47.99606, 7.853915] // north-east corner of the image
+];
+
+// = State =
+let activePivot = null;
+const anchorGroups = {};
+let currentTargetIdx = null;
+let isPaused = false;
+let isTargetVisible = false;
+let updateTrackingUI = () => {};
+
+let map = null;
+let userMarker = null;
+let geoWatchId = null;
+
+// = Setup =
 const mindarThree = new MindARThree({
   container: document.querySelector("#container"),
   imageTargetSrc: `${base}mind_ar/WS_all_Marker2.mind`,
@@ -77,7 +80,7 @@ await Promise.all(
   )
 );
 
-// = Functions =
+// = AR Functions =
 async function addModelAnchor(index, modelURI) {
   const anchor = mindarThree.addAnchor(index);
   const model = (await new GLTFLoader().loadAsync(modelURI)).scene;
@@ -97,32 +100,35 @@ async function addModelAnchor(index, modelURI) {
   anchorGroups[index] = anchor.group;
 
   anchor.onTargetFound = () => {
-    if (isPaused) return; // ignore tracking events while paused
-    activePivot = pivot;
+    if (isPaused && index !== currentTargetIdx) return; // ignore other markers while paused
     currentTargetIdx = index;
+    isTargetVisible = true;
+    if (!isPaused) activePivot = pivot;
+    updateTrackingUI();
   };
   anchor.onTargetLost = () => {
-    if (isPaused) return;
-    activePivot = null;
+    if (index !== currentTargetIdx) return;
+    isTargetVisible = false;
+    if (!isPaused) activePivot = null;
+    updateTrackingUI();
   };
 
   return anchor;
 }
 
 function pauseTracking() {
-  if (isPaused || !activePivot) return;
+  if (isPaused || !activePivot || !isTargetVisible) return;
   isPaused = true;
-
   scene.attach(activePivot);
 }
 
 function unpauseTracking() {
-  if (!isPaused) return;
+  if (!isPaused || !isTargetVisible) return;
   isPaused = false;
 
   const group = anchorGroups[currentTargetIdx];
   if (group && activePivot) {
-    group.attach(activePivot); // reparent back, will snap to live tracking pose
+    group.attach(activePivot);
   }
 }
 
@@ -186,7 +192,7 @@ function initTouchControls() {
         lastY = null;
         lastDist = null;
       } else if (e.touches.length === 1) {
-        // Lifted one finger from pinch - resume single-finger tracking cleanly
+        // Resume single-finger tracking cleanly when lifting only one finger
         lastDist = null;
         lastX = e.touches[0].clientX;
         lastY = e.touches[0].clientY;
@@ -213,117 +219,7 @@ async function initMindAR() {
   await mindarThree.start();
 }
 
-async function stop() {
-  mindarThree.stop();
-  renderer.setAnimationLoop(null);
-}
-
-// --- UI wiring ---
-function initUI() {
-  const guideButton = document.querySelector("#guide-button");
-  const mapButton = document.querySelector("#map-button");
-  const pauseButton = document.querySelector("#pause-button");
-  const infoButton = document.querySelector("#info-button");
-  const backButton = document.querySelector("#unpause-button");
-
-  const infoWS = document.querySelector("#infoWS");
-  const infoText = document.querySelector("#info-text");
-  const closeBtn = infoWS.querySelector(".close");
-
-  const mapWS = document.querySelector("#mapWS");
-  const mapCloseBtn = mapWS.querySelector(".map-close");
-
-  infoWS.style.display = "none";
-  mapWS.style.display = "none";
-
-  let infoModalOpen = false;
-  let mapModalOpen = false;
-
-  function showModal(text) {
-    infoText.textContent = text;
-    infoWS.style.display = "flex";
-    infoModalOpen = true;
-  }
-
-  function hideModal() {
-    infoWS.style.display = "none";
-    infoModalOpen = false;
-  }
-
-  function showMapModal() {
-    mapWS.style.display = "flex";
-    mapModalOpen = true;
-    initMap("map");
-    requestAnimationFrame(() => map.invalidateSize());
-  }
-
-  function hideMapModal() {
-    mapWS.style.display = "none";
-    mapModalOpen = false;
-  }
-
-  infoWS.addEventListener("click", (e) => {
-    if (e.target === infoWS) hideModal();
-  });
-  closeBtn.addEventListener("click", hideModal);
-
-  mapWS.addEventListener("click", (e) => {
-    if (e.target === mapWS) hideMapModal();
-  });
-  mapCloseBtn.addEventListener("click", hideMapModal);
-
-  guideButton.addEventListener("click", () => {
-    if (infoModalOpen) {
-      hideModal();
-      setActive(guideButton, false);
-    } else {
-      showModal(t("app.guide-text"));
-      setActive(guideButton, true);
-    }
-  });
-
-  infoButton.addEventListener("click", () => {
-    if (infoModalOpen) {
-      hideModal();
-      setActive(infoButton, false);
-      return;
-    }
-    if (currentTargetIdx === null) {
-      showModal(t("app.info.none"));
-    } else {
-      showModal(t(`app.info.${currentTargetIdx}`));
-    }
-    setActive(infoButton, true);
-  });
-
-  mapButton.addEventListener("click", () => {
-    mapModalOpen ? hideMapModal() : showMapModal();
-    setActive(mapButton, mapModalOpen);
-  });
-
-  pauseButton.addEventListener("click", () => {
-    isPaused ? unpauseTracking() : pauseTracking();
-    setActive(pauseButton, isPaused);
-  });
-
-  // Guide and Info share one modal, so opening one should visually
-  // deactivate the other if it was previously toggled active.
-  closeBtn.addEventListener("click", () => {
-    setActive(guideButton, false);
-    setActive(infoButton, false);
-  });
-  infoWS.addEventListener("click", (e) => {
-    if (e.target === infoWS) {
-      setActive(guideButton, false);
-      setActive(infoButton, false);
-    }
-  });
-
-  backButton.addEventListener("click", () => {
-    window.location.href = base;
-  });
-}
-
+// = Map Functions =
 function initMap(containerId) {
   if (map) return map;
 
@@ -342,11 +238,11 @@ function initMap(containerId) {
   }).addTo(map);
 
   // Reserved layer for a future image overlay (floor plan, historic map, etc.)
-  imageOverlayLayer = L.layerGroup().addTo(map);
+  const imageOverlayLayer = L.layerGroup().addTo(map);
   // Later:
   // const bounds = [[47.9954, 7.8524], [47.9959, 7.8529]];
   // L.imageOverlay('path/to/image.png', bounds).addTo(imageOverlayLayer);
-  floorPlanLayer = L.imageOverlay(floorPlanImg, FLOOR_PLAN_BOUNDS, {
+  L.imageOverlay(floorPlanImg, FLOOR_PLAN_BOUNDS, {
     opacity: 0.85
   }).addTo(imageOverlayLayer);
 
@@ -379,13 +275,109 @@ function startLiveLocation() {
   );
 }
 
-function stopLiveLocation() {
-  if (geoWatchId !== null) {
-    navigator.geolocation.clearWatch(geoWatchId);
-    geoWatchId = null;
-  }
+// --- UI wiring ---
+function setActive(button, active) {
+  if (!button) return;
+  button.classList.toggle("active", active);
 }
 
-function setActive(button, active) {
-  button.classList.toggle("active", active);
+function initUI() {
+  const guideButton = document.querySelector("#guide-button");
+  const mapButton = document.querySelector("#map-button");
+  const pauseButton = document.querySelector("#pause-button");
+  const infoButton = document.querySelector("#info-button");
+  const backButton = document.querySelector("#unpause-button");
+
+  const infoWS = document.querySelector("#infoWS");
+  const infoText = document.querySelector("#info-text");
+  const closeBtn = infoWS.querySelector(".close");
+
+  const mapWS = document.querySelector("#mapWS");
+  const mapCloseBtn = mapWS.querySelector(".map-close");
+
+  updateTrackingUI = () => {
+    pauseButton.disabled = !isTargetVisible;
+  };
+  updateTrackingUI();
+
+  infoWS.style.display = "none";
+  mapWS.style.display = "none";
+
+  let mapModalOpen = false;
+
+  // Guide and Info share one modal, so opening one should visually
+  // deactivate the other if it was previously toggled active.
+  let activeTextButton = null;
+
+  function openTextModal(button, text) {
+    infoText.textContent = text;
+    infoWS.style.display = "flex";
+    setActive(activeTextButton, false);
+    setActive(button, true);
+    activeTextButton = button;
+  }
+
+  function closeTextModal() {
+    infoWS.style.display = "none";
+    setActive(activeTextButton, false);
+    activeTextButton = null;
+  }
+
+  function showMapModal() {
+    mapWS.style.display = "flex";
+    mapModalOpen = true;
+    initMap("map");
+    requestAnimationFrame(() => map.invalidateSize());
+  }
+
+  function hideMapModal() {
+    mapWS.style.display = "none";
+    mapModalOpen = false;
+  }
+
+  infoWS.addEventListener("click", (e) => {
+    if (e.target === infoWS) closeTextModal();
+  });
+  closeBtn.addEventListener("click", closeTextModal);
+
+  mapWS.addEventListener("click", (e) => {
+    if (e.target === mapWS) hideMapModal();
+  });
+  mapCloseBtn.addEventListener("click", hideMapModal);
+
+  guideButton.addEventListener("click", () => {
+    if (activeTextButton === guideButton) {
+      closeTextModal();
+    } else {
+      openTextModal(guideButton, t("app.guide-text"));
+    }
+  });
+
+  infoButton.addEventListener("click", () => {
+    if (activeTextButton === infoButton) {
+      closeTextModal();
+      return;
+    }
+    const text =
+      currentTargetIdx === null
+        ? t("app.info.none")
+        : t(`app.info.${currentTargetIdx}`);
+    openTextModal(infoButton, text);
+  });
+
+  mapButton.addEventListener("click", () => {
+    const opening = !mapModalOpen;
+    opening ? showMapModal() : hideMapModal();
+    setActive(mapButton, opening);
+  });
+
+  pauseButton.addEventListener("click", () => {
+    const pausing = !isPaused;
+    pausing ? pauseTracking() : unpauseTracking();
+    setActive(pauseButton, pausing);
+  });
+
+  backButton.addEventListener("click", () => {
+    window.location.href = base;
+  });
 }
