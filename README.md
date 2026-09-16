@@ -61,13 +61,15 @@ Das Projekt ist als statische Webanwendung konzipiert, die mit minimalen externe
 
 ```toml
 # Einige Dateien wurden für bessere Übersicht weggelassen
+├── .github/                     # Github Pages Deployment
 ├── public/
+│   ├── .original_models/        # Originale 3D-Modelle (GLTF)
 │   ├── mind_ar/
 │   │   └── WS_all_Marker2.mind  # Image Targets
-│   └── models/                  # 3D-Modelle
-├── scripts
-│   └── image_augmentations.py   # Script für Modell-Training
-├── src
+│   └── models/                  # Optimierte 3D-Modelle (GLB)
+├── scripts/
+│   └── image_augmentations.py   # Script für Modell-Training; nicht genutzt
+├── src/
 │   ├── assets/
 │   ├── locales/                 # Übersetzungen
 │   │   ├── de.json
@@ -78,12 +80,12 @@ Das Projekt ist als statische Webanwendung konzipiert, die mit minimalen externe
 │   ├── main.js
 │   ├── style.css
 │   └── style.js
+├── .gitignore
 ├── vite.config.js
 ├── app.html                     # AR-Anwendung
 ├── CONFIG.yaml                  # Konfiguration der Wasserspeier
 ├── impressum.html               # Impressum
 ├── index.html                   # Startseite
-├── node_modules
 ├── package.json
 ├── package-lock.json
 └── README.md
