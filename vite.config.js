@@ -17,10 +17,9 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        app: resolve(__dirname, 'app.html'),
-        legacyApp: resolve(__dirname, 'legacy-app.html'),
-        impressum: resolve(__dirname, 'impressum.html'),
+        main: resolve(import.meta.dirname, 'index.html'),
+        app: resolve(import.meta.dirname, 'app.html'),
+        impressum: resolve(import.meta.dirname, 'impressum.html'),
       },
     },
   },

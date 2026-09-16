@@ -20,6 +20,8 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.0",
+    "js-yaml": "^5.4.2",
+    "leaflet": "^1.9.4",
     "mind-ar": "1.2.5",
     "tailwindcss": "^4.3.0",
     "three": "0.149.0"
