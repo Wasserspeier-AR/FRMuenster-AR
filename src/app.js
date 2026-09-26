@@ -53,7 +53,8 @@ const mindarThree = new MindARThree({
   imageTargetSrc: `${base}mind_ar/WS_all_Marker2.mind`,
   filterMinCF: 0.001,
   filterBeta: 0.001,
-  warmupTolerance: 3
+  warmupTolerance: 3,
+  //uiScanning: "#mindar-ui-scanning",
 });
 const { renderer, scene, camera } = mindarThree;
 renderer.setAnimationLoop(() => {
@@ -217,11 +218,12 @@ function initMap(containerId) {
   }).setView(mapCenter, 18);
 
   // "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" --> Just works, but has labels
+  // Alternative CARTO basemaps: https://carto.com/basemaps/#styles
   L.tileLayer("https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png?key=cb1_3n05_1_ec8829c0a380ba86e1af803d", {
     attribution: "© <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, " +
     "© <a href='https://carto.com/attribution/'>CARTO</a>",
-    minZoom: 16,
-    maxZoom: 19,
+    minZoom: 17,
+    maxZoom: 20,
   }).addTo(map);
 
   const imageOverlayLayer = L.layerGroup().addTo(map);
