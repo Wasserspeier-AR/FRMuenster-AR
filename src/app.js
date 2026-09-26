@@ -216,13 +216,12 @@ function initMap(containerId) {
     maxBoundsViscosity: 0.8
   }).setView(mapCenter, 18);
 
-  // "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png", '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>' -> Looks better, but requires a key (free)
-  // "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" --> Just works
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  // "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" --> Just works, but has labels
+  L.tileLayer("https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png?key=cb1_3n05_1_ec8829c0a380ba86e1af803d", {
+    attribution: "© <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, " +
+    "© <a href='https://carto.com/attribution/'>CARTO</a>",
     minZoom: 16,
     maxZoom: 19,
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
 
   const imageOverlayLayer = L.layerGroup().addTo(map);
@@ -334,7 +333,7 @@ function initUI() {
     mapModalOpen = false;
   }
 
-  
+
 
   infoWS.addEventListener("click", (e) => {
     if (e.target === infoWS) closeTextModal();
