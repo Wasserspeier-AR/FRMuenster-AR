@@ -328,6 +328,8 @@ function initUI() {
   function showMapModal() {
     mapWS.style.display = "flex";
     mapModalOpen = true;
+    document.body.classList.add("map-is-open");
+    document.querySelector("#container").style.pointerEvents = "none";
     initMap("map");
     requestAnimationFrame(() => map.invalidateSize());
   }
@@ -335,6 +337,8 @@ function initUI() {
   function hideMapModal() {
     mapWS.style.display = "none";
     mapModalOpen = false;
+    document.body.classList.remove("map-is-open");
+    document.querySelector("#container").style.pointerEvents = "auto";
   }
 
 
