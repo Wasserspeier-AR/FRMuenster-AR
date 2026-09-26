@@ -5,16 +5,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    #container {
-      position: fixed;
-      inset: 0;
-    }
     #container video,
     #container canvas {
-      position: absolute !important;
       inset: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
       object-fit: cover;
     }
 
@@ -23,10 +16,6 @@
       overflow: hidden;
     }
 
-    #ui nav {
-      width: min(90%, 380px);
-      pointer-events: auto;
-    }
     #ui button.active,
     #ui button.active i {
       color: rgb(118, 23, 23);
@@ -42,6 +31,7 @@
       height: 70vh;
     }
 
+    /* Needed for dynamically added element from mindAR */
     canvas {
       z-index: 100 !important;
       touch-action: none !important;
@@ -49,10 +39,10 @@
   </style>
 </head>
 
-<body class="h-full w-full m-0 overflow-hidden pointer-events-none">
-  <div id="container"></div>
-  <div id="ui" class="fixed inset-0 z-999 flex items-end justify-center p-0.7">
-    <nav class="flex justify-around items-center bg-white/90 rounded-2xl py-3 shadow-xl backdrop-blur-xl">
+<body class="relative h-dvh w-full m-0 overflow-hidden pointer-events-none">
+  <div id="container" class="absolute inset-0 pointer-events-auto"></div>
+  <div id="ui" class="absolute inset-x-0 bottom-0 p-[5%] z-999">
+    <nav class="mx-auto w-full max-w-95 pointer-events-auto flex justify-around items-center bg-white/90 rounded-2xl py-3 shadow-xl backdrop-blur-xl">
       <button id="guide-button"
         class="app-button flex flex-col items-center text-gray-600 transition-colors duration-200">
         <i class="fa-solid fa-book-open text-xl"></i>
@@ -81,10 +71,6 @@
     </nav>
   </div>
 
-  <div class="unpause-container">
-    <p id="text-unpause"></p>
-  </div>
-
   <div id="infoWS" class="info-background absolute bottom-1/6 z-200 bg-white">
     <div class="info-container">
       <div class="info-content">
@@ -107,11 +93,6 @@
     <div class="relative flex max-h-[85vh] w-full max-w-md
          flex-col overflow-hidden rounded-t-4xl
          bg-white shadow-2xl">
-
-      <!-- top gray bar -->
-      <!-- <div class="flex justify-center pt-3">
-      <div class="h-1 w-9 rounded-full bg-gray-400"></div>
-    </div> -->
 
       <button class="guide-close absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center
              rounded-full bg-white/80 text-2xl text-gray-500
@@ -142,7 +123,7 @@
             </div>
           </div>
 
-        
+
           <div class="min-w-full snap-center">
             <div class="overflow-hidden rounded-2xl">
               <img src="src/assets/Anleitung_Wasserspeier.png" class="w-full object-contain"/>
@@ -157,7 +138,7 @@
             </div>
           </div>
 
-      
+
           <div class="min-w-full snap-center">
             <div class="overflow-hidden rounded-2xl">
               <img src="src/assets/Anleitung_Wasserspeier.png" class="w-full object-contain"/>
