@@ -1,5 +1,5 @@
 # Ein Wasserspeier kommt selten allein
-Im Rahmen einer Bachelorarbeit wurde [ein WebAR-Protyp](https://hannguyen10.github.io/AR_FR_Muenster/homepage.html) zur Erkundung der Wasserspeier des Freiburger Münsters entwickelt.
+Im Rahmen einer Bachelorarbeit wurde [ein WebAR-Protyp](https://hannguyen10.github.io/AR_FR_Muenster/homepage.html) zur Erkundung der Wasserspeier des [Freiburger Münsters](https://www.freiburgermuenster.info) entwickelt.
 
 Im Rahmen eines HiWi-Projektes wurde die Anwendung in Zusammenarbeit mit dem Freiburger Münsterbauverein weiter ausgearbeitet.
 Diese ist über diesen Link zugänglich: 
@@ -19,10 +19,10 @@ Moreli Andrea Paredes Gonzalez
 
 ### Projektbetreuung
 
-Hochschule Furtwangen:<br/>
+[Hochschule Furtwangen](https://www.hs-furtwangen.de/):<br/>
 Prof. Dr. Uwe Hahne
 
-Freiburger Münsterbauverein:<br/>
+[Freiburger Münsterbauverein](https://www.freiburgermuenster.info):<br/>
 Lena Hipp
 
 
