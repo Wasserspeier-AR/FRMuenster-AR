@@ -53,7 +53,8 @@ const mindarThree = new MindARThree({
   imageTargetSrc: `${base}mind_ar/WS_all_Marker2.mind`,
   filterMinCF: 0.001,
   filterBeta: 0.001,
-  warmupTolerance: 3
+  warmupTolerance: 3,
+  //uiScanning: "#mindar-ui-scanning",
 });
 const { renderer, scene, camera } = mindarThree;
 renderer.setAnimationLoop(() => {
@@ -108,6 +109,7 @@ function pauseTracking() {
   if (isPaused || !activePivot || !isTargetVisible) return;
   isPaused = true;
   scene.attach(activePivot);
+  document.querySelector(".mindar-ui-scanning").style.display = "none";
 }
 
 function unpauseTracking() {
@@ -118,6 +120,7 @@ function unpauseTracking() {
   if (group && activePivot) {
     group.attach(activePivot);
   }
+  document.querySelector(".mindar-ui-scanning").style.display = "";
 }
 
 function initTouchControls() {
@@ -216,13 +219,13 @@ function initMap(containerId) {
     maxBoundsViscosity: 0.8
   }).setView(mapCenter, 18);
 
-  // "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png", '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>' -> Looks better, but requires a key (free)
-  // "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" --> Just works
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    minZoom: 16,
-    maxZoom: 19,
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  // "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" --> Just works, but has labels
+  // Alternative CARTO basemaps: https://carto.com/basemaps/#styles
+  L.tileLayer("https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png?key=cb1_3n05_1_ec8829c0a380ba86e1af803d", {
+    attribution: "© <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, " +
+    "© <a href='https://carto.com/attribution/'>CARTO</a>",
+    minZoom: 17,
+    maxZoom: 20,
   }).addTo(map);
 
   const imageOverlayLayer = L.layerGroup().addTo(map);
@@ -325,6 +328,8 @@ function initUI() {
   function showMapModal() {
     mapWS.style.display = "flex";
     mapModalOpen = true;
+    document.body.classList.add("map-is-open");
+    document.querySelector("#container").style.pointerEvents = "none";
     initMap("map");
     requestAnimationFrame(() => map.invalidateSize());
   }
@@ -332,9 +337,11 @@ function initUI() {
   function hideMapModal() {
     mapWS.style.display = "none";
     mapModalOpen = false;
+    document.body.classList.remove("map-is-open");
+    document.querySelector("#container").style.pointerEvents = "auto";
   }
 
-  
+
 
   infoWS.addEventListener("click", (e) => {
     if (e.target === infoWS) closeTextModal();

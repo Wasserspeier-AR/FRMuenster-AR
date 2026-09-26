@@ -1,5 +1,5 @@
 # Ein Wasserspeier kommt selten allein
-Im Rahmen einer Bachelorarbeit wurde [ein WebAR-Protyp](https://hannguyen10.github.io/AR_FR_Muenster/homepage.html) zur Erkundung der Wasserspeier des Freiburger Münsters entwickelt.
+Im Rahmen einer Bachelorarbeit wurde [ein WebAR-Protyp](https://hannguyen10.github.io/AR_FR_Muenster/homepage.html) zur Erkundung der Wasserspeier des [Freiburger Münsters](https://www.freiburgermuenster.info) entwickelt.
 
 Im Rahmen eines HiWi-Projektes wurde die Anwendung in Zusammenarbeit mit dem Freiburger Münsterbauverein weiter ausgearbeitet.
 Diese ist über diesen Link zugänglich: 
@@ -19,10 +19,10 @@ Moreli Andrea Paredes Gonzalez
 
 ### Projektbetreuung
 
-Hochschule Furtwangen:<br/>
+[Hochschule Furtwangen](https://www.hs-furtwangen.de/):<br/>
 Prof. Dr. Uwe Hahne
 
-Freiburger Münsterbauverein:<br/>
+[Freiburger Münsterbauverein](https://www.freiburgermuenster.info):<br/>
 Lena Hipp
 
 
@@ -61,13 +61,15 @@ Das Projekt ist als statische Webanwendung konzipiert, die mit minimalen externe
 
 ```toml
 # Einige Dateien wurden für bessere Übersicht weggelassen
+├── .github/                     # Github Pages Deployment
 ├── public/
+│   ├── .original_models/        # Originale 3D-Modelle (GLTF)
 │   ├── mind_ar/
 │   │   └── WS_all_Marker2.mind  # Image Targets
-│   └── models/                  # 3D-Modelle
-├── scripts
-│   └── image_augmentations.py   # Script für Modell-Training
-├── src
+│   └── models/                  # Optimierte 3D-Modelle (GLB)
+├── scripts/
+│   └── image_augmentations.py   # Script für Modell-Training; nicht genutzt
+├── src/
 │   ├── assets/
 │   ├── locales/                 # Übersetzungen
 │   │   ├── de.json
@@ -78,12 +80,12 @@ Das Projekt ist als statische Webanwendung konzipiert, die mit minimalen externe
 │   ├── main.js
 │   ├── style.css
 │   └── style.js
+├── .gitignore
 ├── vite.config.js
 ├── app.html                     # AR-Anwendung
 ├── CONFIG.yaml                  # Konfiguration der Wasserspeier
 ├── impressum.html               # Impressum
 ├── index.html                   # Startseite
-├── node_modules
 ├── package.json
 ├── package-lock.json
 └── README.md

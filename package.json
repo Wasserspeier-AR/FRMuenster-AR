@@ -25,5 +25,10 @@
     "mind-ar": "1.2.5",
     "tailwindcss": "^4.3.0",
     "three": "0.149.0"
+  },
+  "allowScripts": {
+    "canvas@2.11.2": true,
+    "core-js@3.29.1": true,
+    "esbuild@0.25.12": true
   }
 }
