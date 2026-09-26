@@ -27,12 +27,12 @@ const config = yaml.load(configRaw).filter((m) => m.enabled);
 
 const mapCenter = [47.995437, 7.85285];
 const panBounds = L.latLngBounds(
-  [47.99, 7.849], // southwest corner
-  [47.9983, 7.8563] // northeast corner
+  [47.993437, 7.84985], // SW corner
+  [47.997437, 7.85585] // NE corner
 );
 const floorplanBounds = [
-  [47.995067, 7.851915], // south-west corner of the image
-  [47.99606, 7.853915] // north-east corner of the image
+  [47.995067, 7.851915], // SW corner
+  [47.99606, 7.853915] // NE corner
 ];
 
 // = State =
@@ -224,7 +224,7 @@ function initMap(containerId) {
   L.tileLayer("https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png?key=cb1_3n05_1_ec8829c0a380ba86e1af803d", {
     attribution: "© <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, " +
     "© <a href='https://carto.com/attribution/'>CARTO</a>",
-    minZoom: 17,
+    minZoom: 18,
     maxZoom: 20,
   }).addTo(map);
 
@@ -340,8 +340,6 @@ function initUI() {
     document.body.classList.remove("map-is-open");
     document.querySelector("#container").style.pointerEvents = "auto";
   }
-
-
 
   infoWS.addEventListener("click", (e) => {
     if (e.target === infoWS) closeTextModal();
