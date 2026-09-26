@@ -109,6 +109,7 @@ function pauseTracking() {
   if (isPaused || !activePivot || !isTargetVisible) return;
   isPaused = true;
   scene.attach(activePivot);
+  document.querySelector(".mindar-ui-scanning").style.display = "none";
 }
 
 function unpauseTracking() {
@@ -119,6 +120,7 @@ function unpauseTracking() {
   if (group && activePivot) {
     group.attach(activePivot);
   }
+  document.querySelector(".mindar-ui-scanning").style.display = "";
 }
 
 function initTouchControls() {
