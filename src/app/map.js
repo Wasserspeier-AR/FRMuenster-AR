@@ -1,21 +1,21 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
 import floorPlanImg from "../assets/Grundriss_ausgerichtet.png";
 import * as CONFIG from "./config.js";
 
-let map = null,
-  userMarker = null,
-  geoWatchId = null;
+let map = null;
+let userMarker = null;
+let geoWatchId = null;
 
 // Leaflet's default marker icon paths break under bundlers
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: markerIcon2x,
   iconUrl: markerIcon,
+  iconRetinaUrl: markerIcon2x,
   shadowUrl: markerShadow
 });
 
@@ -24,7 +24,7 @@ export async function init() {
 
   map = L.map("map", {
     maxBounds: L.latLngBounds(...CONFIG.panBounds),
-    maxBoundsViscosity: CONFIG.maxBoundsViscosity
+    maxBoundsViscosity: 0.8
   }).setView(CONFIG.mapCenter, 18);
 
   const basemapUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
