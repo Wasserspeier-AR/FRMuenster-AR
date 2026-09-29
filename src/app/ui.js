@@ -11,7 +11,7 @@ export function init() {
   const mapButton = document.querySelector("#map-button");
   const pauseButton = document.querySelector("#pause-button");
   const infoButton = document.querySelector("#info-button");
-  const backButton = document.querySelector("#unpause-button");
+  const backButton = document.querySelector("#back-button");
 
   const infoWS = document.querySelector("#infoWS");
   const infoText = document.querySelector("#info-text");
