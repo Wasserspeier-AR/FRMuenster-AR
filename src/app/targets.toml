@@ -1,0 +1,89 @@
+[[target]]
+model = "0_unicorn.glb"
+coordinates = [47.99538, 7.85242]
+enabled = true
+
+[[target]]
+model = "1_man_with_book.glb"
+coordinates = [47.99538, 7.85252]
+enabled = true
+
+[[target]]
+model = "2_dog.glb"
+coordinates = [47.99539, 7.85259]
+enabled = true
+
+[[target]]
+model = "3_horse.glb"
+coordinates = [47.99539, 7.8528]
+enabled = true
+
+[[target]]
+model = "4_fantasy_dog.glb"
+coordinates = [47.99541, 7.85337]
+enabled = true
+
+[[target]]
+model = "5_feathered_dog.glb"
+coordinates = [47.99547, 7.85367]
+enabled = true
+
+[[target]]
+model = "6_monster_dog.glb"
+coordinates = [47.99549, 7.85368]
+enabled = true
+
+[[target]]
+model = "7_zanner.glb"
+coordinates = [47.99571, 7.85351]
+enabled = true
+
+[[target]]
+model = "8_human_skeleton.glb"
+coordinates = [47.99571, 7.85331]
+enabled = true
+
+[[target]]
+model = "9_dog_with_rabbit.glb"
+coordinates = [47.99574, 7.85327]
+enabled = true
+
+[[target]]
+model = "10_griffin.glb"
+coordinates = [47.99571, 7.85323]
+enabled = true
+
+[[target]]
+model = "11_fish.glb"
+coordinates = [47.99572, 7.85269]
+enabled = true
+
+[[target]]
+model = "12_devilry.glb"
+coordinates = [47.99573, 7.85264]
+enabled = true
+
+[[target]]
+model = "13_ram.glb"
+coordinates = [47.9957, 7.85229]
+enabled = false
+
+[[target]]
+model = "14_billy_goat.glb"
+coordinates = [47.99569, 7.85226]
+enabled = false
+
+[[target]]
+model = "15_man_with_jug.glb"
+coordinates = [47.99549, 7.85206]
+enabled = true
+
+[[target]]
+model = "16_knight.glb"
+coordinates = [47.99546, 7.85216]
+enabled = true
+
+[[target]]
+name = "17_boar_gluttony.doesnt.exist"
+coordinates = [47.995437, 7.85285]
+enabled = false

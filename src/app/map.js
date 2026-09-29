@@ -4,9 +4,10 @@ import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
-import floorPlanImg from "../assets/Grundriss_ausgerichtet.png";
+import outlineImg from "../assets/Grundriss_ausgerichtet.png";
 import * as CONFIG from "./config.js";
 
+const dev = import.meta.env.DEV;
 let map = null;
 let userMarker = null;
 let geoWatchId = null;
@@ -23,39 +24,29 @@ export async function init() {
   if (map) return map;
 
   map = L.map("map", {
-    maxBounds: L.latLngBounds(...CONFIG.panBounds),
+    maxBounds: L.latLngBounds(...CONFIG.map.pan_bounds),
     maxBoundsViscosity: 0.8
-  }).setView(CONFIG.mapCenter, 18);
+  }).setView(CONFIG.map.center, 18);
 
-  const basemapUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-  const attribution =
-    "© <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, ";
-  if (!import.meta.env.DEV) {
-    // Alternative CARTO basemaps: https://carto.com/basemaps/#styles
-    basemapUrl =
-      "https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png?key=cb1_3n05_1_ec8829c0a380ba86e1af803d";
-    attribution += "© <a href='https://carto.com/attribution/'>CARTO</a>";
-  }
-
-  L.tileLayer(basemapUrl, {
-    attribution: attribution,
+  L.tileLayer(dev ? CONFIG.map.osm_basemap : CONFIG.map.basemap, {
+    attribution: dev ? CONFIG.map.osm_attribution : CONFIG.map.attribution,
     minZoom: 18,
     maxZoom: 20
   }).addTo(map);
 
   const imageOverlayLayer = L.layerGroup().addTo(map);
-  L.imageOverlay(floorPlanImg, CONFIG.floorplanBounds, {
+  L.imageOverlay(outlineImg, CONFIG.map.outline_bounds, {
     opacity: 0.85
   }).addTo(imageOverlayLayer);
 
-  CONFIG.yaml
+  CONFIG.targetList
     .filter(
       (entry) => entry.coordinates[0] !== null && entry.coordinates[1] !== null
     )
     .forEach((entry) => {
       L.marker(entry.coordinates, { opacity: 0.75 })
         .addTo(map)
-        .bindPopup(entry.name);
+      //.bindPopup(entry.name);
     });
   _startLiveLocation();
 

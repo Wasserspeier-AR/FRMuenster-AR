@@ -6,7 +6,7 @@ import * as CONFIG from "./config.js";
 export async function init() {
   const mThree = new MindARThree({
     container: document.querySelector("#container"),
-    imageTargetSrc: CONFIG.targetSrc,
+    imageTargetSrc: CONFIG.targets.src,
     filterMinCF: 0.001,
     filterBeta: 0.001,
     warmupTolerance: 3

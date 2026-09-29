@@ -1,18 +1,12 @@
-import * as y from "js-yaml";
-import configRaw from "../../CONFIG.yaml?raw";
+import { parse } from "smol-toml";
+import confRaw from "./config.toml?raw";
+import listRaw from "./targetlist.toml?raw";
 
-export const yaml = y.load(configRaw).filter((m) => m.enabled);
-// TODO: add markertargets to config
+const withBase = (p) => import.meta.env.BASE_URL + p.replace(/^\//, "");
 
-export const mapCenter = [47.995437, 7.85285];
-export const panBounds = [
-  [47.993437, 7.84985], // SW corner
-  [47.997437, 7.85585] // NE corner
-];
-export const maxBoundsViscosity = 0.8
-export const floorplanBounds = [
-  [47.995067, 7.851915], // SW corner
-  [47.99606, 7.853915] // NE corner
-];
-export const base = import.meta.env.BASE_URL;
-export const targetSrc = base + "targets/targets.mind";
+export const { targets, map } = parse(confRaw);
+for (const k of ["src", "model_path"]) {
+  targets[k] = withBase(targets[k]);
+}
+
+export const targetList = parse(listRaw).target.filter((t) => t.enabled);
