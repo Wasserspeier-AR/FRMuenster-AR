@@ -14,5 +14,5 @@ export const floorplanBounds = [
   [47.995067, 7.851915], // SW corner
   [47.99606, 7.853915] // NE corner
 ];
-export const targetSrc = `${import.meta.env.BASE_URL}mind_ar/targets.mind`;
 export const base = import.meta.env.BASE_URL;
+export const targetSrc = base + "targets/targets.mind";
