@@ -55,7 +55,7 @@ Das Projekt ist als statische Webanwendung konzipiert, die mit minimalen externe
 - Build Tool & Bundler: [Vite](https://vite.dev/)
 - Styling: [Tailwind.css](https://tailwindcss.com/)
 - [OpenStreetmap](https://www.openstreetmap.org) Integration: [Leaflet](https://leafletjs.com/)
-- Vereinfachte Konfiguration: [js-yaml](https://www.npmjs.com/package/js-yaml)
+- Konfiguration: [smol-toml](https://github.com/squirrelchat/smol-toml)
 
 ### Projektstruktur
 

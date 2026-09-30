@@ -12,6 +12,7 @@ export default defineConfig({
   },
   base: "/FRMuenster-AR/",
   build: {
+    license: { fileName: "NOTICE.md" },
     rollupOptions: {
       input: {
         main: resolve(import.meta.dirname, "index.html"),
