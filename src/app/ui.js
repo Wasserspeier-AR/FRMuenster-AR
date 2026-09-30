@@ -24,9 +24,6 @@ export function init() {
   mapWS.style.display = "none";
 
   let mapModalOpen = false;
-
-  // Guide and Info share one modal, so opening one should visually
-  // deactivate the other if it was previously toggled active.
   let activeTextButton = null;
 
   function openTextModal(button, text) {
@@ -59,6 +56,7 @@ export function init() {
 
   function updateTrackingUI() {
     pauseButton.disabled = !CONTROLS.isTargetVisible();
+    _setActive(pauseButton, CONTROLS.isPaused());
   }
   updateTrackingUI();
   CONTROLS.onChange(updateTrackingUI);
@@ -86,11 +84,8 @@ export function init() {
       closeTextModal();
       return;
     }
-    const text =
-      CONTROLS.getCurrentTarget() === null
-        ? t("app.info.none")
-        : t(`app.info.${CONTROLS.getCurrentTarget()}`);
-    openTextModal(infoButton, text);
+    const id = CONTROLS.getCurrentTarget();
+    openTextModal(infoButton, t(id === null ? "app.info.none" : `app.info.${id}`));
   });
 
   mapButton.addEventListener("click", () => {
@@ -100,9 +95,7 @@ export function init() {
   });
 
   pauseButton.addEventListener("click", () => {
-    const pausing = !CONTROLS.isPaused();
-    pausing ? CONTROLS.pauseTracking() : CONTROLS.unpauseTracking();
-    _setActive(pauseButton, pausing);
+    CONTROLS.isPaused() ? CONTROLS.unpauseTracking() : CONTROLS.pauseTracking();
   });
 
   backButton.addEventListener("click", () => {

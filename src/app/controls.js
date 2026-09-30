@@ -1,26 +1,35 @@
 import * as THREE from "three";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-import * as CONFIG from "./config.js";
-
-let anchorGroups = {};
-let activePivot = null;
+let currentRecord = null;
 let paused = false;
 let targetVisible = false;
-let currentTarget = null;
 let sceneRef = null;
 
 let onTrackingChange = () => {};
-export function onChange(cb) { onTrackingChange = cb; }
+export function onChange(cb) {
+  onTrackingChange = cb;
+}
 
-export async function init(mindARThree) {
-  const { scene, renderer } = mindARThree;
-  const el = renderer.domElement;
+export function init({ mThree, anchors }) {
+  const { scene, renderer } = mThree;
   sceneRef = scene;
+
+  for (const record of anchors) {
+    record.anchor.onTargetFound = () => {
+      if (paused && record !== currentRecord) return;
+      currentRecord = record;
+      targetVisible = true;
+      onTrackingChange();
+    };
+    record.anchor.onTargetLost = () => {
+      if (record !== currentRecord) return;
+      targetVisible = false;
+      onTrackingChange();
+    };
+  }
+
   let lastX = null, lastY = null, lastDist = null;
-
-  await loadAnchors(mindARThree);
-
+  const el = renderer.domElement;
   el.addEventListener(
     "touchstart",
     (e) => {
@@ -40,7 +49,8 @@ export async function init(mindARThree) {
   el.addEventListener(
     "touchmove",
     (e) => {
-      if (!activePivot) return;
+      const pivot = getGesturePivot();
+      if (!pivot) return;
 
       if (e.touches.length === 1 && lastX !== null) {
         const dx = e.touches[0].clientX - lastX;
@@ -48,9 +58,9 @@ export async function init(mindARThree) {
         lastX = e.touches[0].clientX;
         lastY = e.touches[0].clientY;
 
-        activePivot.rotation.y += dx * 0.01;
-        activePivot.rotation.x = THREE.MathUtils.clamp(
-          activePivot.rotation.x + dy * 0.01,
+        pivot.rotation.y += dx * 0.01;
+        pivot.rotation.x = THREE.MathUtils.clamp(
+          pivot.rotation.x + dy * 0.01,
           -Math.PI / 2,
           Math.PI / 2
         );
@@ -59,8 +69,8 @@ export async function init(mindARThree) {
           e.touches[0].clientX - e.touches[1].clientX,
           e.touches[0].clientY - e.touches[1].clientY
         );
-        activePivot.scale.multiplyScalar(newDist / lastDist);
-        activePivot.scale.clampScalar(0.2, 5);
+        pivot.scale.multiplyScalar(newDist / lastDist);
+        pivot.scale.clampScalar(0.2, 5);
         lastDist = newDist;
       }
     },
@@ -85,81 +95,25 @@ export async function init(mindARThree) {
   );
 }
 
-export async function addModelAnchor(index, modelURI, mT) {
-  const anchor = mT.addAnchor(index);
-  const model = (await new GLTFLoader().loadAsync(modelURI)).scene;
-
-  const box = new THREE.Box3().setFromObject(model);
-  model.position.sub(box.getCenter(new THREE.Vector3()));
-
-  const size = new THREE.Vector3();
-  box.getSize(size);
-
-  const scale = 0.2 / Math.max(...size);
-  model.scale.setScalar(scale).clampScalar(0.5, 2);
-
-  const pivot = new THREE.Group();
-  pivot.add(model);
-  anchor.group.add(pivot);
-
-  anchorGroups[index] = anchor.group;
-
-  anchor.onTargetFound = () => {
-    if (paused && index !== currentTarget) return; // ignore other markers while paused
-    currentTarget = index;
-    targetVisible = true;
-    if (!paused) activePivot = pivot;
-    onTrackingChange();
-  };
-  anchor.onTargetLost = () => {
-    if (index !== currentTarget) return;
-    targetVisible = false;
-    if (!paused) activePivot = null;
-    onTrackingChange();
-  };
-
-  return anchor;
-}
-
 export function pauseTracking() {
-  if (paused || !activePivot || !targetVisible) return;
+  if (paused || !currentRecord || !targetVisible || !currentRecord) return;
   paused = true;
-  sceneRef.attach(activePivot);
+  sceneRef.attach(currentRecord.pivot);
   onTrackingChange();
 }
 
 export function unpauseTracking() {
   if (!paused || !targetVisible) return;
   paused = false;
-  const group = anchorGroups[currentTarget];
-  if (group && activePivot) group.attach(activePivot);
+  currentRecord.anchor.group.attach(currentRecord.pivot);
   onTrackingChange();
 }
 
-export function isPaused() {
-  return paused;
-}
+export function getActivePivot() { return getGesturePivot(); }
+export function getCurrentTarget() { return currentRecord?.id ?? null; }
+export function isPaused() { return paused; }
+export function isTargetVisible() { return targetVisible; }
 
-export function isTargetVisible() {
-  return targetVisible;
-}
-
-export function getCurrentTarget() {
-  return currentTarget;
-}
-
-export function getActivePivot() {
-  return activePivot;
-}
-
-export function getAnchorGroups(idx) {
-  return anchorGroups[idx];
-}
-
-function loadAnchors(mT) {
-  return Promise.all(
-    CONFIG.targetList.map((entry) =>
-      addModelAnchor(entry.id, CONFIG.targets.model_path + entry.model, mT)
-    )
-  );
+function getGesturePivot() {
+  return currentRecord && (paused || targetVisible) ? currentRecord.pivot : null;
 }

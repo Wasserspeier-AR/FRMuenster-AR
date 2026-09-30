@@ -1,5 +1,6 @@
 import * as THREE from "three";
-const { MindARThree } = await import("mind-ar/dist/mindar-image-three.prod.js") // Dynamic loading forces Rolldown to chunk this off
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+const { MindARThree } = await import("mind-ar/dist/mindar-image-three.prod.js"); // Dynamic loading forces Rolldown to chunk this off
 
 import * as CONFIG from "./config.js";
 
@@ -12,11 +13,6 @@ export async function init() {
     warmupTolerance: 3
   });
 
-  mThree.renderer.setAnimationLoop(() => {
-    mThree.renderer.render(mThree.scene, mThree.camera);
-  });
-  await mThree.start();
-
   const hemLight = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 0.3);
   mThree.scene.add(hemLight);
 
@@ -28,5 +24,43 @@ export async function init() {
   rimLight.position.set(-3, 1, -3);
   mThree.scene.add(rimLight);
 
-  return mThree;
+  const anchors = await Promise.all(
+    CONFIG.targetList.map((entry) => createModelAnchor(mThree, entry))
+  );
+
+  mThree.renderer.setAnimationLoop(() => {
+    mThree.renderer.render(mThree.scene, mThree.camera);
+  });
+  await mThree.start();
+
+  return { mThree, anchors };
+}
+
+async function createModelAnchor(mThree, entry) {
+  const anchor = mThree.addAnchor(entry.id);
+  const model = await loadNormalizedModel(
+    CONFIG.targets.model_path + entry.model
+  );
+
+  const pivot = new THREE.Group();
+  pivot.add(model);
+  anchor.group.add(pivot);
+
+  return { id: entry.id, anchor, pivot };
+}
+
+async function loadNormalizedModel(uri) {
+  const model = (await new GLTFLoader().loadAsync(uri)).scene;
+
+  const size = new THREE.Box3()
+    .setFromObject(model)
+    .getSize(new THREE.Vector3());
+  model.scale.setScalar(0.5 / Math.max(size.x, size.y, size.z));
+
+  const center = new THREE.Box3()
+    .setFromObject(model)
+    .getCenter(new THREE.Vector3());
+  model.position.sub(center);
+
+  return model;
 }
