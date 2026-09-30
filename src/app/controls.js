@@ -159,7 +159,7 @@ export function getAnchorGroups(idx) {
 function loadAnchors(mT) {
   return Promise.all(
     CONFIG.targetList.map((entry) =>
-      addModelAnchor(entry.id, `${import.meta.env.BASE_URL}${entry.model_path}`, mT)
+      addModelAnchor(entry.id, CONFIG.targets.model_path + entry.model, mT)
     )
   );
 }
