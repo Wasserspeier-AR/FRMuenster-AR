@@ -14,15 +14,13 @@ export async function init() {
   });
 
   const hemLight = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 0.3);
-  mThree.scene.add(hemLight);
-
   const dirLight = new THREE.DirectionalLight(0xefdfc4, 2);
-  dirLight.position.set(1, 2, 1);
-  mThree.scene.add(dirLight);
-
   const rimLight = new THREE.DirectionalLight(0xffffff, 0.75);
+
+  dirLight.position.set(1, 2, 1);
   rimLight.position.set(-3, 1, -3);
-  mThree.scene.add(rimLight);
+
+  mThree.scene.add(hemLight, rimLight, dirLight);
 
   const anchors = await Promise.all(
     CONFIG.targetList.map((entry) => createModelAnchor(mThree, entry))
