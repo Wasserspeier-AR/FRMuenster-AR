@@ -1,55 +1,58 @@
-import en from './locales/en.json';
-import de from './locales/de.json';
+import en from "./locales/en.json";
+import de from "./locales/de.json";
 
 const translations = { en, de };
-const STORAGE_KEY = 'lang';
+const storage = "lang";
 
-function getLang() {
-  return localStorage.getItem(STORAGE_KEY) || 'de';
-}
-
-function setLang(lang) {
-  localStorage.setItem(STORAGE_KEY, lang);
-  applyTranslations(lang);
+export function initI18n() {
+  const lang = _getLang();
   document.documentElement.lang = lang;
-  updateActiveLangButton(lang);
-}
+  _applyTranslations(lang);
+  _updateActiveLangButton(lang);
 
-function updateActiveLangButton(lang) {
-  document.querySelectorAll('[data-lang-switch]').forEach((btn) => {
-    btn.classList.toggle('active', btn.getAttribute('data-lang-switch') === lang);
-  });
-}
-
-function applyTranslations(lang) {
-  const dict = translations[lang] || translations.de;
-
-  document.querySelectorAll('[data-i18n]').forEach((el) => {
-    const key = el.getAttribute('data-i18n');
-    if (dict[key]) el.textContent = dict[key];
-  });
-
-  // for placeholders, titles, etc.
-  document.querySelectorAll('[data-i18n-attr]').forEach((el) => {
-    const [attr, key] = el.getAttribute('data-i18n-attr').split(':');
-    if (dict[key]) el.setAttribute(attr, dict[key]);
+  document.querySelectorAll("[data-lang-switch]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      _setLang(btn.getAttribute("data-lang-switch"));
+    });
   });
 }
 
 export function t(key) {
-  const dict = translations[getLang()] || translations.de;
+  const dict = translations[_getLang()] || translations.de;
   return dict[key] || key;
 }
 
-export function initI18n() {
-  const lang = getLang();
-  document.documentElement.lang = lang;
-  applyTranslations(lang);
-  updateActiveLangButton(lang);
+function _getLang() {
+  return localStorage.getItem(storage) || "de";
+}
 
-  document.querySelectorAll('[data-lang-switch]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      setLang(btn.getAttribute('data-lang-switch'));
-    });
+function _setLang(lang) {
+  localStorage.setItem(storage, lang);
+  _applyTranslations(lang);
+  document.documentElement.lang = lang;
+  _updateActiveLangButton(lang);
+}
+
+function _updateActiveLangButton(lang) {
+  document.querySelectorAll("[data-lang-switch]").forEach((btn) => {
+    btn.classList.toggle(
+      "active",
+      btn.getAttribute("data-lang-switch") === lang
+    );
+  });
+}
+
+function _applyTranslations(lang) {
+  const dict = translations[lang] || translations.de;
+
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    if (dict[key]) el.textContent = dict[key];
+  });
+
+  // for placeholders, titles, etc.
+  document.querySelectorAll("[data-i18n-attr]").forEach((el) => {
+    const [attr, key] = el.getAttribute("data-i18n-attr").split(":");
+    if (dict[key]) el.setAttribute(attr, dict[key]);
   });
 }

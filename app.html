@@ -4,8 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title data-i18n="index.title">Ein Wasserspeier kommt selten allein</title>
   <style>
-    #container video,
+  #container video,
     #container canvas {
       inset: 0 !important;
       object-fit: cover;
@@ -44,8 +45,8 @@
 </head>
 
 <body class="relative h-dvh w-full m-0 overflow-hidden pointer-events-none">
-  <div id="container" class="absolute inset-0 pointer-events-auto"></div>
-  <div id="ui" class="absolute inset-x-0 bottom-0 p-[5%] z-20">
+  <div id="container" class="absolute inset-0 pointer-events-auto isolate z-0"></div>
+  <div id="ui" class="absolute inset-x-0 bottom-0 p-[5%] isolate z-1000">
     <nav class="mx-auto w-full max-w-95 pointer-events-auto flex justify-around items-center bg-white/90 rounded-2xl py-3 shadow-xl backdrop-blur-xl">
       <button id="guide-button"
         class="app-button flex flex-col items-center text-gray-600 transition-colors duration-200">
@@ -67,7 +68,7 @@
         <i class="fa-solid fa-circle-info text-xl"></i>
         <span class="text-[11px]" data-i18n="app.info-button"></span>
       </button>
-      <button id="unpause-button"
+      <button id="back-button"
         class="app-button flex flex-col items-center text-gray-600 transition-colors duration-200">
         <i class="fa-solid fa-play text-xl"></i>
         <span class="text-[11px]" data-i18n="app.back-button"></span>
@@ -75,7 +76,7 @@
     </nav>
   </div>
 
-  <div id="infoWS" class="info-background absolute bottom-1/6 z-200 bg-white  pointer-events-auto">
+  <div id="infoWS" class="info-background absolute bottom-1/6 bg-white pointer-events-auto isolate z-2000">
     <div class="info-container">
       <div class="info-content">
         <span class="close">&times;</span>
@@ -84,7 +85,7 @@
     </div>
   </div>
 
-  <div id="mapWS" class="map-background bg-white pointer-events-auto">
+  <div id="mapWS" class="map-background bg-white pointer-events-auto isolate z-3000">
     <div class="map-container">
       <div class="map-content">
         <span class="close map-close">&times;</span>
@@ -93,7 +94,7 @@
     </div>
   </div>
 
-  <div id="guideWS" class="fixed inset-0 z-1010 hidden items-end justify-center bg-black/30 pb-4 pt-6 backdrop-blur-sm pointer-events-auto">
+  <div id="guideWS" class="fixed inset-0 hidden items-end justify-center bg-black/30 pb-4 pt-6 backdrop-blur-sm pointer-events-auto isolate z-4000">
     <div class="relative flex max-h-[85vh] w-full max-w-md
          flex-col overflow-hidden rounded-t-4xl
          bg-white shadow-2xl">
@@ -162,10 +163,9 @@
     </div>
   </div>
 
-  <p id="showme"></p>
   <script type="module" src="src/style.css"></script>
   <script type="module" src="src/main.js"></script>
-  <script type="module" src="src/app.js"></script>
+  <script type="module" src="src/app/main.js"></script>
   <script src="https://kit.fontawesome.com/34c3e261b7.js" crossorigin="anonymous"></script>
 </body>
 
