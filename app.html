@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title data-i18n="index.title">Ein Wasserspeier kommt selten allein</title>
   <style>
-  #container video,
+    #container video,
     #container canvas {
       inset: 0 !important;
       object-fit: cover;
@@ -21,8 +21,8 @@
     #ui button.active i {
       color: rgb(118, 23, 23);
     }
+
     #ui button:disabled {
-      opacity: 0.4;
       pointer-events: none;
     }
 
@@ -47,7 +47,8 @@
 <body class="relative h-dvh w-full m-0 overflow-hidden pointer-events-none">
   <div id="container" class="absolute inset-0 pointer-events-auto isolate z-0"></div>
   <div id="ui" class="absolute inset-x-0 bottom-0 p-[5%] isolate z-1000">
-    <nav class="mx-auto w-full max-w-95 pointer-events-auto flex justify-around items-center bg-white/90 rounded-2xl py-3 shadow-xl backdrop-blur-xl">
+    <nav
+      class="mx-auto w-full max-w-95 pointer-events-auto flex justify-around items-center bg-white/90 rounded-2xl py-3 shadow-xl backdrop-blur-xl">
       <button id="guide-button"
         class="app-button flex flex-col items-center text-gray-600 transition-colors duration-200">
         <i class="fa-solid fa-book-open text-xl"></i>
@@ -94,29 +95,31 @@
     </div>
   </div>
 
-  <div id="guideWS" class="fixed inset-0 hidden items-end justify-center bg-black/30 pb-4 pt-6 backdrop-blur-sm pointer-events-auto isolate z-4000">
+  <div id="guideWS"
+    class="fixed inset-0 hidden items-end justify-center bg-black/30 pt-6 backdrop-blur-sm pointer-events-auto isolate z-4000">
     <div class="relative flex max-h-[85vh] w-full max-w-md
          flex-col overflow-hidden rounded-t-4xl
          bg-white shadow-2xl">
 
       <button class="guide-close absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center
              rounded-full bg-white/80 text-2xl text-gray-500
-             hover:bg-gray-100" aria-label="Schließen">
+             hover:bg-gray-100">
         &times;
       </button>
 
-      <div class="overflow-y-auto px-6 pb-6 pt-4">
+      <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 pb-6 pt-4">
         <h2 data-i18n="index.start" class="text-xl font-semibold text-stone-900">
           So funktioniert's
         </h2>
         <p data-i18n="index.swipe" class="mb-4 mt-1 text-sm text-stone-500">
           Nach links wischen zum nächsten Schritt.
         </p>
-        <div id="guide-slider" class="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-4">
+        <div id="guide-slider" class="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-4"
+          style="scrollbar-width: none;">
 
           <div class="min-w-full snap-center">
             <div class="overflow-hidden rounded-2xl">
-              <img src="src/assets/Anleitung_Wasserspeier_Schritt_1.jpg" class="w-full object-contain"/>
+              <img src="src/assets/Anleitung_Wasserspeier_Schritt_1.jpg" class="w-full object-contain" />
             </div>
             <div class="mt-4">
               <h3 data-i18n="index.manual-first-step" class="text-lg font-semibold text-stone-900">
@@ -131,7 +134,7 @@
 
           <div class="min-w-full snap-center">
             <div class="overflow-hidden rounded-2xl">
-              <img src="src/assets/Anleitung_Wasserspeier.png" class="w-full object-contain"/>
+              <img src="src/assets/Anleitung_Wasserspeier.png" class="w-full object-contain" />
             </div>
             <div class="mt-4">
               <h3 data-i18n="index.manual-second-step" class="text-lg font-semibold text-stone-900">
@@ -146,7 +149,7 @@
 
           <div class="min-w-full snap-center">
             <div class="overflow-hidden rounded-2xl">
-              <img src="src/assets/Anleitung_Wasserspeier.png" class="w-full object-contain"/>
+              <img src="src/assets/Anleitung_Wasserspeier.png" class="w-full object-contain" />
             </div>
             <div class="mt-4">
               <h3 data-i18n="index.manual-third-step" class="text-lg font-semibold text-stone-900">
