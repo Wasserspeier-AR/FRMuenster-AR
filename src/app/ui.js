@@ -7,6 +7,10 @@ export function init() {
   const container = document.querySelector("#container");
   const pauseButton = document.querySelector("#pause-button");
   const infoText = document.querySelector("#info-text");
+  const infoTitle = document.querySelector("#info-title");
+  const infoDate = document.querySelector("#info-date");
+  // const infoMat = document.querySelector("#info-mat");
+  // const infoImg = document.querySelector("#info-img");
 
   const guide = createModal({
     el: document.querySelector("#guideWS"),
@@ -40,6 +44,10 @@ export function init() {
   info.button.addEventListener("click", () => {
     if (!info.isOpen()) {
       const id = CONTROLS.getCurrentTarget();
+      //infoImg.innerHTML();
+      infoTitle.textContent = t(id === null ? "" : `app.info.title.${id}`);
+      infoDate.textContent = t(id === null ? "" : `app.info.date.${id}`);
+      //infoMat.textContent = t(id === null ? "" : `app.info.material.${id}`);
       infoText.textContent = t(id === null ? "app.info.none" : `app.info.${id}`);
     }
     info.toggle();
