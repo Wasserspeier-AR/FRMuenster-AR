@@ -37,7 +37,6 @@ export function init() {
 
   guide.button.addEventListener("click", guide.toggle);
   map.button.addEventListener("click", map.toggle);
-
   info.button.addEventListener("click", () => {
     if (!info.isOpen()) {
       const id = CONTROLS.getCurrentTarget();
