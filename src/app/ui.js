@@ -1,7 +1,10 @@
- import { t } from "../i18n.js";
+import { t } from "../i18n.js";
 
+import * as CONFIG from "./config.js";
 import * as MAP from "./map.js";
 import * as CONTROLS from "./controls.js";
+
+const preloaded = new Map();
 
 export function init() {
   const container = document.querySelector("#container");
@@ -10,7 +13,7 @@ export function init() {
   const infoTitle = document.querySelector("#info-title");
   const infoDate = document.querySelector("#info-date");
   // const infoMat = document.querySelector("#info-mat");
-  // const infoImg = document.querySelector("#info-img");
+  const infoImg = document.querySelector("#info-img");
 
   const guide = createModal({
     el: document.querySelector("#guideWS"),
@@ -42,20 +45,18 @@ export function init() {
   guide.button.addEventListener("click", guide.toggle);
   map.button.addEventListener("click", map.toggle);
   info.button.addEventListener("click", () => {
-    if (!info.isOpen()) {
-      const id = CONTROLS.getCurrentTarget();
-      //infoImg.innerHTML();
-      infoTitle.textContent = t(id === null ? "" : `app.info.title.${id}`);
-      infoDate.textContent = t(id === null ? "" : `app.info.date.${id}`);
-      //infoMat.textContent = t(id === null ? "" : `app.info.material.${id}`);
-      infoText.textContent = t(id === null ? "app.info.none" : `app.info.${id}`);
-    }
+    if (!info.isOpen()) renderInfo(CONTROLS.getCurrentTarget());
     info.toggle();
   });
 
   function updateTrackingUI() {
     pauseButton.disabled = !CONTROLS.isTargetVisible();
     _setActive(pauseButton, CONTROLS.isPaused());
+
+    if (CONTROLS.isTargetVisible()) {
+      const id = CONTROLS.getCurrentTarget();
+      preloadImage(CONFIG.contentImageUrl(CONFIG.getTarget(id)));
+    }
   }
   updateTrackingUI();
   CONTROLS.onChange(updateTrackingUI);
@@ -67,6 +68,34 @@ export function init() {
   document.querySelector("#back-button").addEventListener("click", () => {
     window.location.href = import.meta.env.BASE_URL;
   });
+
+  function renderInfo(id) {
+    const entry = id === null ? null : CONFIG.getTarget(id);
+
+    if (!entry) {
+      infoTitle.textContent = "";
+      infoDate.textContent = "";
+      infoText.textContent = t("app.info.none");
+      infoImg.classList.add("hidden");
+      infoImg.removeAttribute("src");
+      return;
+    }
+
+    const title = t(`app.info.title.${id}`);
+    infoTitle.textContent = title;
+    infoDate.textContent = t(`app.info.date.${id}`);
+    infoText.textContent = t(`app.info.${id}`);
+
+    const url = CONFIG.contentImageUrl(entry);
+    if (url) {
+      infoImg.src = url;
+      infoImg.alt = title;
+      infoImg.classList.remove("hidden");
+    } else {
+      infoImg.classList.add("hidden");
+      infoImg.removeAttribute("src");
+    }
+  }
 }
 
 function createModal({ el, button, closeBtn, onOpen, onClose }) {
@@ -95,6 +124,15 @@ function createModal({ el, button, closeBtn, onOpen, onClose }) {
   });
 
   return modal;
+}
+
+function preloadImage(url) {
+  if (!url || preloaded.has(url)) return;
+  const img = new Image();
+  img.decoding = "async";
+  img.src = url;
+  img.decode?.().catch(() => {});
+  preloaded.set(url, img); // Keep a reference to prevent garbage collection
 }
 
 function _setActive(button, active) {

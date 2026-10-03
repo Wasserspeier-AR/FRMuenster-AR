@@ -1,7 +1,8 @@
 [targets]
 src = "targets/targets.mind"
+src_images_per_target = 1
 model_path = "models/"
-images_per_target = 1
+content_image_path = "src/assets/content_images/"
 
 [map]
 center = [47.995437, 7.85285]
