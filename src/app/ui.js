@@ -70,6 +70,7 @@ export function init() {
     mapModalOpen = false;
     document.body.classList.remove("map-is-open");
     document.querySelector("#container").style.pointerEvents = "auto";
+    _setActive(mapButton, CONTROLS.isPaused());
   }
 
   function updateTrackingUI() {
