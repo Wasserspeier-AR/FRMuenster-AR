@@ -11,13 +11,8 @@ if (slider && dots.length > 0) {
     const currentSlide = Math.round(slider.scrollLeft / slideWidth);
 
     dots.forEach((dot, index) => {
-      if (index === currentSlide) {
-        dot.classList.remove("bg-stone-300");
-        dot.classList.add("bg-[rgb(118,23,23)]");
-      } else {
-        dot.classList.remove("bg-[rgb(118,23,23)]");
-        dot.classList.add("bg-stone-300");
-      }
+      dot.classList.toggle("bg-brand", index === currentSlide);
+      dot.classList.toggle("bg-stone-300", index !== currentSlide);
     });
   });
 }

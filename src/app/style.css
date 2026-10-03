@@ -20,6 +20,7 @@
 }
 #ui button:disabled {
   pointer-events: none;
+  color: #888;
 }
 
 /* Size needed statically for OSM */

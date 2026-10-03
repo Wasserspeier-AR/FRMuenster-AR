@@ -1,212 +1,177 @@
 <!doctype html>
 <html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="index.title">Ein Wasserspeier kommt selten allein</title>
+    <link rel="icon" type="image/svg+xml" href="src/assets/logos/Logo_Bauverein.svg" />
+    <link rel="stylesheet" href="src/style.css" />
+    <script type="module" src="src/main.js"></script>
+    <script src="https://kit.fontawesome.com/34c3e261b7.js" crossorigin="anonymous" defer></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="index.title">Ein Wasserspeier kommt selten allein</title>
-  <link rel="icon" type="image/svg+xml" href="src/assets/logos/Logo_Bauverein.svg" />
-  <link rel="stylesheet" href="src/style.css">
-</head>
+  <body class="min-h-screen bg-stone-100 text-stone-800">
+    <main class="mx-auto max-w-3xl px-6 py-10">
+      <nav aria-label="Language / Sprache">
+        <button type="button" lang="de" data-lang-switch="de">DE</button>
+        <button type="button" lang="en" data-lang-switch="en">EN</button>
+      </nav>
 
-<body class="min-h-screen bg-stone-100 text-stone-800">
-  <main class="max-w-3xl mx-auto px-6 py-10">
-    <button data-lang-switch="de">DE</button>
-    <button data-lang-switch="en">EN</button>
-
-    <div class="flex justify-center mb-8">
-      <div class="bg-stone-200 rounded-2xl p-4">
-        <img src="src/assets/logos/Logo_Bauverein.png" class="h-20 object-contain">
-      </div>
-    </div>
-    <h1 data-i18n="index.title" class="text-4xl font-bold text-center text-stone-900 leading-tight mb-8">Ein Wasserspeier kommt selten allein</h1>
-
-    <section class="bg-white rounded-3xl shadow-md p-8 space-y-8">
-      <div class="space-y-4">
-        <p class="text-xl font-semibold text-center leading-relaxed">
-          <span data-i18n="index.description-before">
-            Ob Tier, Mensch oder Monster, entdecke über
-          </span>
-          <span data-i18n="index.gargoyles" class="text-[rgb(118,23,23)]">
-            90 Wasserspeier
-          </span>
-          <span data-i18n="index.description-after">
-            rund um das Freiburger Münster.
-          </span>
-        </p>
-        <p data-i18n="index.text" class="text-center text-stone-600">
-          13 von ihnen könnt ihr bei einem Rundgang in Augmented Reality
-          kennenlernen.
-        </p>
-      </div>
-      <div>
-        <h2 data-i18n="index.start" class="text-xl font-semibold mb-2">
-          So funktioniert's
-        </h2>
-        <p data-i18n="index.swipe" class="text-sm text-stone-500 mb-4">
-          Nach links wischen zum nächsten Schritt.
-        </p>
-        <div id="manual-slider"
-          class="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 scroll-smooth scrollbar-hide">
-          <div class="min-w-full snap-center">
-            <div class="rounded-2xl overflow-hidden">
-              <img src="src/assets/Anleitung_Wasserspeier_Schritt_1.jpg" class="max-w-full max-h-full object-contain">
-            </div>
-            <div class="mt-4">
-              <h3 data-i18n="index.manual-first-step" class="font-semibold text-lg">
-                1. Wandfläche scannen
-              </h3>
-              <p data-i18n="index.manual-first-step-text" class="text-stone-600 mt-2">
-                Suche eine passende Wandfläche am Münster
-                und richte deine Kamera darauf.
-              </p>
-            </div>
-          </div>
-
-          <div class="min-w-full snap-center">
-            <div class="rounded-2xl overflow-hidden">
-              <img src="src/assets/Anleitung_Wasserspeier.png" class="max-w-full max-h-full object-contain">
-            </div>
-            <div class="mt-4">
-              <h3 data-i18n="index.manual-second-step" class="font-semibold text-lg">
-                2. Wasserspeier entdecken
-              </h3>
-              <p data-i18n="index.manual-second-step-text" class="text-stone-600 mt-2">
-                Scanne die Wandfläche, bis das
-                3D-Modell erscheint.
-              </p>
-            </div>
-          </div>
-
-          <div class="min-w-full snap-center">
-            <div class="rounded-2xl overflow-hidden">
-              <img src="src/assets/Anleitung_Wasserspeier.png" class="max-w-full max-h-full object-contain">
-            </div>
-            <div class="mt-4">
-              <h3 data-i18n="index.manual-third-step" class="font-semibold text-lg">
-                3. Mehr erfahren
-              </h3>
-              <p data-i18n="index.manual-third-step-text" class="text-stone-600 mt-2">
-                Tippe auf den Info-Button und
-                erfahre mehr über den Wasserspeier.
-              </p>
-            </div>
-          </div>
+      <header>
+        <div class="mx-auto mb-8 w-fit rounded-2xl bg-stone-200 p-4">
+          <img src="src/assets/logos/Logo_Bauverein.png" alt="Münsterbauverein Freiburg" class="h-20" />
         </div>
+        <h1 data-i18n="index.title" class="mb-8 text-center text-4xl font-bold leading-tight text-stone-900">
+          Ein Wasserspeier kommt selten allein
+        </h1>
+      </header>
 
-        <div class="flex justify-center items-center gap-2 mt-1" id="manual-dots">
-          <span class="h-2 w-2 rounded-full bg-[rgb(118,23,23)] transition-all duration-300"></span>
-          <span class="h-2 w-2 rounded-full bg-stone-300 transition-all duration-300"></span>
-          <span class="h-2 w-2 rounded-full bg-stone-300 transition-all duration-300"></span>
-        </div>
+      <div class="space-y-8 rounded-3xl bg-white p-8 shadow-md">
+        <section class="space-y-4">
+          <p class="text-center text-xl font-semibold leading-relaxed">
+            <span data-i18n="index.description-before"> Ob Tier, Mensch oder Monster, entdecke über </span>
+            <span data-i18n="index.gargoyles" class="text-brand"> 90 Wasserspeier </span>
+            <span data-i18n="index.description-after"> rund um das Freiburger Münster. </span>
+          </p>
+          <p data-i18n="index.text" class="text-center text-stone-600">
+            13 von ihnen könnt ihr bei einem Rundgang in Augmented Reality kennenlernen.
+          </p>
+        </section>
 
-      </div>
+        <section>
+          <h2 data-i18n="index.start" class="mb-2 text-xl font-semibold">So funktioniert's</h2>
+          <p data-i18n="index.swipe" class="mb-4 text-sm text-stone-500">Nach links wischen zum nächsten Schritt.</p>
 
-      <div>
-        <h2 data-i18n="index.tips" class="text-xl font-semibold mb-5">
-          Tipps
-        </h2>
+          <ol
+            id="manual-slider"
+            tabindex="0"
+            class="scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-4"
+          >
+            <li class="min-w-full snap-center">
+              <img
+                src="src/assets/Anleitung_Wasserspeier_Schritt_1.jpg"
+                alt="Eine Kamera wird auf eine Wandfläche am Münster gerichtet"
+                data-i18n-attr="alt:index.manual-first-step-alt"
+                class="rounded-2xl"
+              />
+              <h3 data-i18n="index.manual-first-step" class="mt-4 text-lg font-semibold">1. Wandfläche scannen</h3>
+              <p data-i18n="index.manual-first-step-text" class="mt-2 text-stone-600">
+                Suche eine passende Wandfläche am Münster und richte deine Kamera darauf.
+              </p>
+            </li>
 
-        <ul class="space-y-4">
-          <li class="flex items-start gap-3">
-            <span class="mt-2.5 h-2 w-2 rounded-full bg-[rgb(118,23,23)] shrink-0"></span>
-            <span data-i18n="index.first-tip" class="text-stone-700 leading-7">
+            <li class="min-w-full snap-center">
+              <img
+                src="src/assets/Anleitung_Wasserspeier.png"
+                loading="lazy"
+                alt="Ein 3D-Modell eines Wasserspeiers erscheint an der Wand"
+                data-i18n-attr="alt:index.manual-second-step-alt"
+                class="rounded-2xl"
+              />
+              <h3 data-i18n="index.manual-second-step" class="mt-4 text-lg font-semibold">2. Wasserspeier entdecken</h3>
+              <p data-i18n="index.manual-second-step-text" class="mt-2 text-stone-600">
+                Scanne die Wandfläche, bis das 3D-Modell erscheint.
+              </p>
+            </li>
+
+            <li class="min-w-full snap-center">
+              <img
+                src="src/assets/Anleitung_Wasserspeier.png"
+                loading="lazy"
+                alt="Der Info-Button neben dem Wasserspeier"
+                data-i18n-attr="alt:index.manual-third-step-alt"
+                class="rounded-2xl"
+              />
+              <h3 data-i18n="index.manual-third-step" class="mt-4 text-lg font-semibold">3. Mehr erfahren</h3>
+              <p data-i18n="index.manual-third-step-text" class="mt-2 text-stone-600">
+                Tippe auf den Info-Button und erfahre mehr über den Wasserspeier.
+              </p>
+            </li>
+          </ol>
+
+          <div id="manual-dots" class="mt-1 flex items-center justify-center gap-2" aria-hidden="true">
+            <span class="size-2 rounded-full bg-brand transition-colors duration-300"></span>
+            <span class="size-2 rounded-full bg-stone-300 transition-colors duration-300"></span>
+            <span class="size-2 rounded-full bg-stone-300 transition-colors duration-300"></span>
+          </div>
+        </section>
+
+        <section>
+          <h2 data-i18n="index.tips" class="mb-5 text-xl font-semibold">Tipps</h2>
+          <ul class="space-y-4">
+            <li data-i18n="index.first-tip" class="tip">
               Sucht nach Symbolen, Inschriften oder auffälligen Steinflächen.
-            </span>
-          </li>
-
-          <li class="flex items-start gap-3">
-            <span class="mt-2.5 h-2 w-2 rounded-full bg-[rgb(118,23,23)] shrink-0"></span>
-            <span data-i18n="index.second-tip" class="text-stone-700 leading-7">
+            </li>
+            <li data-i18n="index.second-tip" class="tip">
               Die 3D-Modelle verstecken sich immer auf flachen Wänden, nicht an Ecken oder Kanten.
-            </span>
-          </li>
-
-          <li class="flex items-start gap-3">
-            <span class="mt-2.5 h-2 w-2 rounded-full bg-[rgb(118,23,23)] shrink-0"></span>
-            <span data-i18n="index.third-tip" class="text-stone-700 leading-7">
+            </li>
+            <li data-i18n="index.third-tip" class="tip">
               Von der Scanposition aus könnt ihr den steinernen Wasserspeier über euch entdecken.
-            </span>
-          </li>
-
-          <li class="flex items-start gap-3">
-            <span class="mt-2.5 h-2 w-2 rounded-full bg-[rgb(118,23,23)] shrink-0"></span>
-            <span data-i18n="index.fourth-tip" class="text-stone-700 leading-7">
+            </li>
+            <li data-i18n="index.fourth-tip" class="tip">
               Bei starker Sonne oder Regen kann die Erkennung unter Umständen beeinträchtigt sein.
-            </span>
-          </li>
-
-          <li class="flex items-start gap-3">
-            <span class="mt-2.5 h-2 w-2 rounded-full bg-[rgb(118,23,23)] shrink-0"></span>
-            <span data-i18n="index.fifth-tip" class="text-stone-700 leading-7">
+            </li>
+            <li data-i18n="index.fifth-tip" class="tip">
               Für eine bessere Orientierung schaut einfach auf die Karte, sie zeigt euch, wo sich die Modelle der
               Wasserspeier verstecken.
-            </span>
-          </li>
+            </li>
+          </ul>
+        </section>
 
-        </ul>
-      </div>
+        <aside class="rounded-2xl border border-stone-200 bg-stone-50 p-5">
+          <h2 data-i18n="index.notice" class="mb-2 font-semibold text-brand">Hinweis</h2>
+          <p data-i18n="index.notice-text" class="text-sm leading-6 text-stone-700">
+            Wegen Bauarbeiten oder Veranstaltungen auf dem Münsterplatz können einzelne Verstecke zeitweise nicht
+            erreichbar sein. Besuche diese Wasserspeier einfach zu einem späteren Zeitpunkt.
+          </p>
+        </aside>
 
-      <div class="rounded-2xl bg-stone-50 border border-stone-200 p-5">
-        <h3 data-i18n="index.notice" class="font-semibold text-[rgb(118,23,23)] mb-2">
-          Hinweis
-        </h3>
+        <section>
+          <h2 data-i18n="index.camera-access" class="mb-2 font-semibold text-brand">Kamerazugriff erforderlich</h2>
+          <p data-i18n="index.camera-access-text" class="text-sm leading-6 text-stone-700">
+            Für die AR-Anwendung wird eure Kamera benötigt. Beim Start werdet ihr von eurem Browser um Erlaubnis
+            gebeten. Erlaubt den Kamerazugriff, damit die Anwendung funktioniert.
+          </p>
+        </section>
 
-        <p data-i18n="index.notice-text" class="text-sm leading-6 text-stone-700">
-          Wegen Bauarbeiten oder Veranstaltungen auf dem Münsterplatz
-          können einzelne Verstecke zeitweise nicht erreichbar sein.
-          Besuche diese Wasserspeier einfach zu einem späteren Zeitpunkt.
+        <p data-i18n="index.have-fun" class="text-center text-lg font-semibold text-brand">
+          Viel Spaß beim Entdecken der Wasserspeier!
         </p>
       </div>
 
-      <div class="mt-8">
-        <h3 data-i18n="index.camera-access" class="font-semibold text-[rgb(118,23,23)] mb-2">
-          Kamerazugriff erforderlich
-        </h3>
-        <p data-i18n="index.camera-access-text" class="text-sm leading-6 text-stone-700">
-          Für die AR-Anwendung wird eure Kamera benötigt. Beim Start werdet ihr von eurem Browser um Erlaubnis gebeten.
-          Erlaubt den Kamerazugriff, damit die Anwendung funktioniert.
-        </p>
-      </div>
-      <p data-i18n="index.have-fun" class="text-center text-lg font-semibold text-[rgb(118,23,23)]">
-        Viel Spaß beim Entdecken der Wasserspeier!
-      </p>
-
-    </section>
-    <div class="mt-8 flex flex-col gap-4">
-      <a data-i18n="index.map-download" href="Wasserspeier_Karte.pdf" download
-        class="w-full rounded-xl bg-stone-200  py-3 text-center font-medium">
-        Karte herunterladen
-      </a>
-      <a data-i18n="index.start-app" href="app"
-        class="w-full rounded-xl bg-[rgb(118,23,23)] py-3 text-center text-white font-semibold">
-        Anwendung starten
-      </a>
-    </div>
-
-    <footer class="mt-10 text-center text-sm text-stone-500">
-      <div class="flex flex-row justify-center gap-3 mb-2">
-        <a href="https://www.freiburgermuenster.info">
-          <i class="fa-solid fa-church"></i> <!-- PLACEHOLDER ICON; TODO: ADD BAUVEREIN ICON INSTEAD -->
-          <span>Münster</span>
+      <div class="mt-8 flex flex-col gap-4">
+        <a
+          data-i18n="index.map-download"
+          href="Wasserspeier_Karte.pdf"
+          download
+          class="rounded-xl bg-stone-200 py-3 text-center font-medium"
+        >
+          Karte herunterladen
         </a>
-        <a href="https://muensterbauverein-freiburg.de">
-          <i class="fa-solid fa-church"></i> <!-- PLACEHOLDER ICON; TODO: ADD BAUVEREIN ICON INSTEAD -->
-          <span>Bauverein</span>
-        </a>
-        <a href="https://github.com/Wasserspeier-AR/FRMuenster-AR">
-          <i class="fa-brands fa-github"></i>
-          <span>Code</span>
+        <a data-i18n="index.start-app" href="app" class="rounded-xl bg-brand py-3 text-center font-semibold text-white">
+          Anwendung starten
         </a>
       </div>
-      <a data-i18n="index.legal-notice" href="impressum" class="hover:underline">
-        Impressum
-      </a>
-    </footer>
-  </main>
-  <script type="module" src="src/main.js"></script>
-  <script src="https://kit.fontawesome.com/34c3e261b7.js" crossorigin="anonymous"></script>
-</body>
 
+      <footer class="mt-10 text-center text-sm text-stone-500">
+        <nav class="mb-2 flex justify-center gap-3">
+          <a href="https://www.freiburgermuenster.info">
+            <i class="fa-solid fa-church" aria-hidden="true"></i>
+            <!-- TODO: add Bauverein icon -->
+            Münster
+          </a>
+          <a href="https://muensterbauverein-freiburg.de">
+            <i class="fa-solid fa-church" aria-hidden="true"></i>
+            <!-- TODO: add Bauverein icon -->
+            Bauverein
+          </a>
+          <a href="https://github.com/Wasserspeier-AR/FRMuenster-AR">
+            <i class="fa-brands fa-github" aria-hidden="true"></i>
+            Code
+          </a>
+        </nav>
+        <a data-i18n="index.legal-notice" href="impressum" class="hover:underline"> Impressum </a>
+      </footer>
+    </main>
+  </body>
 </html>

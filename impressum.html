@@ -1,104 +1,110 @@
 <!doctype html>
 <html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="impressum.title">Impressum</title>
+    <link rel="icon" type="image/svg+xml" href="src/assets/logos/Logo_Bauverein.svg" />
+    <link rel="stylesheet" href="src/style.css" />
+    <script type="module" src="src/main.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="impressum.title">Impressum</title>
-  <link rel="icon" type="image/svg+xml" href="src/assets/logos/Logo_Bauverein.svg" />
-  <link rel="stylesheet" href="src/style.css">
-</head>
+  <body class="flex min-h-screen items-center justify-center bg-stone-100 p-6">
+    <main class="w-full max-w-2xl">
+      <nav aria-label="Language / Sprache" class="mb-4">
+        <button type="button" lang="de" data-lang-switch="de">DE</button>
+        <button type="button" lang="en" data-lang-switch="en">EN</button>
+      </nav>
 
-<body class="min-h-screen bg-stone-100 flex items-center justify-center p-6">
-  <main class="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-8">
-  <button data-lang-switch="de">DE</button>
-  <button data-lang-switch="en">EN</button>
-    <h1 data-i18n="impressum.title" class="text-3xl font-bold text-stone-800 mb-6">
-      Impressum
-    </h1>
+      <article class="rounded-2xl bg-white p-8 shadow-lg">
+        <h1 data-i18n="impressum.title" class="mb-6 text-3xl font-bold text-stone-800">Impressum</h1>
 
-    <p data-i18n="impressum.description" class="text-stone-600 leading-relaxed mb-6">
-      Diese WebAR-Anwendung wurde ursprünglich im Rahmen einer Bachelorarbeit
-      an der Hochschule Furtwangen entwickelt. Im Rahmen eines HiWi-Projektes
-      wurde sie anschließend weiterentwickelt.
-    </p>
-
-    <div class="space-y-5 text-stone-700">
-      <div>
-        <h2 data-i18n="impressum.development" class="font-semibold text-stone-900">
-          Entwicklung der WebAR-Anwendung
-        </h2>
-        <p class="mt-1">
-          Bao Han Nguyen<br>
-          Jérôme Kochenburger
-        </p>
-      </div>
-
-      <div>
-        <h2 data-i18n="impressum.models" class="font-semibold text-stone-900">
-          Erstellung der Wasserspeier 3D-Modelle
-        </h2>
-        <p data-i18n="impressum.name-method" class="mt-1">
-          Moreli Andrea Paredes Gonzalez<br>
-          Erstellungsmethode: Luma AI, nachbearbeitet mit Blender
-        </p>
-      </div>
-
-      <div>
-        <h2 data-i18n="impressum.project-management" class="font-semibold text-stone-900">
-          Projektbetreuung
-        </h2>
-        <p data-i18n="impressum.hfu-prof" class="mt-1">
-          Hochschule Furtwangen - The Black Forest University<br>
-          Prof. Dr. Uwe Hahne
+        <p data-i18n="impressum.description" class="mb-6 leading-relaxed text-stone-600">
+          Diese WebAR-Anwendung wurde ursprünglich im Rahmen einer Bachelorarbeit an der Hochschule Furtwangen
+          entwickelt. Im Rahmen eines HiWi-Projektes wurde sie anschließend weiterentwickelt.
         </p>
 
-        <p data-i18n="impressum.muenster" class="mt-3">
-          Freiburger Münsterbauverein e. V.<br>
-          Lena Hipp
-        </p>
-      </div>
-    </div>
+        <dl class="space-y-5 text-stone-700">
+          <div>
+            <dt data-i18n="impressum.development" class="font-semibold text-stone-900">
+              Entwicklung der WebAR-Anwendung
+            </dt>
+            <dd class="mt-1">
+              Bao Han Nguyen<br />
+              Jérôme Kochenburger
+            </dd>
+          </div>
 
-    <div class="mt-10 border-t border-stone-200 pt-6 space-y-8">
-      <div>
-        <h3 data-i18n="impressum.project-partner" class="text-sm font-semibold text-stone-500 uppercase tracking-wide mb-4 text-center">
-          Projektpartner
-        </h3>
+          <div>
+            <dt data-i18n="impressum.models" class="font-semibold text-stone-900">
+              Erstellung der Wasserspeier 3D-Modelle
+            </dt>
+            <dd data-i18n="impressum.name-method" class="mt-1">
+              Moreli Andrea Paredes Gonzalez<br />
+              Erstellungsmethode: Luma AI, nachbearbeitet mit Blender
+            </dd>
+          </div>
 
-        <div class="flex justify-center items-center gap-10 flex-wrap">
-          <a href="https://www.hs-furtwangen.de/" target="_blank">
-            <img src="src/assets/logos/Logo_Hochschule_Furtwangen_HFU.png" class="h-12 object-contain">
-          </a>
+          <div>
+            <dt data-i18n="impressum.project-management" class="font-semibold text-stone-900">Projektbetreuung</dt>
+            <dd data-i18n="impressum.hfu-prof" class="mt-1">
+              Hochschule Furtwangen - The Black Forest University<br />
+              Prof. Dr. Uwe Hahne
+            </dd>
+            <dd data-i18n="impressum.muenster" class="mt-3">
+              Freiburger Münsterbauverein e. V.<br />
+              Lena Hipp
+            </dd>
+          </div>
+        </dl>
 
-          <a href="https://muensterbauverein-freiburg.de/" target="_blank" class="bg-stone-700 rounded-lg p-3">
-            <img src="src/assets/logos/Logo_Bauverein.png" class="h-12 object-contain">
-          </a>
-        </div>
-      </div>
+        <footer class="mt-10 space-y-8 border-t border-stone-200 pt-6">
+          <section>
+            <h2
+              data-i18n="impressum.project-partner"
+              class="mb-4 text-center text-sm font-semibold uppercase tracking-wide text-stone-500"
+            >
+              Projektpartner
+            </h2>
+            <div class="flex flex-wrap items-center justify-center gap-10">
+              <a href="https://www.hs-furtwangen.de/" target="_blank">
+                <img
+                  src="src/assets/logos/Logo_Hochschule_Furtwangen_HFU.png"
+                  alt="Hochschule Furtwangen"
+                  class="h-12"
+                />
+              </a>
+              <a href="https://muensterbauverein-freiburg.de/" target="_blank" class="rounded-lg bg-stone-700 p-3">
+                <img src="src/assets/logos/Logo_Bauverein.png" alt="Freiburger Münsterbauverein" class="h-12" />
+              </a>
+            </div>
+          </section>
 
-      <div>
-        <h3 data-i18n="impressum.sponsors" class="text-sm font-semibold text-stone-500 uppercase tracking-wide mb-4 text-center">
-          Gefördert durch
-        </h3>
-
-        <div class="flex justify-center items-center gap-10 flex-wrap">
-          <a href="https://www.bbbank.de/privatkunden.html" target="_blank">
-            <img src="src/assets/logos/Logo_BBBank.png" class="h-14 object-contain">
-          </a>
-
-          <a href="https://katholische-stiftungen-freiburg.de/stiftungen/erzbischof-hermann-stiftung/" target="_blank">
-            <img src="src/assets/logos/Logo_Erzbischof_Hermann.png" class="h-12 object-contain">
-          </a>
-        </div>
-      </div>
-
-    </div>
-
-  </main>
-
-  <script type="module" src="src/style.css"></script>
-  <script type="module" src="src/main.js"></script>
-</body>
-
+          <section>
+            <h2
+              data-i18n="impressum.sponsors"
+              class="mb-4 text-center text-sm font-semibold uppercase tracking-wide text-stone-500"
+            >
+              Gefördert durch
+            </h2>
+            <div class="flex flex-wrap items-center justify-center gap-10">
+              <a href="https://www.bbbank.de/privatkunden.html" target="_blank">
+                <img src="src/assets/logos/Logo_BBBank.png" alt="BBBank" class="h-14" />
+              </a>
+              <a
+                href="https://katholische-stiftungen-freiburg.de/stiftungen/erzbischof-hermann-stiftung/"
+                target="_blank"
+              >
+                <img
+                  src="src/assets/logos/Logo_Erzbischof_Hermann.png"
+                  alt="Erzbischof-Hermann-Stiftung"
+                  class="h-12"
+                />
+              </a>
+            </div>
+          </section>
+        </footer>
+      </article>
+    </main>
+  </body>
 </html>
