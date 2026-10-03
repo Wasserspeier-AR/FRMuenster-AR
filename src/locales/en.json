@@ -27,6 +27,7 @@
   "index.start-app": "Start the application",
   "index.legal-notice": "Legal notice",
 
+  "app.title": "Hunt the gargoyles",
   "app.guide-button": "Manual",
   "app.guide-text": "TODO",
   "app.map-button": "Map",
