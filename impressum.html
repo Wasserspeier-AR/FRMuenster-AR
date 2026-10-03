@@ -3,15 +3,16 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Impressum</title>
+  <title data-i18n="impressum.title">Impressum</title>
+  <link rel="icon" type="image/svg+xml" href="src/assets/logos/Logo_Bauverein.svg" />
+  <link rel="stylesheet" href="src/style.css">
 </head>
 
 <body class="min-h-screen bg-stone-100 flex items-center justify-center p-6">
-
   <main class="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-8">
-
+  <button data-lang-switch="de">DE</button>
+  <button data-lang-switch="en">EN</button>
     <h1 data-i18n="impressum.title" class="text-3xl font-bold text-stone-800 mb-6">
       Impressum
     </h1>
@@ -96,7 +97,7 @@
 
   </main>
 
-  <script type="module" src="/src/style.js"></script>
+  <script type="module" src="src/style.css"></script>
   <script type="module" src="src/main.js"></script>
 </body>
 

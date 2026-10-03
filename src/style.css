@@ -4,7 +4,7 @@
   white-space: pre-line;
 }
 
-[data-lang-switch].active {
+.active {
   color: rgb(118, 23, 23);
   font-weight: 600;
 }

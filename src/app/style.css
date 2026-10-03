@@ -1,0 +1,43 @@
+#container video,
+#container canvas {
+  inset: 0 !important;
+  object-fit: cover;
+}
+/* Needed for dynamically added element from mindAR */
+#container canvas {
+  z-index: 10 !important;
+  touch-action: none !important;
+}
+
+.mindar-ui-scanning .scanning .inner {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#ui button.active,
+#ui button.active i {
+  color: rgb(118, 23, 23);
+}
+#ui button:disabled {
+  pointer-events: none;
+}
+
+/* Size needed statically for OSM */
+#map {
+  width: 100vw;
+  height: 70vh;
+}
+.map-is-open #container {
+  pointer-events: none;
+}
+
+.locate-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+}
+.locate-toggle.active {
+  color: #1d4ed8;
+  background-color: #eff6ff;
+}
