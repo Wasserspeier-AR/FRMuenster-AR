@@ -11,6 +11,7 @@ const dev = import.meta.env.DEV;
 let map = null;
 let userMarker = null;
 let geoWatchId = null;
+let locateControl = null;
 
 // Leaflet's default marker icon paths break under bundlers
 delete L.Icon.Default.prototype._getIconUrl;
@@ -48,7 +49,8 @@ export async function init() {
         .addTo(map)
       //.bindPopup(entry.name);
     });
-  _startLiveLocation();
+
+  new LocateControl().addTo(map);
 
   return map;
 }
@@ -59,9 +61,41 @@ export function refresh() {
   map.setView(CONFIG.map.center, map.getZoom(), { animate: false });
 }
 
-function _startLiveLocation() {
-  if (!navigator.geolocation || geoWatchId !== null) return;
+const LocateControl = L.Control.extend({
+  options: { position: "bottomright" },
 
+  onAdd() {
+    const container = L.DomUtil.create("div", "leaflet-bar leaflet-control");
+    const button = L.DomUtil.create("a", "locate-toggle", container);
+    button.href = "#";
+    button.role = "button";
+    button.title = "Meinen Standort anzeigen";
+    button.setAttribute("aria-label", button.title);
+    button.setAttribute("aria-pressed", "false");
+    button.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i>';
+
+    L.DomEvent.disableClickPropagation(container);
+    L.DomEvent.on(button, "click", (e) => {
+      L.DomEvent.preventDefault(e);
+      const active = geoWatchId === null ? _startLiveLocation() : _stopLiveLocation();
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+
+    this._button = button;
+    return container;
+  },
+
+  setActive(active) {
+    this._button.classList.toggle("active", active);
+    this._button.setAttribute("aria-pressed", String(active));
+  }
+});
+
+function _startLiveLocation() {
+  if (!navigator.geolocation || geoWatchId !== null) return false;
+
+  let firstFix = true;
   geoWatchId = navigator.geolocation.watchPosition(
     (pos) => {
       const { latitude, longitude } = pos.coords;
@@ -77,8 +111,27 @@ function _startLiveLocation() {
       } else {
         userMarker.setLatLng(latlng);
       }
+
+      // Pan to the user once, if they're inside the allowed area
+      if (firstFix && map.options.maxBounds.contains(latlng)) {
+        map.panTo(latlng);
+      }
+      firstFix = false;
     },
-    (err) => console.warn("Geolocation unavailable:", err.message),
+    (err) => {
+      console.warn("Geolocation unavailable:", err.message);
+      _stopLiveLocation();
+      locateControl?.setActive(false);
+    },
     { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
   );
+  return true;
+}
+
+function _stopLiveLocation() {
+  if (geoWatchId !== null) navigator.geolocation.clearWatch(geoWatchId);
+  geoWatchId = null;
+  userMarker?.remove();
+  userMarker = null;
+  return false;
 }
