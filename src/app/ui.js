@@ -1,5 +1,6 @@
 import { t } from "../i18n.js";
 
+import * as MAP from "./map.js";
 import * as CONTROLS from "./controls.js";
 
 export function init() {
@@ -45,6 +46,7 @@ export function init() {
     mapModalOpen = true;
     document.body.classList.add("map-is-open");
     document.querySelector("#container").style.pointerEvents = "none";
+    requestAnimationFrame(() => MAP.refresh());
   }
 
   function hideMapModal() {

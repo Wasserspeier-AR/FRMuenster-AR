@@ -53,6 +53,12 @@ export async function init() {
   return map;
 }
 
+export function refresh() {
+  if (!map) return;
+  map.invalidateSize();
+  map.setView(CONFIG.map.center, map.getZoom(), { animate: false });
+}
+
 function _startLiveLocation() {
   if (!navigator.geolocation || geoWatchId !== null) return;
 
