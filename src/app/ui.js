@@ -5,9 +5,8 @@ import * as CONTROLS from "./controls.js";
 
 export function init() {
   const guideButton = document.querySelector("#guide-button");
-  // Might need later
-  // const guideWS = document.querySelector("#guideWS");
-  // const guideClose = guideWS.querySelector(".guide-close");
+  const guideWS = document.querySelector("#guideWS");
+  const guideClose = guideWS.querySelector(".guide-close");
 
   const mapButton = document.querySelector("#map-button");
   const pauseButton = document.querySelector("#pause-button");
@@ -25,6 +24,7 @@ export function init() {
   mapWS.style.display = "none";
 
   let mapModalOpen = false;
+  let guideModalOpen = false;
   let activeTextButton = null;
 
   function openTextModal(button, text) {
@@ -39,6 +39,22 @@ export function init() {
     infoWS.style.display = "none";
     _setActive(activeTextButton, false);
     activeTextButton = null;
+  }
+
+  function openGuideModal() {
+    guideWS.classList.remove("hidden");
+    guideWS.classList.add("flex");
+
+    guideModalOpen = true;
+    _setActive(guideButton, true);
+  }
+
+  function closeGuideModal() {
+    guideWS.classList.remove("flex");
+    guideWS.classList.add("hidden");
+
+    guideModalOpen = false;
+    _setActive(guideButton, false);
   }
 
   function showMapModal() {
@@ -68,16 +84,18 @@ export function init() {
   });
   closeBtn.addEventListener("click", closeTextModal);
 
+  guideClose.addEventListener("click", closeGuideModal);
+
   mapWS.addEventListener("click", (e) => {
     if (e.target === mapWS) hideMapModal();
   });
   mapCloseBtn.addEventListener("click", hideMapModal);
 
   guideButton.addEventListener("click", () => {
-    if (activeTextButton === guideButton) {
-      closeTextModal();
+    if (guideModalOpen) {
+      closeGuideModal();
     } else {
-      openTextModal(guideButton, t("app.guide-text"));
+      openGuideModal();
     }
   });
 
