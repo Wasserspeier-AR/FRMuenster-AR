@@ -48,13 +48,15 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  width: 21px;
   color: var(--color-brand);
   font-size: 28px;
   line-height: 1;
   filter: drop-shadow(
     0 1px 2px rgb(0 0 0 / 0.4)
   ); /* keeps the pin legible on the basemap */
+}
+.target-marker svg {
+  display: block;
 }
 
 .locate-toggle {
@@ -64,6 +66,6 @@
   color: #333;
 }
 .locate-toggle.active {
-  color: #000000;
+  color: var(--color-brand);
   background-color: #eff6ff;
 }

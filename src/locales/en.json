@@ -1,4 +1,6 @@
 {
+  "site.title": " — Münster AR",
+
   "index.title": "A gargoyle\nrarely comes alone",
   "index.description-before": "Whether they're animals, people, or monsters, discover more than",
   "index.gargoyles": "90 gargoyles",
@@ -111,7 +113,6 @@
   "app.info.15": "High up on the tower of the Freiburger Minster there is a group of seven sculptures which look like gargoyles, they however do not have a gutter through which water can be drained away. The man with a flagon is a later addition to the group and replaced an unknown predecessor, possibly lost to damage caused by lightning. While the rest of the group each represent one of the seven cardinal sins, this man cannot be ascribed to one. It is plausible that the theme of the vices was not revisited when this sculpture was created in the 16th century. While the original still remains at its intended place, this model originates from a plaster cast, made in 1914 as documentation.",
   "app.info.16": "High up on the tower of the Freiburger Minster there is a group of seven sculptures which look like gargoyles, they however do not have a gutter through which water can be drained away. The originals, dating from around 1320, represented the seven cardinal sins. In this case, “Pride” is depicted as a knight in full armor and a tunic. The original was replaced by a copy in 1915. A year prior a plaster cast was made as documentation. The model is based on this cast.",
   "app.info.17": "High up on the tower of the Freiburger Minster there is a group of seven sculptures which look like gargoyles, they however do not have a gutter through which water can be drained away. The originals, dating from around 1320, represented the seven cardinal sins. In this case, “Gluttony” is depicted as a boar. The original was replaced by a copy in 1915. A year prior a plaster cast was made as documentation. The model is based on this cast.",
-
 
   "impressum.title": "Legal notice",
   "impressum.description": "This WebAR application was originally developed as part of a bachelor's thesis at Furtwangen University. It was subsequently further developed as part of a student assistant project.",

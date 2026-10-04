@@ -1,4 +1,25 @@
+import { library, dom } from "@fortawesome/fontawesome-svg-core";
+import {
+  faBookOpen,
+  faChurch,
+  faCircleInfo,
+  faCirclePause,
+  faMap,
+  faPlay
+} from "@fortawesome/free-solid-svg-icons"; // Importing it this way, allows for tree-shaking
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { initI18n } from "./i18n.js";
+
+library.add(
+  faBookOpen,
+  faChurch,
+  faCircleInfo,
+  faCirclePause,
+  faMap,
+  faPlay,
+  faGithub
+);
+dom.watch();
 initI18n();
 
 //Slider animation

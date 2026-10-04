@@ -4,7 +4,7 @@ const { MindARThree } = await import("mind-ar/dist/mindar-image-three.prod.js");
 
 import * as CONFIG from "./config.js";
 
-const SETTLE_MS = 300;
+const settleMS = 300;
 
 let mThree = null;
 let ready = false, running = false;
@@ -84,7 +84,7 @@ function reconcile() {
     if (running) stopProcessing();
   } else if (!running) {
     // Give an in-flight detection iteration time to finish (see notes)
-    const wait = Math.max(0, SETTLE_MS - (performance.now() - stoppedAt));
+    const wait = Math.max(0, settleMS - (performance.now() - stoppedAt));
     resumeTimer = setTimeout(startProcessing, wait);
   }
 }
