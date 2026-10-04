@@ -42,14 +42,12 @@ function _updateActiveLangButton(lang) {
   });
 }
 
-
 function _join(dict, keyString) {
   return keyString
     .split("+")
     .map((k) => dict[k.trim()] ?? k.trim())
     .join("");
 }
-
 
 function _applyTranslations(lang) {
   const dict = translations[lang] || translations.de;
