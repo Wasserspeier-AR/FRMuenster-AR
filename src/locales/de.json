@@ -1,4 +1,6 @@
 {
+  "site.title": " — Münster AR",
+
   "index.title": "Ein Wasserspeier\nkommt selten allein",
   "index.description-before": "Ob Tier, Mensch oder Monster, entdecke über",
   "index.gargoyles": "90 Wasserspeier",
@@ -72,7 +74,7 @@
   "app.info.material.15": "Gips",
   "app.info.material.16": "Gips",
   "app.info.material.17": "Gips",
-  
+
   "app.info.date.0": "1926",
   "app.info.date.1": "1913",
   "app.info.date.2": "um 1260/1270",

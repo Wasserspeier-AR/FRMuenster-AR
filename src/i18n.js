@@ -42,17 +42,25 @@ function _updateActiveLangButton(lang) {
   });
 }
 
+
+function _join(dict, keyString) {
+  return keyString
+    .split("+")
+    .map((k) => dict[k.trim()] ?? k.trim())
+    .join("");
+}
+
+
 function _applyTranslations(lang) {
   const dict = translations[lang] || translations.de;
 
   document.querySelectorAll("[data-i18n]").forEach((el) => {
-    const key = el.getAttribute("data-i18n");
-    if (dict[key]) el.textContent = dict[key];
+    el.textContent = _join(dict, el.getAttribute("data-i18n"));
   });
 
   // for placeholders, titles, etc.
   document.querySelectorAll("[data-i18n-attr]").forEach((el) => {
-    const [attr, key] = el.getAttribute("data-i18n-attr").split(":");
-    if (dict[key]) el.setAttribute(attr, dict[key]);
+    const [attr, keys] = el.getAttribute("data-i18n-attr").split(":");
+    el.setAttribute(attr, _join(dict, keys));
   });
 }
