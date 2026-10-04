@@ -18,3 +18,5 @@ export const contentImageUrl = (entry) =>
 for (const k of ["src", "model_path", "content_image_path"]) {
   targets[k] = import.meta.env.BASE_URL + targets[k];
 }
+
+export const devEnv = import.meta.env.DEV;
