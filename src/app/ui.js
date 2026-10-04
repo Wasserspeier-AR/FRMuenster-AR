@@ -5,6 +5,7 @@ import * as MAP from "./map.js";
 import * as CONTROLS from "./controls.js";
 
 const preloaded = new Map();
+let displayedId = null;
 
 export function init() {
   const container = document.querySelector("#container");
@@ -24,7 +25,8 @@ export function init() {
   const info = createModal({
     el: document.querySelector("#infoWS"),
     button: document.querySelector("#info-button"),
-    closeBtn: document.querySelector("#infoWS .close")
+    closeBtn: document.querySelector("#infoWS .close"),
+    onClose: updateTrackingUI
   });
 
   const map = createModal({
@@ -50,13 +52,21 @@ export function init() {
   });
 
   function updateTrackingUI() {
-    pauseButton.disabled = !CONTROLS.isTargetVisible();
+    const visible = CONTROLS.isTargetVisible();
+    const id = CONTROLS.getCurrentTarget();
+
+    pauseButton.disabled = !visible;
     _setActive(pauseButton, CONTROLS.isPaused());
 
-    if (CONTROLS.isTargetVisible()) {
-      const id = CONTROLS.getCurrentTarget();
+    if (visible) {
       preloadImage(CONFIG.contentImageUrl(CONFIG.getTarget(id)));
+
+      // Switch content only when a different target is found while open
+      if (info.isOpen() && id !== displayedId) renderInfo(id);
     }
+
+    // Lost target + open modal: keep content, keep button enabled so it can be closed
+    info.button.disabled = !visible && !info.isOpen();
   }
   updateTrackingUI();
   CONTROLS.onChange(updateTrackingUI);
@@ -70,6 +80,7 @@ export function init() {
   });
 
   function renderInfo(id) {
+    displayedId = id;
     const entry = id === null ? null : CONFIG.getTarget(id);
 
     if (!entry) {
