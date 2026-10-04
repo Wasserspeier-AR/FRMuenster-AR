@@ -3,6 +3,7 @@ import { t } from "../i18n.js";
 import * as CONFIG from "./config.js";
 import * as MAP from "./map.js";
 import * as CONTROLS from "./controls.js";
+import * as SCENE from "./scene.js";
 
 const preloaded = new Map();
 let displayedId = null;
@@ -19,7 +20,9 @@ export function init() {
   const guide = createModal({
     el: document.querySelector("#guideWS"),
     button: document.querySelector("#guide-button"),
-    closeBtn: document.querySelector("#guideWS .guide-close")
+    closeBtn: document.querySelector("#guideWS .guide-close"),
+    onOpen: () => SCENE.suspend("guide"),
+    onClose: () => SCENE.resume("guide")
   });
 
   const info = createModal({
@@ -36,6 +39,7 @@ export function init() {
     onOpen() {
       document.body.classList.add("map-is-open");
       container.style.pointerEvents = "none";
+      SCENE.suspend("map");
       requestAnimationFrame(() => {
         MAP.refresh();
         MAP.resumeLocation();
@@ -45,6 +49,7 @@ export function init() {
       document.body.classList.remove("map-is-open");
       container.style.pointerEvents = "auto";
       MAP.pauseLocation();
+      SCENE.resume("map");
     }
   });
 
@@ -75,7 +80,13 @@ export function init() {
   CONTROLS.onChange(updateTrackingUI);
 
   pauseButton.addEventListener("click", () => {
-    CONTROLS.isPaused() ? CONTROLS.unpauseTracking() : CONTROLS.pauseTracking();
+    if (CONTROLS.isPaused()) {
+      CONTROLS.unpauseTracking();
+      SCENE.resume("pause");
+    } else {
+      CONTROLS.pauseTracking();
+      if (CONTROLS.isPaused()) SCENE.suspend("pause");
+    }
   });
 
   document.querySelector("#back-button").addEventListener("click", () => {

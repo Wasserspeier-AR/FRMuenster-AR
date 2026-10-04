@@ -4,8 +4,16 @@ const { MindARThree } = await import("mind-ar/dist/mindar-image-three.prod.js");
 
 import * as CONFIG from "./config.js";
 
+const SETTLE_MS = 300;
+
+let mThree = null;
+let ready = false, running = false;
+let stoppedAt = 0;
+let resumeTimer = null;
+const reasons = new Set();
+
 export async function init() {
-  const mThree = new MindARThree({
+  mThree = new MindARThree({
     container: document.querySelector("#container"),
     imageTargetSrc: CONFIG.targets.src,
     filterMinCF: 0.001,
@@ -31,6 +39,8 @@ export async function init() {
   });
   await mThree.start();
 
+  ready = running = true;
+  reconcile(); // Apply anything requested while scene was still loading
   return { mThree, anchors };
 }
 
@@ -61,4 +71,39 @@ async function loadNormalizedModel(uri) {
   model.position.sub(center);
 
   return model;
+}
+
+export const suspend = (reason) => (reasons.add(reason), reconcile());
+export const resume = (reason) => (reasons.delete(reason), reconcile());
+
+function reconcile() {
+  clearTimeout(resumeTimer);
+  if (!ready) return;
+
+  if (reasons.size > 0) {
+    if (running) stopProcessing();
+  } else if (!running) {
+    // Give an in-flight detection iteration time to finish (see notes)
+    const wait = Math.max(0, SETTLE_MS - (performance.now() - stoppedAt));
+    resumeTimer = setTimeout(startProcessing, wait);
+  }
+}
+
+function stopProcessing() {
+  mThree.controller.stopProcessVideo();
+  running = false;
+  stoppedAt = performance.now();
+}
+
+function startProcessing() {
+  for (const a of mThree.anchors) {
+    a.group.visible = false;
+    if (a.visible) {
+      a.visible = false;
+      a.onTargetLost?.();
+    }
+  }
+  mThree.ui?.showScanning?.();
+  mThree.controller.processVideo(mThree.video);
+  running = true;
 }
