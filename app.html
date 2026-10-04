@@ -12,9 +12,12 @@
     <script src="https://kit.fontawesome.com/34c3e261b7.js" crossorigin="anonymous" defer></script>
   </head>
 
-  <body class="pointer-events-none relative h-dvh overflow-hidden">
+  <body class="pointer-events-none relative h-dvh overflow-hidden" style="background-color: black;">
     <main>
-      <nav aria-label="Language / Sprache" class="pointer-events-auto select-none absolute left-0 top-0 z-1000 flex gap-1 p-3">
+      <nav
+        aria-label="Language / Sprache"
+        class="pointer-events-auto select-none absolute left-0 top-0 z-1000 flex gap-1 p-3"
+      >
         <button type="button" lang="de" data-lang-switch="de" class="rounded-lg bg-white/90 px-3 py-1 text-sm">
           DE
         </button>
@@ -77,6 +80,7 @@
         role="dialog"
         aria-labelledby="info-title"
         class="info-background pointer-events-auto absolute bottom-1/6 z-2000 bg-white"
+        style="display: none"
       >
         <div class="info-container">
           <div class="info-content">
@@ -98,6 +102,7 @@
         aria-label="Karte"
         data-i18n-attr="aria-label:app.map-button"
         class="map-background pointer-events-auto absolute inset-0 bottom-1/6 z-3000 bg-white"
+        style="display: none"
       >
         <div class="map-container">
           <div class="map-content">
@@ -115,6 +120,7 @@
         aria-modal="true"
         aria-labelledby="guide-title"
         class="pointer-events-auto fixed inset-0 z-4000 hidden items-end justify-center bg-black/30 pt-6 backdrop-blur-sm"
+        style="display: none"
       >
         <div
           class="relative flex max-h-[85vh] w-full max-w-md flex-col overflow-hidden rounded-t-4xl bg-white shadow-2xl"

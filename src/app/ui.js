@@ -5,80 +5,89 @@ import * as MAP from "./map.js";
 import * as CONTROLS from "./controls.js";
 import * as SCENE from "./scene.js";
 
+const selectors = {
+  container: "#container",
+  pauseButton: "#pause-button",
+  backButton: "#back-button",
+
+  infoText: "#info-text",
+  infoTitle: "#info-title",
+  infoDate: "#info-date",
+  infoMat: "#info-mat",
+  infoImg: "#info-img",
+
+  guideEl: "#guideWS",
+  guideButton: "#guide-button",
+  guideClose: "#guideWS .guide-close",
+
+  infoEl: "#infoWS",
+  infoButton: "#info-button",
+  infoClose: "#infoWS .close",
+
+  mapEl: "#mapWS",
+  mapButton: "#map-button",
+  mapClose: "#mapWS .map-close"
+};
+
 const preloaded = new Map();
 let displayedId = null;
 
 export function init() {
-  const container = document.querySelector("#container");
-  const pauseButton = document.querySelector("#pause-button");
-  const infoText = document.querySelector("#info-text");
-  const infoTitle = document.querySelector("#info-title");
-  const infoDate = document.querySelector("#info-date");
-  // const infoMat = document.querySelector("#info-mat");
-  const infoImg = document.querySelector("#info-img");
+  const dom = queryDom();
+  const modals = createModals(dom);
 
+  bindModalButtons(modals);
+  bindPauseButton(dom);
+  bindBackButton(dom);
+  bindTrackingUI(dom, modals.info);
+}
+
+function queryDom() {
+  return Object.fromEntries(
+    Object.entries(selectors).map(([key, selector]) => [
+      key,
+      document.querySelector(selector)
+    ])
+  );
+}
+
+function createModals(dom) {
   const guide = createModal({
-    el: document.querySelector("#guideWS"),
-    button: document.querySelector("#guide-button"),
-    closeBtn: document.querySelector("#guideWS .guide-close"),
+    el: dom.guideEl,
+    button: dom.guideButton,
+    closeBtn: dom.guideClose,
     onOpen: () => SCENE.suspend("guide"),
     onClose: () => SCENE.resume("guide")
   });
 
   const info = createModal({
-    el: document.querySelector("#infoWS"),
-    button: document.querySelector("#info-button"),
-    closeBtn: document.querySelector("#infoWS .close"),
-    onClose: updateTrackingUI
+    el: dom.infoEl,
+    button: dom.infoButton,
+    closeBtn: dom.infoClose,
+    onClose: () => updateTrackingUI(dom, info)
   });
 
   const map = createModal({
-    el: document.querySelector("#mapWS"),
-    button: document.querySelector("#map-button"),
-    closeBtn: document.querySelector("#mapWS .map-close"),
-    onOpen() {
-      document.body.classList.add("map-is-open");
-      container.style.pointerEvents = "none";
-      SCENE.suspend("map");
-      requestAnimationFrame(() => {
-        MAP.refresh();
-        MAP.resumeLocation();
-      });
-    },
-    onClose() {
-      document.body.classList.remove("map-is-open");
-      container.style.pointerEvents = "auto";
-      MAP.pauseLocation();
-      SCENE.resume("map");
-    }
+    el: dom.mapEl,
+    button: dom.mapButton,
+    closeBtn: dom.mapClose,
+    onOpen: () => onMapOpen(dom),
+    onClose: () => onMapClose(dom)
   });
 
+  return { guide, info, map, dom };
+}
+
+function bindModalButtons({ guide, info, map, dom }) {
   guide.button.addEventListener("click", guide.toggle);
   map.button.addEventListener("click", map.toggle);
   info.button.addEventListener("click", () => {
-    if (!info.isOpen()) renderInfo(CONTROLS.getCurrentTarget());
+    if (!info.isOpen()) renderInfo(dom, CONTROLS.getCurrentTarget());
     info.toggle();
   });
+}
 
-  function updateTrackingUI() {
-    const visible = CONTROLS.isTargetVisible();
-    const id = CONTROLS.getCurrentTarget();
-
-    pauseButton.disabled = !visible;
-    _setActive(pauseButton, CONTROLS.isPaused());
-
-    if (visible) {
-      preloadImage(CONFIG.contentImageUrl(CONFIG.getTarget(id)));
-
-      // Switch content only when a different target is found while open
-      if (info.isOpen() && id !== displayedId) renderInfo(id);
-    }
-    // Lost target + open modal: Keep content, keep button enabled so it can be closed
-    info.button.disabled = !visible && !info.isOpen();
-  }
-  updateTrackingUI();
-  CONTROLS.onChange(updateTrackingUI);
-
+function bindPauseButton({ pauseButton }) {
   pauseButton.addEventListener("click", () => {
     if (CONTROLS.isPaused()) {
       CONTROLS.unpauseTracking();
@@ -88,39 +97,93 @@ export function init() {
       if (CONTROLS.isPaused()) SCENE.suspend("pause");
     }
   });
+}
 
-  document.querySelector("#back-button").addEventListener("click", () => {
+function bindBackButton({ backButton }) {
+  backButton.addEventListener("click", () => {
     window.location.href = import.meta.env.BASE_URL;
   });
+}
 
-  function renderInfo(id) {
-    displayedId = id;
-    const entry = id === null ? null : CONFIG.getTarget(id);
+function bindTrackingUI(dom, info) {
+  const update = () => updateTrackingUI(dom, info);
+  update();
+  CONTROLS.onChange(update);
+}
 
-    if (!entry) {
-      infoTitle.textContent = "";
-      infoDate.textContent = "";
-      infoText.textContent = t("app.info.none");
-      infoImg.classList.add("hidden");
-      infoImg.removeAttribute("src");
-      return;
-    }
+function onMapOpen({ container }) {
+  document.body.classList.add("map-is-open");
+  container.style.pointerEvents = "none";
+  SCENE.suspend("map");
+  requestAnimationFrame(() => {
+    MAP.refresh();
+    MAP.resumeLocation();
+  });
+}
 
-    const title = t(`app.info.title.${id}`);
-    infoTitle.textContent = title;
-    infoDate.textContent = t(`app.info.date.${id}`);
-    infoText.textContent = t(`app.info.${id}`);
+function onMapClose({ container }) {
+  document.body.classList.remove("map-is-open");
+  container.style.pointerEvents = "auto";
+  MAP.pauseLocation();
+  SCENE.resume("map");
+}
 
-    const url = CONFIG.contentImageUrl(entry);
-    if (url) {
-      infoImg.src = url;
-      infoImg.alt = title;
-      infoImg.classList.remove("hidden");
-    } else {
-      infoImg.classList.add("hidden");
-      infoImg.removeAttribute("src");
-    }
+function updateTrackingUI(dom, info) {
+  const { pauseButton, infoButton } = dom;
+  const visible = CONTROLS.isTargetVisible();
+  const id = CONTROLS.getCurrentTarget();
+
+  pauseButton.disabled = !visible;
+  setActive(pauseButton, CONTROLS.isPaused());
+
+  if (visible) {
+    preloadImage(CONFIG.contentImageUrl(CONFIG.getTarget(id)));
+
+    // Switch content only when a different target is found while open
+    if (info.isOpen() && id !== displayedId) renderInfo(dom, id);
   }
+  // Lost target + open modal: keep content, keep button enabled so it can be closed
+  infoButton.disabled = !visible && !info.isOpen();
+}
+
+function renderInfo(dom, id) {
+  displayedId = id;
+  const entry = id === null ? null : CONFIG.getTarget(id);
+
+  if (!entry) {
+    setInfoText(dom, { text: t("app.info.none") });
+    hideInfoImage(dom.infoImg);
+    return;
+  }
+
+  const title = t(`app.info.title.${id}`);
+  setInfoText(dom, {
+    title,
+    date: t(`app.info.date.${id}`),
+    material: t(`app.info.material.${id}`),
+    text: t(`app.info.${id}`)
+  });
+
+  const url = CONFIG.contentImageUrl(entry);
+  if (url) {
+    dom.infoImg.src = url;
+    dom.infoImg.alt = title;
+    dom.infoImg.classList.remove("hidden");
+  } else {
+    hideInfoImage(dom.infoImg);
+  }
+}
+
+function setInfoText(dom, { title = "", date = "", material = "", text = "" }) {
+  dom.infoTitle.textContent = title;
+  dom.infoDate.textContent = date;
+  dom.infoMat.textContent = material;
+  dom.infoText.textContent = text;
+}
+
+function hideInfoImage(img) {
+  img.classList.add("hidden");
+  img.removeAttribute("src");
 }
 
 function createModal({ el, button, closeBtn, onOpen, onClose }) {
@@ -130,7 +193,7 @@ function createModal({ el, button, closeBtn, onOpen, onClose }) {
     if (open === value) return;
     open = value;
     el.style.display = value ? "flex" : "none";
-    _setActive(button, value);
+    setActive(button, value);
     (value ? onOpen : onClose)?.();
   }
 
@@ -160,6 +223,6 @@ function preloadImage(url) {
   preloaded.set(url, img); // Keep a reference to prevent garbage collection
 }
 
-function _setActive(button, active) {
+function setActive(button, active) {
   button?.classList.toggle("active", active);
 }
