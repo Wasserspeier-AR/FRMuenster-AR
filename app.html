@@ -3,13 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title data-i18n="app.title+site.title">Ein Wasserspeier kommt selten allein</title>
+    <title data-i18n="app.title+site.title"></title>
     <link rel="icon" type="image/svg+xml" href="src/assets/logos/Logo_Bauverein.svg" />
     <link rel="stylesheet" href="src/style.css" />
     <link rel="stylesheet" href="src/app/style.css" />
     <script type="module" src="src/main.js"></script>
     <script type="module" src="src/app/main.js"></script>
-    <script src="https://kit.fontawesome.com/34c3e261b7.js" crossorigin="anonymous" defer></script>
   </head>
 
   <body class="pointer-events-none relative h-dvh overflow-hidden" style="background-color: black">
@@ -49,6 +48,7 @@
             <span class="text-[11px]" data-i18n="app.map-button"></span>
           </button>
           <button
+            disabled
             type="button"
             id="pause-button"
             class="app-button flex flex-col items-center text-gray-600 transition-colors duration-200"
@@ -57,6 +57,7 @@
             <span class="text-[11px]" data-i18n="app.pause-button"></span>
           </button>
           <button
+            disabled
             type="button"
             id="info-button"
             class="app-button flex flex-col items-center text-gray-600 transition-colors duration-200"
