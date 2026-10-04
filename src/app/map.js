@@ -1,5 +1,10 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { icon } from "@fortawesome/fontawesome-svg-core";
+import {
+  faLocationCrosshairs,
+  faLocationDot
+} from "@fortawesome/free-solid-svg-icons";
 
 import { t } from "../i18n.js";
 import outlineImg from "../assets/Grundriss_ausgerichtet.png";
@@ -11,12 +16,14 @@ const marker_style = {
   fillColor: "#3b82f6",
   fillOpacity: 0.9
 };
+const h = 28;
+const w = (faLocationDot.icon[0] / faLocationDot.icon[1]) * h;
 const targetIcon = L.divIcon({
   className: "target-marker",
-  html: '<i class="fa-solid fa-location-dot" aria-hidden="true"></i>',
-  iconSize: [28, 28],
-  iconAnchor: [10.5, 28], // Bottom-center -> pin tip
-  popupAnchor: [0, -28]
+  html: icon(faLocationDot).html[0],
+  iconSize: [w, h],
+  iconAnchor: [w / 2 + 5, h], // Bottom-center -> pin tip
+  popupAnchor: [0, -h]
 });
 const LocateControl = L.Control.extend({
   options: { position: "bottomright" },
@@ -25,11 +32,11 @@ const LocateControl = L.Control.extend({
     const container = L.DomUtil.create("div", "leaflet-bar leaflet-control");
     const button = L.DomUtil.create("a", "locate-toggle", container);
     button.href = "#";
-    button.role = "button";
     button.title = "Meinen Standort anzeigen";
+    button.setAttribute("role", "button");
     button.setAttribute("aria-label", button.title);
     button.setAttribute("aria-pressed", "false");
-    button.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i>';
+    button.replaceChildren(icon(faLocationCrosshairs).node[0]);
 
     L.DomEvent.disableClickPropagation(container);
     L.DomEvent.on(button, "click", (e) => {
@@ -118,9 +125,10 @@ function addOutlineOverlay(map) {
 
 function addTargetMarkers(map) {
   CONF.targetList
-    .filter((entry) => {
-      entry.coordinates?.[0] != null && entry.coordinates?.[1] != null;
-    })
+    .filter(
+      (entry) =>
+        entry.coordinates?.[0] != null && entry.coordinates?.[1] != null
+    )
     .forEach((entry) => {
       L.marker(entry.coordinates, { icon: targetIcon, opacity: 0.75 })
         .addTo(map)
