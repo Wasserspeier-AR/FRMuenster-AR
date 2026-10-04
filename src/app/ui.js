@@ -31,6 +31,9 @@ const selectors = {
 
 const preloaded = new Map();
 let displayedId = null;
+let pinned = false;
+let wasVisible = false;
+let lastId = null;
 
 export function init() {
   const dom = queryDom();
@@ -40,6 +43,7 @@ export function init() {
   bindPauseButton(dom);
   bindBackButton(dom);
   bindTrackingUI(dom, modals.info);
+  bindMapMarkers(modals);
 }
 
 function queryDom() {
@@ -64,7 +68,11 @@ function createModals(dom) {
     el: dom.infoEl,
     button: dom.infoButton,
     closeBtn: dom.infoClose,
-    onClose: () => updateTrackingUI(dom, info)
+    onOpen: () => updateTrackingUI(dom, info),
+    onClose: () => {
+      pinned = false;
+      updateTrackingUI(dom, info);
+    }
   });
 
   const map = createModal({
@@ -111,6 +119,14 @@ function bindTrackingUI(dom, info) {
   CONTROLS.onChange(update);
 }
 
+function bindMapMarkers({ map, info, dom }) {
+  MAP.onMarkerSelect((id) => {
+    map.close(); // the map would otherwise cover the info modal
+    renderInfo(dom, id, { pin: true });
+    info.open();
+  });
+}
+
 function onMapOpen({ container }) {
   document.body.classList.add("map-is-open");
   container.style.pointerEvents = "none";
@@ -133,21 +149,26 @@ function updateTrackingUI(dom, info) {
   const visible = CONTROLS.isTargetVisible();
   const id = CONTROLS.getCurrentTarget();
 
+  // True only on a real detection, not on pause toggles or other onChange calls
+  const justFound = visible && (!wasVisible || id !== lastId);
+  wasVisible = visible;
+  lastId = id;
+
   pauseButton.disabled = !visible;
   setActive(pauseButton, CONTROLS.isPaused());
 
-  if (visible) {
-    preloadImage(CONFIG.contentImageUrl(CONFIG.getTarget(id)));
+  if (visible) preloadImage(CONFIG.contentImageUrl(CONFIG.getTarget(id)));
 
-    // Switch content only when a different target is found while open
-    if (info.isOpen() && id !== displayedId) renderInfo(dom, id);
+  if (justFound && !pinned && info.isOpen() && id !== displayedId) {
+    renderInfo(dom, id);
   }
-  // Lost target + open modal: keep content, keep button enabled so it can be closed
+
   infoButton.disabled = !visible && !info.isOpen();
 }
 
-function renderInfo(dom, id) {
+function renderInfo(dom, id, { pin = false } = {}) {
   displayedId = id;
+  pinned = pin;
   const entry = id === null ? null : CONFIG.getTarget(id);
 
   if (!entry) {

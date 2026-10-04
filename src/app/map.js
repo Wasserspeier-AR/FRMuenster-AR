@@ -1,9 +1,7 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import markerIcon from "leaflet/dist/images/marker-icon.png";
-import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
-import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
+import { t } from "../i18n.js";
 import outlineImg from "../assets/Grundriss_ausgerichtet.png";
 import * as CONFIG from "./config.js";
 
@@ -14,13 +12,18 @@ let geoWatchId = null;
 let locateControl = null;
 let locateWanted = false;
 
-// Leaflet's default marker icon paths break under bundlers
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconUrl: markerIcon,
-  iconRetinaUrl: markerIcon2x,
-  shadowUrl: markerShadow
+const targetIcon = L.divIcon({
+  className: "target-marker",
+  html: '<i class="fa-solid fa-location-dot" aria-hidden="true"></i>',
+  iconSize: [28, 28],
+  iconAnchor: [10.5, 28], // Bottom-center -> pin tip
+  popupAnchor: [0, -28]
 });
+
+let onSelect = () => {};
+export function onMarkerSelect(cb) {
+  onSelect = cb;
+}
 
 export async function init() {
   if (map) return map;
@@ -42,12 +45,11 @@ export async function init() {
   }).addTo(imageOverlayLayer);
 
   CONFIG.targetList
-    .filter(
-      (entry) => entry.coordinates[0] !== null && entry.coordinates[1] !== null
-    )
+    .filter((e) => e.coordinates?.[0] != null && e.coordinates?.[1] != null)
     .forEach((entry) => {
-      L.marker(entry.coordinates, { opacity: 0.75 }).addTo(map);
-      //.bindPopup(entry.name);
+      L.marker(entry.coordinates, { icon: targetIcon, opacity: 0.75 })
+        .addTo(map)
+        .bindPopup(() => buildPopup(entry.id), { closeButton: false });
     });
 
   locateControl = new LocateControl().addTo(map);
@@ -79,9 +81,9 @@ const LocateControl = L.Control.extend({
       L.DomEvent.preventDefault(e);
       locateWanted = !locateWanted;
       if (locateWanted) {
-        locateWanted = _startLiveLocation(); // false if unsupported
+        locateWanted = startLiveLocation(); // false if unsupported
       } else {
-        _stopLiveLocation();
+        stopLiveLocation();
       }
       this.setActive(locateWanted);
     });
@@ -96,7 +98,18 @@ const LocateControl = L.Control.extend({
   }
 });
 
-function _startLiveLocation() {
+function buildPopup(id) {
+  const btn = L.DomUtil.create("button", "marker-popup");
+  btn.type = "button";
+  btn.textContent = t(`app.info.title.${id}`);
+  L.DomEvent.on(btn, "click", () => {
+    map.closePopup();
+    onSelect(id);
+  });
+  return btn;
+}
+
+function startLiveLocation() {
   if (!navigator.geolocation || geoWatchId !== null) return false;
 
   let firstFix = true;
@@ -125,7 +138,7 @@ function _startLiveLocation() {
     (err) => {
       console.warn("Geolocation unavailable:", err.message);
       locateWanted = false;
-      _stopLiveLocation();
+      stopLiveLocation();
       locateControl?.setActive(false);
     },
     { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
@@ -134,14 +147,14 @@ function _startLiveLocation() {
 }
 
 export function pauseLocation() {
-  _stopLiveLocation();
+  stopLiveLocation();
 }
 
 export function resumeLocation() {
-  if (locateWanted) _startLiveLocation();
+  if (locateWanted) startLiveLocation();
 }
 
-function _stopLiveLocation() {
+function stopLiveLocation() {
   if (geoWatchId !== null) navigator.geolocation.clearWatch(geoWatchId);
   geoWatchId = null;
   userMarker?.remove();
