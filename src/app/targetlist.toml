@@ -1,59 +1,59 @@
 [[target]]
-model = "0_unicorn.glb"
+model = "00_unicorn.glb"
 content_image = "00_Einhorn.jpg"
 coordinates = [47.99538, 7.85242]
 enabled = true
 
 [[target]]
-model = "1_man_with_book.glb"
+model = "001_man_with_book.glb"
 content_image = "01_Gelehrter.jpg"
 coordinates = [47.99538, 7.85252]
 enabled = true
 
 [[target]]
-model = "2_dog.glb"
+model = "02_dog.glb"
 content_image = "02_Hund.jpg"
 coordinates = [47.99539, 7.85259]
 enabled = true
 
 [[target]]
-model = "3_horse.glb"
+model = "03_horse.glb"
 content_image = "03_Pferd.jpg"
 coordinates = [47.99539, 7.8528]
 enabled = true
 
 [[target]]
-model = "4_fantasy_dog.glb"
+model = "04_fantasy_dog.glb"
 content_image = "04_Hundeähnliches_Fantasiewesen.jpg"
 coordinates = [47.99541, 7.85337]
 enabled = true
 
 [[target]]
-model = "5_feathered_dog.glb"
+model = "05_feathered_dog.glb"
 content_image = "05_Hund_mit_Vogelgefieder.jpg"
 coordinates = [47.99547, 7.85367]
 enabled = true
 
 [[target]]
-model = "6_monster_dog.glb"
+model = "06_monster_dog.glb"
 content_image = "06_Monsterhund.jpg"
 coordinates = [47.99549, 7.85368]
 enabled = true
 
 [[target]]
-model = "7_zanner.glb"
+model = "07_zanner.glb"
 content_image = "07_Zanner.jpg"
 coordinates = [47.99571, 7.85351]
 enabled = true
 
 [[target]]
-model = "8_human_skeleton.glb"
+model = "08_human_skeleton.glb"
 content_image = "08_Skelett.jpg"
 coordinates = [47.99571, 7.85331]
 enabled = true
 
 [[target]]
-model = "9_dog_with_rabbit.glb"
+model = "09_dog_with_rabbit.glb"
 content_image = "09_Hund_mit_Hase.jpg"
 coordinates = [47.99574, 7.85327]
 enabled = true
