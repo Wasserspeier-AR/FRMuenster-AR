@@ -12,7 +12,7 @@
     <script src="https://kit.fontawesome.com/34c3e261b7.js" crossorigin="anonymous" defer></script>
   </head>
 
-  <body class="pointer-events-none relative h-dvh overflow-hidden" style="background-color: black;">
+  <body class="pointer-events-none relative h-dvh overflow-hidden" style="background-color: black">
     <main>
       <nav
         aria-label="Language / Sprache"
@@ -87,7 +87,9 @@
             <button type="button" class="close" aria-label="Schließen" data-i18n-attr="aria-label:app.close">
               &times;
             </button>
-            <img id="info-img" class="hidden w-full rounded-xl" alt="" decoding="async" />
+            <div id="info-img-wrap" class="hidden object-contain w-full overflow-hidden rounded-xl bg-gray-200">
+              <img id="info-img" class="size-full object-cover" alt="" decoding="async" />
+            </div>
             <h2 id="info-title" class="info-text"></h2>
             <p id="info-date" class="info-text"></p>
             <p id="info-mat" class="info-text"></p>

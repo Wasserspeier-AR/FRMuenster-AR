@@ -98,7 +98,7 @@ function createMap() {
   return L.map("map", {
     maxBounds: L.latLngBounds(...CONF.map.pan_bounds),
     maxBoundsViscosity: 0.8
-  }).setView(CONF.map.center, CONF.zoom.initial);
+  }).setView(CONF.map.center, CONF.map.zoom.initial);
 }
 
 function addBasemap(map) {

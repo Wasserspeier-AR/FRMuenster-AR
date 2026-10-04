@@ -15,6 +15,7 @@ const selectors = {
   infoDate: "#info-date",
   infoMat: "#info-mat",
   infoImg: "#info-img",
+  infoImgWrap: "#info-img-wrap",
 
   guideEl: "#guideWS",
   guideButton: "#guide-button",
@@ -155,7 +156,7 @@ function updateTrackingUI(dom, info) {
   lastId = id;
 
   pauseButton.disabled = !visible;
-  setActive(pauseButton, CONTROLS.isPaused());
+  pauseButton?.classList.toggle("active", CONTROLS.isPaused());
 
   if (visible) preloadImage(CONFIG.contentImageUrl(CONFIG.getTarget(id)));
 
@@ -173,7 +174,7 @@ function renderInfo(dom, id, { pin = false } = {}) {
 
   if (!entry) {
     setInfoText(dom, { text: t("app.info.none") });
-    hideInfoImage(dom.infoImg);
+    hideInfoImage(dom);
     return;
   }
 
@@ -186,13 +187,27 @@ function renderInfo(dom, id, { pin = false } = {}) {
   });
 
   const url = CONFIG.contentImageUrl(entry);
-  if (url) {
-    dom.infoImg.src = url;
-    dom.infoImg.alt = title;
-    dom.infoImg.classList.remove("hidden");
-  } else {
-    hideInfoImage(dom.infoImg);
-  }
+  if (url) showInfoImage(dom, url, title);
+  else hideInfoImage(dom);
+}
+
+function showInfoImage({ infoImg, infoImgWrap }, url, alt) {
+  infoImgWrap.classList.remove("hidden"); // grey placeholder box
+  delete infoImg.dataset.loaded; // hide the previous image immediately
+  infoImg.alt = alt;
+  infoImg.onload = () => {
+    infoImg.dataset.loaded = "";
+  };
+  infoImg.onerror = () => {}; // stay on the grey box if loading fails
+  infoImg.removeAttribute("src");
+  infoImg.src = url;
+}
+
+function hideInfoImage({ infoImg, infoImgWrap }) {
+  infoImgWrap.classList.add("hidden");
+  delete infoImg.dataset.loaded;
+  infoImg.onload = infoImg.onerror = null;
+  infoImg.removeAttribute("src");
 }
 
 function setInfoText(dom, { title = "", date = "", material = "", text = "" }) {
@@ -202,11 +217,6 @@ function setInfoText(dom, { title = "", date = "", material = "", text = "" }) {
   dom.infoText.textContent = text;
 }
 
-function hideInfoImage(img) {
-  img.classList.add("hidden");
-  img.removeAttribute("src");
-}
-
 function createModal({ el, button, closeBtn, onOpen, onClose }) {
   let open = false;
 
@@ -214,7 +224,7 @@ function createModal({ el, button, closeBtn, onOpen, onClose }) {
     if (open === value) return;
     open = value;
     el.style.display = value ? "flex" : "none";
-    setActive(button, value);
+    button?.classList.toggle("active", value);
     (value ? onOpen : onClose)?.();
   }
 
@@ -242,8 +252,4 @@ function preloadImage(url) {
   img.src = url;
   img.decode?.().catch(() => {});
   preloaded.set(url, img); // Keep a reference to prevent garbage collection
-}
-
-function setActive(button, active) {
-  button?.classList.toggle("active", active);
 }
