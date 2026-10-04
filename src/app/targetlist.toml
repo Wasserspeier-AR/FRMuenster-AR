@@ -5,7 +5,7 @@ coordinates = [47.99538, 7.85242]
 enabled = true
 
 [[target]]
-model = "001_man_with_book.glb"
+model = "01_man_with_book.glb"
 content_image = "01_Gelehrter.jpg"
 coordinates = [47.99538, 7.85252]
 enabled = true
