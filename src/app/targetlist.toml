@@ -101,7 +101,7 @@ coordinates = [47.99546, 7.85216]
 enabled = true
 
 [[target]]
-name = "17_boar_gluttony.doesnt.exist"
+name = "17_boar_gluttony.glb"
 content_image = ""
 coordinates = [47.995437, 7.85285]
 enabled = false
