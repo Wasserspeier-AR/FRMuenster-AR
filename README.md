@@ -1,16 +1,98 @@
-# Ein Wasserspeier kommt selten allein
+# Münster AR
+
+🌐 [**Webseite**](https://wasserspeier-ar.github.io/FRMuenster-AR)
+
+> [!NOTE]
+> For an English version reference [README_en.md](README_en.md). **!TODO: DATEI ERSTELLEN**
+
+**!TODO: EINFÜHRUNGSTEXT ÜBERARBEITEN**
+
 Im Rahmen einer Bachelorarbeit wurde [ein WebAR-Protyp](https://hannguyen10.github.io/AR_FR_Muenster/homepage.html) zur Erkundung der Wasserspeier des [Freiburger Münsters](https://www.freiburgermuenster.info) entwickelt.
 
 Im Rahmen eines HiWi-Projektes wurde die Anwendung in Zusammenarbeit mit dem Freiburger Münsterbauverein weiter ausgearbeitet.
-Diese ist über diesen Link zugänglich: 
 
-<https://wasserspeier-ar.github.io/FRMuenster-AR/>
+## Features
 
-Gefördert wurde das Projekt von der [BBBank](https://www.bbbank.de) und der [Erzbischof Hermann Stiftung](https://katholische-stiftungen-freiburg.de/stiftungen/erzbischof-hermann-stiftung/).
+- Erkunde das Freiburger Münster in Augmented Reality
+- Scanne eine Mauersektion unter einem Wasserspeier
+- Interagiere mit seinem 3D-Scan
+- Erhalte Hintergrundinformationen
+- Orientiere dich anhand der Karte
 
-### Entwicklung der WebAR-Anwendung
+## Pflege und Anpassung
 
-Bao Han Nguyen<br/>
+Für Instruktionen zur Pflege der App besuche das [Wiki](). **!TODO: LINK EINFÜGEN**
+
+## Lokale Entwicklung
+
+Das Projekt ist als statische Webanwendung konzipiert, die mit minimalen externen Abhängigkeiten möglichst aufwandsarm unterhalten werden soll.
+
+### Installation
+
+#### Voraussetzungen
+
+- [Node.js](https://nodejs.org/) 26 oder neuer
+- [npm](https://npmjs.com/) oder äquivalenter Node Package Manager
+- Ein moderner Webbrowser mit Unterstützung für WebAR und WASM
+- Ein Endgerät mit Kamera und Standortdienst (optional)
+
+```sh
+npm install
+```
+
+### Verwendung
+
+```sh
+npm run dev
+```
+
+Öffne den _Network_-Link in der Ausgabe auf deinem Mobile-Gerät.
+
+> [!NOTE]
+> Der Entwicklungs-Server wird für die AR-Funktion im HTTPS-Modus gestartet, allerdings wird hier kein gültiges Zertifikat verwendet. Der Browser gibt daher meist ein Warnung aus ("Diese Verbindung ist nicht sicher") und blockiert die direkte Verbindung. Umgehe diese Warnung durch klicken/tippen auf "Zur Seite fortfahren".
+
+### Mobile-Debugging
+
+- [Chromium-basiert](https://developer.chrome.com/docs/devtools/remote-debugging)
+- [Firefox-basiert](https://firefox-source-docs.mozilla.org/devtools-user/about_colon_debugging/index.html)
+
+### Deployment
+
+```sh
+npm run build # Kopiert zusätzlich lokal die aktuellste NOTICE.md ins Repo
+git add --all
+git commit -m "Change"
+git push
+```
+
+Die Seite wird automatisch auf Github Pages bereitgestellt.
+
+### Projektstruktur
+
+**!TODO: AKTUELLE STRUKTUR HINZUFÜGEN̶̶**
+
+```
+
+```
+
+### Verwendete Projekte
+
+|                                                  |                                                        |
+| ------------------------------------------------ | ------------------------------------------------------ |
+| AR-Backend                                       | [MindAR](https://github.com/hiukim/mind-ar-js)         |
+| Build Tool                                       | [Vite](https://vite.dev/)                              |
+| Grafik                                           | [Three.js](https://threejs.org/)                       |
+| Icons                                            | [Font Awesome](https://fontawesome.com/)               |
+| Konfiguration                                    | [smol-toml](https://github.com/squirrelchat/smol-toml) |
+| [OSM](https://www.openstreetmap.org) Integration | [Leaflet](https://leafletjs.com/)                      |
+| OSM Basemap                                      | [CARTO](https://carto.com/basemaps/)                   |
+| Styling                                          | [Tailwind.css](https://tailwindcss.com/)               |
+
+## Autor*innen
+
+### Entwicklung
+
+Bao Han Nguyen\
 Jérôme Kochenburger
 
 ### Erstellung der Wasserspeier 3D-Modelle
@@ -19,82 +101,18 @@ Moreli Andrea Paredes Gonzalez
 
 ### Projektbetreuung
 
-[Hochschule Furtwangen](https://www.hs-furtwangen.de/):<br/>
+[Hochschule Furtwangen](https://www.hs-furtwangen.de/):\
 Prof. Dr. Uwe Hahne
 
-[Freiburger Münsterbauverein](https://www.freiburgermuenster.info):<br/>
+[Freiburger Münsterbauverein](https://www.freiburgermuenster.info):\
 Lena Hipp
 
+## Förderung
 
-## Pflege / Anpassung
+Das Projekt wurde gefördert von der [BBBank](https://www.bbbank.de) und der [Erzbischof Hermann Stiftung](https://katholische-stiftungen-freiburg.de/stiftungen/erzbischof-hermann-stiftung/).
 
-Individuelle Wasserspeier können über die Datei `CONFIG.yaml` konfiguriert werden. 
+## Lizenz
 
-Manche Wasserspeier sind nicht immer zugänglich. Um Frust zu vermeiden, sollten diese für die Dauer der Unzugänglichkeit auf der Karte deaktiviert werden.
+Dieses Projekt ist [LIZENZNAME](LICENSE) lizenziert. **!TODO: LIZENZNAME EINFÜGEN**
 
-Um einen Wasserspeier ein- oder auszuschalten, stelle im jeweiligen Abschnitt den Eintrag `enabled` auf `true`/`false`.
-
-### Hinzufügen von Targets
-
-Sollte sich die Anzahl der Wasserspeier grundlegend ändern (etwa durch einscannen weiterer), müssen die Targets in **einer Datei** [neu kompiliert](https://hiukim.github.io/mind-ar-js-doc/tools/compile) werden. Die resultierende `.mind`-Datei muss in `public/mind_ar/` hinterlegt werden.
-
-## Entwicklung
-
-Das Projekt ist als statische Webanwendung konzipiert, die mit minimalen externen Abhängigkeiten möglichst aufwandsarm unterhalten werden soll.
-
-### Voraussetzungen
-
-- [Node.js](https://nodejs.org/) (empfohlene LTS-Version)
-- npm (wird normalerweise zusammen mit Node.js installiert)
-- Ein moderner Webbrowser mit Unterstützung für Kamera-Zugriff und WebAR
-
-### Abhängigkeiten
-
-- AR-Backend: [MindAR](https://github.com/hiukim/mind-ar-js)
-- Grafik: [Three.js](https://threejs.org/)
-- Build Tool & Bundler: [Vite](https://vite.dev/)
-- Styling: [Tailwind.css](https://tailwindcss.com/)
-- [OpenStreetmap](https://www.openstreetmap.org) Integration: [Leaflet](https://leafletjs.com/)
-- Konfiguration: [smol-toml](https://github.com/squirrelchat/smol-toml)
-
-### Projektstruktur
-
-```toml
-# Einige Dateien wurden für bessere Übersicht weggelassen
-├── .github/                     # Github Pages Deployment
-├── public/
-│   ├── .original_models/        # Originale 3D-Modelle (GLTF)
-│   ├── mind_ar/
-│   │   └── WS_all_Marker2.mind  # Image Targets
-│   └── models/                  # Optimierte 3D-Modelle (GLB)
-├── scripts/
-│   └── image_augmentations.py   # Script für Modell-Training; nicht genutzt
-├── src/
-│   ├── assets/
-│   ├── locales/                 # Übersetzungen
-│   │   ├── de.json
-│   │   └── en.json
-│   ├── app.js                   # AR-Anwendung (Script)
-│   ├── experimental-features.js # Experimentelle Shader; nicht genutzt
-│   ├── i18n.js                  # Übersetzungslogik
-│   ├── main.js
-│   ├── style.css
-│   └── style.js
-├── .gitignore
-├── vite.config.js
-├── app.html                     # AR-Anwendung
-├── CONFIG.yaml                  # Konfiguration der Wasserspeier
-├── impressum.html               # Impressum
-├── index.html                   # Startseite
-├── package.json
-├── package-lock.json
-└── README.md
-```
-
-### Schnellstart
-
-1. Klone dieses Repository und gehe ins Stammverzeichnis
-2. `npm install` ausführen
-3. `npm run dev` ausführen und dem Link in der Ausgabe folgen
-
-> Anmerkung: Der Entwicklungs-Server wird für die AR-Funktion im HTTPS-Modus gestartet, allerdings wird kein gültiges Zertifikat verwendet. Die Seite wird damit als "unsicher" angezeigt. Einfach auf "Zur Seite fortfahren" drücken.
+Teile des Projektes basieren auf externen Abhängigkeiten. Siehe [NOTICE.md](NOTICE.md) für deren Lizenzen.
