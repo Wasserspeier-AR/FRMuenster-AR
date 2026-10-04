@@ -12,6 +12,7 @@ let map = null;
 let userMarker = null;
 let geoWatchId = null;
 let locateControl = null;
+let locateWanted = false;
 
 // Leaflet's default marker icon paths break under bundlers
 delete L.Icon.Default.prototype._getIconUrl;
@@ -45,12 +46,11 @@ export async function init() {
       (entry) => entry.coordinates[0] !== null && entry.coordinates[1] !== null
     )
     .forEach((entry) => {
-      L.marker(entry.coordinates, { opacity: 0.75 })
-        .addTo(map)
+      L.marker(entry.coordinates, { opacity: 0.75 }).addTo(map);
       //.bindPopup(entry.name);
     });
 
-  new LocateControl().addTo(map);
+  locateControl = new LocateControl().addTo(map);
 
   return map;
 }
@@ -77,9 +77,13 @@ const LocateControl = L.Control.extend({
     L.DomEvent.disableClickPropagation(container);
     L.DomEvent.on(button, "click", (e) => {
       L.DomEvent.preventDefault(e);
-      const active = geoWatchId === null ? _startLiveLocation() : _stopLiveLocation();
-      button.classList.toggle("active", active);
-      button.setAttribute("aria-pressed", String(active));
+      locateWanted = !locateWanted;
+      if (locateWanted) {
+        locateWanted = _startLiveLocation(); // false if unsupported
+      } else {
+        _stopLiveLocation();
+      }
+      this.setActive(locateWanted);
     });
 
     this._button = button;
@@ -120,12 +124,21 @@ function _startLiveLocation() {
     },
     (err) => {
       console.warn("Geolocation unavailable:", err.message);
+      locateWanted = false;
       _stopLiveLocation();
       locateControl?.setActive(false);
     },
     { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
   );
   return true;
+}
+
+export function pauseLocation() {
+  _stopLiveLocation();
+}
+
+export function resumeLocation() {
+  if (locateWanted) _startLiveLocation();
 }
 
 function _stopLiveLocation() {

@@ -36,11 +36,15 @@ export function init() {
     onOpen() {
       document.body.classList.add("map-is-open");
       container.style.pointerEvents = "none";
-      requestAnimationFrame(() => MAP.refresh());
+      requestAnimationFrame(() => {
+        MAP.refresh();
+        MAP.resumeLocation();
+      });
     },
     onClose() {
       document.body.classList.remove("map-is-open");
       container.style.pointerEvents = "auto";
+      MAP.pauseLocation();
     }
   });
 
@@ -64,8 +68,7 @@ export function init() {
       // Switch content only when a different target is found while open
       if (info.isOpen() && id !== displayedId) renderInfo(id);
     }
-
-    // Lost target + open modal: keep content, keep button enabled so it can be closed
+    // Lost target + open modal: Keep content, keep button enabled so it can be closed
     info.button.disabled = !visible && !info.isOpen();
   }
   updateTrackingUI();
