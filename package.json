@@ -11,7 +11,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node -e \"require('fs').copyFileSync('dist/NOTICE.md','NOTICE.md')\"",
     "preview": "vite preview"
   },
   "devDependencies": {
