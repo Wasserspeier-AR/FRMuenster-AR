@@ -17,9 +17,16 @@ export function initI18n() {
   });
 }
 
+// Plain text (markers removed), e.g. for alerts or attributes
 export function t(key) {
   const dict = translations[_getLang()] || translations.de;
-  return dict[key] || key;
+  return _stripMarkup(dict[key] || key);
+}
+
+// HTML with <strong>/<em>, e.g. for el.innerHTML
+export function tHtml(key) {
+  const dict = translations[_getLang()] || translations.de;
+  return _format(dict[key] || key);
 }
 
 function _getLang() {
@@ -49,16 +56,37 @@ function _join(dict, keyString) {
     .join("");
 }
 
+function _escape(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+// ***bold italic***, **bold**, *italic*
+function _format(str) {
+  return _escape(str)
+    .replace(/\*\*\*(.+?)\*\*\*/g, "<strong><em>$1</em></strong>")
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*(.+?)\*/g, "<em>$1</em>");
+}
+
+function _stripMarkup(str) {
+  return str.replace(/\*{1,3}(.+?)\*{1,3}/g, "$1");
+}
+
 function _applyTranslations(lang) {
   const dict = translations[lang] || translations.de;
 
   document.querySelectorAll("[data-i18n]").forEach((el) => {
-    el.textContent = _join(dict, el.getAttribute("data-i18n"));
+    el.innerHTML = _format(_join(dict, el.getAttribute("data-i18n")));
   });
 
-  // for placeholders, titles, etc.
+  // for placeholders, titles, etc. (attributes can't contain markup)
   document.querySelectorAll("[data-i18n-attr]").forEach((el) => {
     const [attr, keys] = el.getAttribute("data-i18n-attr").split(":");
-    el.setAttribute(attr, _join(dict, keys));
+    el.setAttribute(attr, _stripMarkup(_join(dict, keys)));
   });
 }

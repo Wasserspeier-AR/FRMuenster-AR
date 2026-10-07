@@ -9,7 +9,7 @@
     <script type="module" src="src/main.js"></script>
   </head>
 
-  <body class="min-h-screen bg-stone-100 text-stone-800">
+  <body class="min-h-screen bg-stone-100 text-stone-800 text-pretty">
     <main class="mx-auto max-w-3xl px-6 py-10 lg:max-w-5xl lg:px-10 lg:py-14">
       <nav aria-label="Language / Sprache" class="select-none">
         <button type="button" lang="de" data-lang-switch="de" aria-label="Deutsch">DE</button>
@@ -25,7 +25,7 @@
         </h1>
       </header>
 
-      <div class="space-y-8 rounded-3xl bg-white p-8 shadow-md lg:space-y-12 lg:p-12">
+      <div class="space-y-6 rounded-3xl bg-white p-8 shadow-md lg:space-y-12 lg:p-12">
         <section class="space-y-4">
           <p class="text-center text-xl font-semibold leading-relaxed lg:text-2xl">
             <span data-i18n="index.description-before"> Ob Tier, Mensch oder Monster, entdecke über </span>
@@ -96,42 +96,92 @@
         </section>
 
         <section>
-          <h2 data-i18n="index.tips" class="mb-5 text-xl font-semibold lg:text-2xl">Tipps</h2>
-          <ul class="space-y-4 lg:text-lg lg:leading-7">
-            <li data-i18n="index.first-tip" class="tip">
-              Sucht nach Symbolen, Inschriften oder auffälligen Steinflächen.
-            </li>
-            <li data-i18n="index.second-tip" class="tip">
-              Die 3D-Modelle verstecken sich immer auf flachen Wänden, nicht an Ecken oder Kanten.
-            </li>
-            <li data-i18n="index.third-tip" class="tip">
-              Von der Scanposition aus könnt ihr den steinernen Wasserspeier über euch entdecken.
-            </li>
-            <li data-i18n="index.fourth-tip" class="tip">
-              Bei starker Sonne oder Regen kann die Erkennung unter Umständen beeinträchtigt sein.
-            </li>
-            <li data-i18n="index.fifth-tip" class="tip">
-              Für eine bessere Orientierung schaut einfach auf die Karte, sie zeigt euch, wo sich die Modelle der
-              Wasserspeier verstecken.
-            </li>
-          </ul>
+          <h2 data-i18n="index.requirements" class="mb-2 text-xl font-semibold lg:text-2xl">Vor dem Start</h2>
+          <div class="divide-y divide-stone-200">
+            <details class="group">
+              <summary
+                class="flex cursor-pointer list-none items-center justify-between gap-3 py-1 select-none [&::-webkit-details-marker]:hidden"
+              >
+                <span class="flex min-w-0 items-center gap-3">
+                  <i class="fa-solid fa-camera w-5 shrink-0 text-center text-sm text-stone-400 transition-colors duration-200 group-open:text-brand" aria-hidden="true"></i>
+                  <h3 data-i18n="index.camera-access" class="text-left text-sm font-medium text-stone-700 lg:text-base">Kamerazugriff erforderlich</h3>
+                </span>
+                <i
+                  class="fa-solid fa-chevron-down shrink-0 text-xs text-stone-400 transition-transform duration-200 group-open:rotate-180"
+                  aria-hidden="true"
+                ></i>
+              </summary>
+              <p data-i18n="index.camera-access-text" class="pb-3 pl-8 text-sm leading-snug text-stone-600 lg:text-base lg:leading-6"></p>
+            </details>
+
+            <details class="group">
+              <summary
+                class="flex cursor-pointer list-none items-center justify-between gap-3 py-1 select-none [&::-webkit-details-marker]:hidden"
+              >
+                <span class="flex min-w-0 items-center gap-3">
+                  <i class="fa-solid fa-location-dot w-5 shrink-0 text-center text-sm text-stone-400 transition-colors duration-200 group-open:text-brand" aria-hidden="true"></i>
+                  <h3 data-i18n="index.location-access" class="text-left text-sm font-medium text-stone-700 lg:text-base"></h3>
+                </span>
+                <i
+                  class="fa-solid fa-chevron-down shrink-0 text-xs text-stone-400 transition-transform duration-200 group-open:rotate-180"
+                  aria-hidden="true"
+                ></i>
+              </summary>
+              <p data-i18n="index.location-access-text" class="pb-3 pl-8 text-sm leading-snug text-stone-600 lg:text-base lg:leading-6"></p>
+            </details>
+
+            <details class="group">
+              <summary
+                class="flex cursor-pointer list-none items-center justify-between gap-3 py-1 select-none [&::-webkit-details-marker]:hidden"
+              >
+                <span class="flex min-w-0 items-center gap-3">
+                  <i class="fa-solid fa-battery-half w-5 shrink-0 text-center text-sm text-stone-400 transition-colors duration-200 group-open:text-brand" aria-hidden="true"></i>
+                  <h3 data-i18n="index.battery-drain" class="text-left text-sm font-medium text-stone-700 lg:text-base"></h3>
+                </span>
+                <i
+                  class="fa-solid fa-chevron-down shrink-0 text-xs text-stone-400 transition-transform duration-200 group-open:rotate-180"
+                  aria-hidden="true"
+                ></i>
+              </summary>
+              <p data-i18n="index.battery-drain-text" class="pb-3 pl-8 text-sm leading-snug text-stone-600 lg:text-base lg:leading-6"></p>
+            </details>
+          </div>
+        </section>
+
+        <section>
+          <details class="group">
+            <summary
+              class="flex cursor-pointer list-none items-center justify-between gap-3 rounded-2xl border border-stone-200 bg-stone-50 px-5 py-4 select-none active:bg-stone-100 [&::-webkit-details-marker]:hidden"
+            >
+              <span class="flex min-w-0 items-center gap-3">
+                <i class="fa-solid fa-circle-info w-5 shrink-0 text-center  text-brand" aria-hidden="true"></i>
+                <h2 data-i18n="index.tips" class="text-left text-xl font-semibold lg:text-2xl">Tipps</h2>
+              </span>
+              <i
+                class="fa-solid fa-chevron-down shrink-0 text-stone-500 transition-transform duration-200 group-open:rotate-180"
+                aria-hidden="true"
+              ></i>
+            </summary>
+
+            <ul class="mt-3 space-y-3 px-1 lg:text-lg">
+              <li data-i18n="index.first-tip" class="tip leading-snug"></li>
+              <li data-i18n="index.second-tip" class="tip leading-snug"></li>
+              <li data-i18n="index.third-tip" class="tip leading-snug"></li>
+              <li data-i18n="index.fourth-tip" class="tip leading-snug"></li>
+              <li data-i18n="index.fifth-tip" class="tip leading-snug"></li>
+            </ul>
+          </details>
         </section>
 
         <aside class="rounded-2xl border border-stone-200 bg-stone-50 p-5">
-          <h2 data-i18n="index.notice" class="mb-2 font-semibold text-brand lg:text-lg">Hinweis</h2>
-          <p data-i18n="index.notice-text" class="text-sm leading-6 text-stone-700 lg:text-lg lg:leading-7">
-            Wegen Bauarbeiten oder Veranstaltungen auf dem Münsterplatz können einzelne Verstecke zeitweise nicht
-            erreichbar sein. Besuche diese Wasserspeier einfach zu einem späteren Zeitpunkt.
+          <div class="mb-2 flex items-center gap-3">
+            <i class="fa-solid fa-circle-exclamation w-5 shrink-0 text-center text-brand" aria-hidden="true"></i>
+            <h2 data-i18n="index.notice" class="text-left text-xl font-semibold lg:text-2xl">Hinweis</h2>
+          </div>
+          <p data-i18n="index.notice-text" class="pl-8 text-sm leading-6 text-stone-700 lg:text-lg lg:leading-7 text-balance">
+            Aufgrund von Bauarbeiten oder Veranstaltungen auf dem Münsterplatz können einzelne Verstecke zeitweise nicht erreichbar sein. Besuche diese einfach zu einem späteren Zeitpunkt.
           </p>
         </aside>
-
-        <section>
-          <h2 data-i18n="index.camera-access" class="mb-2 font-semibold text-brand lg:text-lg">Kamerazugriff erforderlich</h2>
-          <p data-i18n="index.camera-access-text" class="text-sm leading-6 text-stone-700 lg:text-lg lg:leading-7">
-            Für die AR-Anwendung wird eure Kamera benötigt. Beim Start werdet ihr von eurem Browser um Erlaubnis
-            gebeten. Erlaubt den Kamerazugriff, damit die Anwendung funktioniert.
-          </p>
-        </section>
 
         <p data-i18n="index.have-fun" class="text-center text-lg font-semibold text-brand lg:text-xl">
           Viel Spaß beim Entdecken der Wasserspeier!
