@@ -103,7 +103,7 @@ export function pauseTracking() {
 }
 
 export function unpauseTracking() {
-  if (!paused || !targetVisible) return;
+  if (!paused) return;
   paused = false;
   currentRecord.anchor.group.attach(currentRecord.pivot);
   onTrackingChange();

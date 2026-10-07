@@ -1,10 +1,21 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand: rgb(118 23 23);
+}
+
 [data-i18n] {
   white-space: pre-line;
 }
 
 .active {
-  color: rgb(118, 23, 23);
+  color: var(--color-brand);
   font-weight: 600;
+}
+
+@layer components {
+  .tip {
+    @apply flex items-start gap-3 leading-7 text-stone-700
+      before:mt-2.5 before:size-2 before:shrink-0 before:rounded-full before:bg-brand;
+  }
 }

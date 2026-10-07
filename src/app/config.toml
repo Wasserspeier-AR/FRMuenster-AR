@@ -1,12 +1,14 @@
 [targets]
 src = "targets/targets.mind"
+src_images_per_target = 1
 model_path = "models/"
-images_per_target = 1
+content_image_path = "src/assets/content_images/"
 
 [map]
 center = [47.995437, 7.85285]
 pan_bounds = [[47.993437, 7.84985], [47.997437, 7.85585]]
 outline_bounds = [[47.995067, 7.851915], [47.99606, 7.853915]]
+zoom = { initial = 18, min = 18, max = 20 }
 basemap = "https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png?key=cb1_3n05_1_ec8829c0a380ba86e1af803d"
 attribution = "© <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, © <a href='https://carto.com/attribution/'>CARTO</a>"
 osm_basemap = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
