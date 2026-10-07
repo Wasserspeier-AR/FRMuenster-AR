@@ -18,7 +18,10 @@
 
       <header>
         <div class="mx-auto mb-8 w-fit rounded-2xl bg-stone-200 p-4">
-          <img src="src/assets/logos/Bauverein.avif" alt="Münsterbauverein Freiburg" class="h-20" />
+          <picture>
+            <source srcset="src/assets/logos/Bauverein.avif" type="image/avif">
+            <img src="src/assets/logos/Bauverein.png" alt="Münsterbauverein Freiburg" class="h-20" />
+          </picture>
         </div>
         <h1 data-i18n="index.title" class="mb-8 text-center text-4xl font-bold leading-tight text-stone-900 lg:text-5xl">
           Ein Wasserspeier kommt selten allein
@@ -47,12 +50,15 @@
             class="scrollbar-hide flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-4"
           >
             <li class="min-w-full snap-center">
-              <img
-                src="src/assets/Anleitung_Wasserspeier_Schritt_1.avif"
-                alt="Eine Kamera wird auf eine Wandfläche am Münster gerichtet"
-                data-i18n-attr="alt:index.manual-first-step-alt"
-                class="w-full rounded-2xl md:mx-auto md:w-[75%] lg:w-[70%]"
-              />
+              <picture>
+                <source srcset="src/assets/Anleitung_Wasserspeier_Schritt_1.avif" type="image/avif">
+                <img
+                  src="src/assets/Anleitung_Wasserspeier_Schritt_1.jpg"
+                  alt="Eine Kamera wird auf eine Wandfläche am Münster gerichtet"
+                  data-i18n-attr="alt:index.manual-first-step-alt"
+                  class="w-full rounded-2xl md:mx-auto md:w-[75%] lg:w-[70%]"
+                />
+              </picture>
               <h3 data-i18n="index.manual-first-step" class="mt-4 text-lg font-semibold lg:text-xl">1. Wandfläche scannen</h3>
               <p data-i18n="index.manual-first-step-text" class="mt-2 text-stone-600 lg:text-lg lg:leading-7">
                 Suche eine passende Wandfläche am Münster und richte deine Kamera darauf.
@@ -60,13 +66,16 @@
             </li>
 
             <li class="min-w-full snap-center">
-              <img
-                src="src/assets/Anleitung_Wasserspeier.avif"
-                loading="lazy"
-                alt="Ein 3D-Modell eines Wasserspeiers erscheint an der Wand"
-                data-i18n-attr="alt:index.manual-second-step-alt"
-                class="w-full rounded-2xl md:mx-auto md:w-[75%] lg:w-[70%]"
-              />
+              <picture>
+                <source srcset="src/assets/Anleitung_Wasserspeier.avif" type="image/avif">
+                <img
+                  src="src/assets/Anleitung_Wasserspeier.jpg"
+                  loading="lazy"
+                  alt="Ein 3D-Modell eines Wasserspeiers erscheint an der Wand"
+                  data-i18n-attr="alt:index.manual-second-step-alt"
+                  class="w-full rounded-2xl md:mx-auto md:w-[75%] lg:w-[70%]"
+                />
+              </picture>
               <h3 data-i18n="index.manual-second-step" class="mt-4 text-lg font-semibold lg:text-xl">2. Wasserspeier entdecken</h3>
               <p data-i18n="index.manual-second-step-text" class="mt-2 text-stone-600 lg:text-lg lg:leading-7">
                 Scanne die Wandfläche, bis das 3D-Modell erscheint.
@@ -74,13 +83,16 @@
             </li>
 
             <li class="min-w-full snap-center">
-              <img
-                src="src/assets/Anleitung_Wasserspeier.avif"
-                loading="lazy"
-                alt="Der Info-Button neben dem Wasserspeier"
-                data-i18n-attr="alt:index.manual-third-step-alt"
-                class="w-full rounded-2xl md:mx-auto md:w-[75%] lg:w-[70%]"
-              />
+              <picture>
+                <source srcset="src/assets/Anleitung_Wasserspeier.avif" type="image/avif">
+                <img
+                  src="src/assets/Anleitung_Wasserspeier.jpg"
+                  loading="lazy"
+                  alt="Der Info-Button neben dem Wasserspeier"
+                  data-i18n-attr="alt:index.manual-third-step-alt"
+                  class="w-full rounded-2xl md:mx-auto md:w-[75%] lg:w-[70%]"
+                />
+              </picture>
               <h3 data-i18n="index.manual-third-step" class="mt-4 text-lg font-semibold lg:text-xl">3. Mehr erfahren</h3>
               <p data-i18n="index.manual-third-step-text" class="mt-2 text-stone-600 lg:text-lg lg:leading-7">
                 Tippe auf den Info-Button und erfahre mehr über den Wasserspeier.

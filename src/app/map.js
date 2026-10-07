@@ -7,7 +7,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { t } from "../i18n.js";
-import outlineImg from "../assets/Outline_orientated.avif";
+import outlineAvif from "../assets/Outline_orientated.avif";
+import outlineAvif from "../assets/Outline_orientated.png";
 import * as CONF from "./config.js";
 
 const marker_style = {
@@ -118,8 +119,9 @@ function addBasemap(map) {
 
 function addOutlineOverlay(map) {
   const layer = L.layerGroup().addTo(map);
-  L.imageOverlay(outlineImg, CONF.map.outline_bounds, {
-    opacity: 0.85
+  L.imageOverlay(outlineAvif, CONF.map.outline_bounds, {
+    opacity: 0.85,
+    errorOverlayUrl: outlinePng,
   }).addTo(layer);
 }
 
