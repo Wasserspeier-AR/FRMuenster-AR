@@ -8,7 +8,7 @@ import {
 
 import { t } from "../i18n.js";
 import outlineAvif from "../assets/Outline_orientated.avif";
-import outlineAvif from "../assets/Outline_orientated.png";
+import outlinePng from "../assets/Outline_orientated.png";
 import * as CONF from "./config.js";
 
 const marker_style = {
