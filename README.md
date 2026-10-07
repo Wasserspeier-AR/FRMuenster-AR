@@ -92,20 +92,22 @@ Die Seite wird automatisch auf Github Pages bereitgestellt.
 
 ### Entwicklung
 
-Bao Han Nguyen\
-Jérôme Kochenburger
+> Bao Han Nguyen\
+> Jérôme Kochenburger
 
 ### Erstellung der Wasserspeier 3D-Modelle
 
-Moreli Andrea Paredes Gonzalez
+> Moreli Andrea Paredes Gonzalez
 
 ### Projektbetreuung
 
-[Hochschule Furtwangen](https://www.hs-furtwangen.de/):\
-Prof. Dr. Uwe Hahne
+[Hochschule Furtwangen](https://www.hs-furtwangen.de/):
 
-[Freiburger Münsterbauverein](https://www.freiburgermuenster.info):\
-Lena Hipp
+> Prof. Dr. Uwe Hahne
+
+[Freiburger Münsterbauverein](https://www.freiburgermuenster.info):
+
+> Lena Hipp
 
 ## Förderung
 
