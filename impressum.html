@@ -10,21 +10,21 @@
   </head>
 
   <body class="flex min-h-screen items-center justify-center bg-stone-100 p-6">
-    <main class="w-full max-w-2xl">
+    <main class="w-full max-w-2xl md:max-w-3xl lg:max-w-4xl">
       <nav aria-label="Language / Sprache" class="select-none mb-4">
         <button type="button" lang="de" data-lang-switch="de" aria-label="Deutsch">DE</button>
         <button type="button" lang="en" data-lang-switch="en" aria-label="English">EN</button>
       </nav>
 
-      <article class="rounded-2xl bg-white p-8 shadow-lg">
-        <h1 data-i18n="impressum.title" class="mb-6 text-3xl font-bold text-stone-800">Impressum</h1>
+      <article class="rounded-2xl bg-white p-8 shadow-lg md:p-10 lg:p-12">
+        <h1 data-i18n="impressum.title" class="mb-6 text-3xl font-bold text-stone-800 md:text-4xl">Impressum</h1>
 
-        <p data-i18n="impressum.description" class="mb-6 leading-relaxed text-stone-600">
+        <p data-i18n="impressum.description" class="mb-6 leading-relaxed text-stone-600 md:text-lg md:leading-7">
           Diese WebAR-Anwendung wurde ursprünglich im Rahmen einer Bachelorarbeit an der Hochschule Furtwangen
           entwickelt. Im Rahmen eines HiWi-Projektes wurde sie anschließend weiterentwickelt.
         </p>
 
-        <dl class="space-y-5 text-stone-700">
+        <dl class="space-y-5 text-stone-700 md:space-y-7 md:text-lg md:leading-7">
           <div>
             <dt data-i18n="impressum.development" class="font-semibold text-stone-900">
               Entwicklung der WebAR-Anwendung
@@ -58,11 +58,11 @@
           </div>
         </dl>
 
-        <footer class="mt-10 space-y-8 border-t border-stone-200 pt-6">
+        <footer class="mt-10 space-y-8 border-t border-stone-200 pt-6 lg:mt-12 lg:space-y-10 lg:pt-8">
           <section>
             <h2
               data-i18n="impressum.project-partner"
-              class="mb-4 text-center text-sm font-semibold uppercase tracking-wide text-stone-500"
+              class="mb-4 text-center text-sm font-semibold uppercase tracking-wide text-stone-500 lg:text-base"
             >
               Projektpartner
             </h2>
@@ -71,11 +71,11 @@
                 <img
                   src="src/assets/logos/Logo_Hochschule_Furtwangen_HFU.png"
                   alt="Hochschule Furtwangen"
-                  class="h-12"
+                  class="h-12 lg:h-14"
                 />
               </a>
               <a href="https://muensterbauverein-freiburg.de/" target="_blank" class="rounded-lg bg-stone-700 p-3">
-                <img src="src/assets/logos/Logo_Bauverein.png" alt="Freiburger Münsterbauverein" class="h-12" />
+                <img src="src/assets/logos/Logo_Bauverein.png" alt="Freiburger Münsterbauverein" class="h-12 lg:h-14" />
               </a>
             </div>
           </section>
@@ -83,13 +83,13 @@
           <section>
             <h2
               data-i18n="impressum.sponsors"
-              class="mb-4 text-center text-sm font-semibold uppercase tracking-wide text-stone-500"
+              class="mb-4 text-center text-sm font-semibold uppercase tracking-wide text-stone-500 lg:text-base"
             >
               Gefördert durch
             </h2>
             <div class="flex flex-wrap items-center justify-center gap-10">
               <a href="https://www.bbbank.de/privatkunden.html" target="_blank">
-                <img src="src/assets/logos/Logo_BBBank.png" alt="BBBank" class="h-14" />
+                <img src="src/assets/logos/Logo_BBBank.png" alt="BBBank" class="h-14 lg:h-16" />
               </a>
               <a
                 href="https://katholische-stiftungen-freiburg.de/stiftungen/erzbischof-hermann-stiftung/"
@@ -98,7 +98,7 @@
                 <img
                   src="src/assets/logos/Logo_Erzbischof_Hermann.png"
                   alt="Erzbischof-Hermann-Stiftung"
-                  class="h-12"
+                  class="h-12 lg:h-14"
                 />
               </a>
             </div>
