@@ -16,10 +16,10 @@
   <main>
     <nav aria-label="Language / Sprache"
       class="pointer-events-auto select-none absolute left-0 top-0 z-1000 flex gap-1 p-3">
-      <button type="button" lang="de" data-lang-switch="de" class="rounded-lg bg-white/90 px-3 py-1 text-sm">
+      <button type="button" lang="de" data-lang-switch="de" aria-label="Deutsch" class="rounded-lg bg-white/90 px-3 py-1 text-sm">
         DE
       </button>
-      <button type="button" lang="en" data-lang-switch="en" class="rounded-lg bg-white/90 px-3 py-1 text-sm">
+      <button type="button" lang="en" data-lang-switch="en" aria-label="English" class="rounded-lg bg-white/90 px-3 py-1 text-sm">
         EN
       </button>
     </nav>
@@ -65,7 +65,7 @@
           <div class="max-h-[65dvh] overflow-y-auto overscroll-contain px-6 pt-5 pb-8">
             <button type="button"
               class="close absolute right-4 top-4 flex size-8 items-center justify-center rounded-full bg-white/80 text-xl leading-none text-gray-500"
-              aria-label="Schließen" data-i18n-attr="aria-label:app.close">
+              aria-label="Schließen" data-i18n-attr="aria-label:app.close-button">
               &times;
             </button>
             <h2 id="info-title" class="info-text pr-9 text-lg font-semibold leading-snug text-stone-900"></h2>
@@ -88,7 +88,7 @@
       class="map-background pointer-events-auto absolute inset-0 bottom-1/6 z-3000 bg-white" style="display: none">
       <div class="map-container">
         <div class="map-content">
-          <button type="button" class="close map-close" aria-label="Schließen" data-i18n-attr="aria-label:app.close">
+          <button type="button" class="close map-close" aria-label="Schließen" data-i18n-attr="aria-label:app.close-button">
             &times;
           </button>
           <div id="map"></div>
@@ -101,7 +101,7 @@
       style="display: none">
       <div
         class="relative flex max-h-[85vh] w-full max-w-md flex-col overflow-hidden rounded-t-4xl bg-white shadow-2xl">
-        <button type="button" aria-label="Schließen" data-i18n-attr="aria-label:app.close"
+        <button type="button" aria-label="Schließen" data-i18n-attr="aria-label:app.close-button"
           class="guide-close absolute right-4 top-4 z-10 flex size-8 items-center justify-center rounded-full bg-white/80 text-2xl text-gray-500">
           &times;
         </button>
