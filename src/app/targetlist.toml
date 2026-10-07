@@ -1,102 +1,102 @@
 [[target]]
 model = "00_unicorn.glb"
-content_image = "00_Einhorn.jpg"
+content_image = "00_Einhorn.avif"
 coordinates = [47.99538, 7.85242]
 enabled = true
 
 [[target]]
 model = "01_man_with_book.glb"
-content_image = "01_Gelehrter.jpg"
+content_image = "01_Gelehrter.avif"
 coordinates = [47.99538, 7.85252]
 enabled = true
 
 [[target]]
 model = "02_dog.glb"
-content_image = "02_Hund.jpg"
+content_image = "02_Hund.avif"
 coordinates = [47.99539, 7.85259]
 enabled = true
 
 [[target]]
 model = "03_horse.glb"
-content_image = "03_Pferd.jpg"
+content_image = "03_Pferd.avif"
 coordinates = [47.99539, 7.8528]
 enabled = true
 
 [[target]]
 model = "04_fantasy_dog.glb"
-content_image = "04_Hundeähnliches_Fantasiewesen.jpg"
+content_image = "04_Hundeähnliches_Fantasiewesen.avif"
 coordinates = [47.99541, 7.85337]
 enabled = true
 
 [[target]]
 model = "05_feathered_dog.glb"
-content_image = "05_Hund_mit_Vogelgefieder.jpg"
+content_image = "05_Hund_mit_Vogelgefieder.avif"
 coordinates = [47.99547, 7.85367]
 enabled = true
 
 [[target]]
 model = "06_monster_dog.glb"
-content_image = "06_Monsterhund.jpg"
+content_image = "06_Monsterhund.avif"
 coordinates = [47.99549, 7.85368]
 enabled = true
 
 [[target]]
 model = "07_zanner.glb"
-content_image = "07_Zanner.jpg"
+content_image = "07_Zanner.avif"
 coordinates = [47.99571, 7.85351]
 enabled = true
 
 [[target]]
 model = "08_human_skeleton.glb"
-content_image = "08_Skelett.jpg"
+content_image = "08_Skelett.avif"
 coordinates = [47.99571, 7.85331]
 enabled = true
 
 [[target]]
 model = "09_dog_with_rabbit.glb"
-content_image = "09_Hund_mit_Hase.jpg"
+content_image = "09_Hund_mit_Hase.avif"
 coordinates = [47.99574, 7.85327]
 enabled = true
 
 [[target]]
 model = "10_griffin.glb"
-content_image = "10_Greif.jpg"
+content_image = "10_Greif.avif"
 coordinates = [47.99571, 7.85323]
 enabled = true
 
 [[target]]
 model = "11_fish.glb"
-content_image = "11_Fisch.jpg"
+content_image = "11_Fisch.avif"
 coordinates = [47.99572, 7.85269]
 enabled = true
 
 [[target]]
 model = "12_devilry.glb"
-content_image = "12_Teufelstier.jpg"
+content_image = "12_Teufelstier.avif"
 coordinates = [47.99573, 7.85264]
 enabled = true
 
 [[target]]
 model = "13_ram.glb"
-content_image = "13_Widder.jpg"
+content_image = "13_Widder.avif"
 coordinates = [47.9957, 7.85229]
 enabled = false
 
 [[target]]
 model = "14_billy_goat.glb"
-content_image = "14_Ziegenbock.jpg"
+content_image = "14_Ziegenbock.avif"
 coordinates = [47.99569, 7.85226]
 enabled = false
 
 [[target]]
 model = "15_man_with_jug.glb"
-content_image = "15_Mann_mit_Krug.jpg"
+content_image = "15_Mann_mit_Krug.avif"
 coordinates = [47.99549, 7.85206]
 enabled = true
 
 [[target]]
 model = "16_knight.glb"
-content_image = "16_Ritter_Hochmut.jpg"
+content_image = "16_Ritter_Hochmut.avif"
 coordinates = [47.99546, 7.85216]
 enabled = true
 

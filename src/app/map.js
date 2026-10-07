@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { t } from "../i18n.js";
-import outlineImg from "../assets/Grundriss_ausgerichtet.png";
+import outlineImg from "../assets/Outline_orientated.avif";
 import * as CONF from "./config.js";
 
 const marker_style = {
