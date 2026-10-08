@@ -12,14 +12,14 @@
   <script type="module" src="src/app/main.js"></script>
 </head>
 
-<body class="pointer-events-none relative h-dvh overflow-hidden" style="background-color: black">
+<body class="pointer-events-none relative h-dvh overflow-hidden text-pretty" style="background-color: black">
   <main>
     <nav aria-label="Language / Sprache"
       class="pointer-events-auto select-none absolute left-0 top-0 z-1000 flex gap-1 p-3">
-      <button type="button" lang="de" data-lang-switch="de" aria-label="Deutsch" class="rounded-lg bg-white/90 px-3 py-1 text-sm">
+      <button type="button" lang="de" data-lang-switch="de" aria-label="Deutsch" class="rounded-xl bg-white/90 px-3 py-1 text-sm">
         DE
       </button>
-      <button type="button" lang="en" data-lang-switch="en" aria-label="English" class="rounded-lg bg-white/90 px-3 py-1 text-sm">
+      <button type="button" lang="en" data-lang-switch="en" aria-label="English" class="rounded-xl bg-white/90 px-3 py-1 text-sm">
         EN
       </button>
     </nav>
@@ -89,7 +89,7 @@
       class="map-background pointer-events-auto absolute inset-0 bottom-1/6 z-3000 bg-white" style="display: none">
       <div class="map-container">
         <div class="map-content">
-          <button type="button" class="close map-close" aria-label="Schließen" data-i18n-attr="aria-label:app.close-button">
+          <button type="button" class="close map-close absolute right-4 top-4 z-1000 flex size-8 items-center justify-center rounded-full bg-white/80 text-xl leading-none text-gray-500" aria-label="Schließen" data-i18n-attr="aria-label:app.close-button">
             &times;
           </button>
           <div id="map"></div>
@@ -118,9 +118,12 @@
           <ol id="guide-slider" tabindex="0"
             class="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-4 scrollbar-none">
             <li class="min-w-full snap-center">
-              <img src="src/assets/Anleitung_Wasserspeier_Schritt_1.jpg"
-                alt="Eine Kamera wird auf eine Wandfläche am Münster gerichtet"
-                data-i18n-attr="alt:index.manual-first-step-alt" class="w-full rounded-2xl" />
+              <picture>
+                <source srcset="src/assets/Anleitung_Wasserspeier_Schritt_1.avif" type="image/avif">
+                <img src="src/assets/Anleitung_Wasserspeier_Schritt_1.jpg"
+                  alt="Eine Kamera wird auf eine Wandfläche am Münster gerichtet"
+                  data-i18n-attr="alt:index.manual-first-step-alt" class="w-full rounded-2xl" />
+              </picture>
               <h3 data-i18n="index.manual-first-step" class="mt-4 text-lg font-semibold text-stone-900 lg:text-xl">
                 1. Wandfläche scannen
               </h3>
@@ -130,9 +133,12 @@
             </li>
 
             <li class="min-w-full snap-center">
-              <img src="src/assets/Anleitung_Wasserspeier.png" loading="lazy"
-                alt="Ein 3D-Modell eines Wasserspeiers erscheint an der Wand"
-                data-i18n-attr="alt:index.manual-second-step-alt" class="w-full rounded-2xl" />
+              <picture>
+                <source srcset="src/assets/Anleitung_Wasserspeier.avif" type="image/avif">
+                <img src="src/assets/Anleitung_Wasserspeier.jpg" loading="lazy"
+                  alt="Ein 3D-Modell eines Wasserspeiers erscheint an der Wand"
+                  data-i18n-attr="alt:index.manual-second-step-alt" class="w-full rounded-2xl" />
+              </picture>
               <h3 data-i18n="index.manual-second-step" class="mt-4 text-lg font-semibold text-stone-900 lg:text-xl">
                 2. Wasserspeier entdecken
               </h3>
@@ -142,9 +148,12 @@
             </li>
 
             <li class="min-w-full snap-center">
-              <img src="src/assets/Anleitung_Wasserspeier.png" loading="lazy"
-                alt="Der Info-Button neben dem Wasserspeier" data-i18n-attr="alt:index.manual-third-step-alt"
-                class="w-full rounded-2xl" />
+              <picture>
+                <source srcset="src/assets/Anleitung_Wasserspeier.avif" type="image/avif">
+                <img src="src/assets/Anleitung_Wasserspeier.jpg" loading="lazy"
+                  alt="Der Info-Button neben dem Wasserspeier" data-i18n-attr="alt:index.manual-third-step-alt"
+                  class="w-full rounded-2xl" />
+              </picture>
               <h3 data-i18n="index.manual-third-step" class="mt-4 text-lg font-semibold text-stone-900 lg:text-xl">
                 3. Mehr erfahren
               </h3>

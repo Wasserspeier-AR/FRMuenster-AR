@@ -19,7 +19,7 @@
       <article class="rounded-2xl bg-white p-8 shadow-lg md:p-10 lg:p-12">
         <h1 data-i18n="impressum.title" class="mb-6 text-3xl font-bold text-stone-800 md:text-4xl">Impressum</h1>
 
-        <p data-i18n="impressum.description" class="mb-6 leading-relaxed text-stone-600 md:text-lg md:leading-7">
+        <p data-i18n="impressum.description" class="mb-6 leading-relaxed text-stone-600 md:text-lg md:leading-7 text-balance">
           Diese WebAR-Anwendung wurde ursprünglich im Rahmen einer Bachelorarbeit an der Hochschule Furtwangen
           entwickelt. Im Rahmen eines HiWi-Projektes wurde sie anschließend weiterentwickelt.
         </p>
@@ -39,22 +39,24 @@
             <dt data-i18n="impressum.models" class="font-semibold text-stone-900">
               Erstellung der Wasserspeier 3D-Modelle
             </dt>
-            <dd data-i18n="impressum.name-method" class="mt-1">
-              Moreli Andrea Paredes Gonzalez<br />
+            <dd class="mt-1">
+              Moreli Andrea Paredes Gonzalez
+            </dd>
+            <dd data-i18n="impressum.name-method" class="text-stone-500">
               Erstellungsmethode: Luma AI, nachbearbeitet mit Blender
             </dd>
           </div>
 
           <div>
             <dt data-i18n="impressum.project-management" class="font-semibold text-stone-900">Projektbetreuung</dt>
-            <dd data-i18n="impressum.hfu-prof" class="mt-1">
-              Hochschule Furtwangen - The Black Forest University<br />
-              Prof. Dr. Uwe Hahne
+            <dd data-i18n="impressum.hfu-prof" class="mt-1 font-medium text-stone-600">
+              Hochschule Furtwangen - The Black Forest University
             </dd>
-            <dd data-i18n="impressum.muenster" class="mt-3">
-              Freiburger Münsterbauverein e. V.<br />
-              Lena Hipp
+            <dd>Prof. Dr. Uwe Hahne</dd>
+            <dd data-i18n="impressum.muenster" class="mt-3 font-medium text-stone-600">
+              Freiburger Münsterbauverein e. V.
             </dd>
+            <dd>Lena Hipp</dd>
           </div>
         </dl>
 
@@ -68,14 +70,20 @@
             </h2>
             <div class="flex flex-wrap items-center justify-center gap-10">
               <a href="https://www.hs-furtwangen.de/" target="_blank">
-                <img
-                  src="src/assets/logos/Logo_Hochschule_Furtwangen_HFU.png"
-                  alt="Hochschule Furtwangen"
-                  class="h-12 lg:h-14"
-                />
+                <picture>
+                  <source srcset="src/assets/logos/Hochschule_Furtwangen.avif" type="image/avif">
+                  <img
+                    src="src/assets/logos/Hochschule_Furtwangen.png"
+                    alt="Hochschule Furtwangen"
+                    class="h-12 lg:h-14"
+                  />
+                </picture>
               </a>
               <a href="https://muensterbauverein-freiburg.de/" target="_blank" class="rounded-lg bg-stone-700 p-3">
-                <img src="src/assets/logos/Logo_Bauverein.png" alt="Freiburger Münsterbauverein" class="h-12 lg:h-14" />
+                <picture>
+                  <source srcset="src/assets/logos/Bauverein.avif" type="image/avif">
+                  <img src="src/assets/logos/Bauverein.png" alt="Freiburger Münsterbauverein" class="h-12 lg:h-14" />
+                </picture>
               </a>
             </div>
           </section>
@@ -89,17 +97,23 @@
             </h2>
             <div class="flex flex-wrap items-center justify-center gap-10">
               <a href="https://www.bbbank.de/privatkunden.html" target="_blank">
-                <img src="src/assets/logos/Logo_BBBank.png" alt="BBBank" class="h-14 lg:h-16" />
+                <picture>
+                  <source srcset="src/assets/logos/BBBank.avif" type="image/avif">
+                  <img src="src/assets/logos/BBBank.png" alt="BBBank" class="h-14 lg:h-16" />
+                </picture>
               </a>
               <a
                 href="https://katholische-stiftungen-freiburg.de/stiftungen/erzbischof-hermann-stiftung/"
                 target="_blank"
               >
-                <img
-                  src="src/assets/logos/Logo_Erzbischof_Hermann.png"
-                  alt="Erzbischof-Hermann-Stiftung"
-                  class="h-12 lg:h-14"
-                />
+                <picture>
+                  <source srcset="src/assets/logos/Erzbischof_Hermann.avif" type="image/avif">
+                  <img
+                    src="src/assets/logos/Erzbischof_Hermann.png"
+                    alt="Erzbischof-Hermann-Stiftung"
+                    class="h-12 lg:h-14"
+                  />
+                </picture>
               </a>
             </div>
           </section>
