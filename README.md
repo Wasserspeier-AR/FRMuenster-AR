@@ -118,3 +118,5 @@ Das Projekt wurde gefördert von der [BBBank](https://www.bbbank.de) und der [Er
 Dieses Projekt ist [LIZENZNAME](LICENSE) lizenziert. **!TODO: LIZENZNAME EINFÜGEN**
 
 Teile des Projektes basieren auf externen Abhängigkeiten. Siehe [NOTICE.md](NOTICE.md) für deren Lizenzen.
+
+Die Namen und Logos der BBBank, der Erzbischof Hermann Stiftung, der Hochschule Furtwangen und des Freiburger Münsters sind Marken bzw. geschützte Kennzeichen ihrer jeweiligen Inhaber. Ihre Nutzung bedarf der vorherigen schriftlichen Zustimmung der jeweiligen Rechteinhaber. Eine unbefugte Nutzung, Vervielfältigung, Bearbeitung oder Darstellung der Marken ist nicht gestattet.
