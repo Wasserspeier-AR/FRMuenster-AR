@@ -26,13 +26,13 @@ enabled = true
 model = "04_fantasy_dog.glb"
 content_image = "04_Hundeähnliches_Fantasiewesen.avif"
 coordinates = [47.99541, 7.85337]
-enabled = true
+enabled = false
 
 [[target]]
 model = "05_feathered_dog.glb"
 content_image = "05_Hund_mit_Vogelgefieder.avif"
 coordinates = [47.99547, 7.85367]
-enabled = true
+enabled = false
 
 [[target]]
 model = "06_monster_dog.glb"
