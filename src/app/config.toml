@@ -1,6 +1,8 @@
+# See wiki for more information
 [targets]
-src = "targets/0-17_1marker.mind"
-markers_per_target = 1
+src = "targets/0-17_2mpt.mind"
+markers_per_target = 2
+variant_scales = [1, 0.7]
 model_path = "models/"
 content_image_path = "src/assets/content/"
 

@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { clone } from "three/addons/utils/SkeletonUtils.js";
 const { MindARThree } = await import("mind-ar/dist/mindar-image-three.prod.js"); // Dynamic loading forces Rolldown to chunk this off
 
 import * as CONFIG from "./config.js";
@@ -11,6 +12,8 @@ let ready = false, running = false;
 let stoppedAt = 0;
 let resumeTimer = null;
 const reasons = new Set();
+
+const { markers_per_target: n, variant_scales: scales } = CONFIG.targets;
 
 export async function init() {
   mThree = new MindARThree({
@@ -30,9 +33,13 @@ export async function init() {
 
   mThree.scene.add(hemLight, rimLight, dirLight);
 
-  const anchors = await Promise.all(
-    CONFIG.targetList.map((entry) => createModelAnchor(mThree, entry))
-  );
+  if (scales.length !== n) {
+    console.warn(`config.toml: Expected ${n} entries in variant_scales, got ${scales.length} instead.`);
+  }
+
+  const anchors = (
+    await Promise.all(CONFIG.targetList.map((entry) => createModelAnchors(mThree, entry)))
+  ).flat();
 
   mThree.renderer.setAnimationLoop(() => {
     mThree.renderer.render(mThree.scene, mThree.camera);
@@ -44,17 +51,23 @@ export async function init() {
   return { mThree, anchors };
 }
 
-async function createModelAnchor(mThree, entry) {
-  const anchor = mThree.addAnchor(entry.id);
-  const model = await loadNormalizedModel(
-    CONFIG.targets.model_path + entry.model
-  );
+async function createModelAnchors(mThree, entry) {
+  const model = await loadNormalizedModel(CONFIG.targets.model_path + entry.model);
 
-  const pivot = new THREE.Group();
-  pivot.add(model);
-  anchor.group.add(pivot);
+  return Array.from({ length: n }, (_, variant) => {
+    const anchor = mThree.addAnchor(entry.id * n + variant);
 
-  return { id: entry.id, anchor, pivot };
+    // The holder compensates for the variant's framing. Add holder.position.set(x, y, 0)
+    const holder = new THREE.Group();
+    holder.scale.setScalar(scales[variant] ?? 1);
+    holder.add(variant === 0 ? model : clone(model)); // Clones share geometry and textures
+
+    const pivot = new THREE.Group();
+    pivot.add(holder);
+    anchor.group.add(pivot);
+
+    return { id: entry.id, variant, anchor, pivot };
+  });
 }
 
 async function loadNormalizedModel(uri) {
