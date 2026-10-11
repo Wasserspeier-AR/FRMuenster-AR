@@ -21,7 +21,7 @@ Im Rahmen eines HiWi-Projektes wurde die Anwendung in Zusammenarbeit mit dem Fre
 
 ## Pflege und Anpassung
 
-Für Instruktionen zur Pflege der App besuche das [Wiki](). **!TODO: LINK EINFÜGEN**
+Für Instruktionen zur Pflege der App besuche das [Wiki](https://github.com/Wasserspeier-AR/FRMuenster-AR/wiki/Start).
 
 ## Lokale Entwicklung
 
@@ -80,7 +80,7 @@ Die Seite wird automatisch auf Github Pages bereitgestellt.
 |                                                  |                                                        |
 | ------------------------------------------------ | ------------------------------------------------------ |
 | AR-Backend                                       | [MindAR](https://github.com/hiukim/mind-ar-js)         |
-| Build Tool                                       | [Vite](https://vite.dev/)                              |
+| Build Tool                                       | [Vite (Vanilla JS)](https://vite.dev/)                              |
 | Grafik                                           | [Three.js](https://threejs.org/)                       |
 | Icons                                            | [Font Awesome](https://fontawesome.com/)               |
 | Konfiguration                                    | [smol-toml](https://github.com/squirrelchat/smol-toml) |
