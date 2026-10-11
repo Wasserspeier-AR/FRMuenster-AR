@@ -6,7 +6,7 @@
 > For an English version reference [README_en.md](README_en.md). **!TODO: DATEI ERSTELLEN**
 
 
-**Ein Wasserspeier kommt selten allein** ist eine WebAR-Anwendung zur interaktiven Erkundung der Wasserspeier des [Freiburger Münsters](https://www.freiburgermuenster.info). Mithilfe der Smartphone-Kamera werden die Wasserspeier vor Ort in Augmented Reality zum Leben erweckt. So können Nutzerinnen und Nutzer ihre Geschichte und Besonderheiten kennenlernen.
+**Ein Wasserspeier kommt selten allein** ist eine WebAR-Anwendung zur interaktiven Erkundung der Wasserspeier des [Freiburger Münsters](https://www.freiburgermuenster.info). Mithilfe der Smartphone-Kamera werden die Wasserspeier vor Ort in Augmented Reality zum Leben erweckt. So können Nutzerinnen und Nutzer ihre Geschichte und Besonderheiten näher kennenlernen.
 
 Der [erste Prototyp](https://hannguyen10.github.io/AR_FR_Muenster/homepage.html) der Anwendung entstand im Rahmen einer Bachelorarbeit in Zusammenarbeit mit dem Freiburger Münsterbauverein. Anschließend wurde das Projekt im Rahmen eines HiWi-Projektes weiterentwickelt und ausgebaut.
 
