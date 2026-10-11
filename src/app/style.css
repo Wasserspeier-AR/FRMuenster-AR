@@ -34,7 +34,7 @@
 /* Size needed statically for OSM */
 #map {
   width: 100vw;
-  height: 70vh;
+  height: 100dvh;
 }
 .map-is-open #container {
   pointer-events: none;
