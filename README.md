@@ -5,11 +5,10 @@
 > [!NOTE]
 > For an English version reference [README_en.md](README_en.md). **!TODO: DATEI ERSTELLEN**
 
-**!TODO: EINFÜHRUNGSTEXT ÜBERARBEITEN**
 
-Im Rahmen einer Bachelorarbeit wurde [ein WebAR-Protyp](https://hannguyen10.github.io/AR_FR_Muenster/homepage.html) zur Erkundung der Wasserspeier des [Freiburger Münsters](https://www.freiburgermuenster.info) entwickelt.
+**Ein Wasserspeier kommt selten allein** ist eine WebAR-Anwendung zur interaktiven Erkundung der Wasserspeier des [Freiburger Münsters](https://www.freiburgermuenster.info). Mithilfe der Smartphone-Kamera werden die Wasserspeier vor Ort in Augmented Reality zum Leben erweckt. So können Nutzerinnen und Nutzer ihre Geschichte und Besonderheiten näher kennenlernen.
 
-Im Rahmen eines HiWi-Projektes wurde die Anwendung in Zusammenarbeit mit dem Freiburger Münsterbauverein weiter ausgearbeitet.
+Der [erste Prototyp](https://hannguyen10.github.io/AR_FR_Muenster/homepage.html) der Anwendung entstand im Rahmen einer Bachelorarbeit in Zusammenarbeit mit dem Freiburger Münsterbauverein. Anschließend wurde das Projekt im Rahmen eines HiWi-Projektes weiterentwickelt und ausgebaut.
 
 ## Features
 
@@ -21,7 +20,7 @@ Im Rahmen eines HiWi-Projektes wurde die Anwendung in Zusammenarbeit mit dem Fre
 
 ## Pflege und Anpassung
 
-Für Instruktionen zur Pflege der App besuche das [Wiki](). **!TODO: LINK EINFÜGEN**
+Für Instruktionen zur Pflege der App besuche das [Wiki](https://github.com/Wasserspeier-AR/FRMuenster-AR/wiki/Start).
 
 ## Lokale Entwicklung
 
@@ -80,7 +79,7 @@ Die Seite wird automatisch auf Github Pages bereitgestellt.
 |                                                  |                                                        |
 | ------------------------------------------------ | ------------------------------------------------------ |
 | AR-Backend                                       | [MindAR](https://github.com/hiukim/mind-ar-js)         |
-| Build Tool                                       | [Vite](https://vite.dev/)                              |
+| Build Tool                                       | [Vite (Vanilla JS)](https://vite.dev/)                              |
 | Grafik                                           | [Three.js](https://threejs.org/)                       |
 | Icons                                            | [Font Awesome](https://fontawesome.com/)               |
 | Konfiguration                                    | [smol-toml](https://github.com/squirrelchat/smol-toml) |
