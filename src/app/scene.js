@@ -3,22 +3,23 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { clone } from "three/addons/utils/SkeletonUtils.js";
 const { MindARThree } = await import("mind-ar/dist/mindar-image-three.prod.js"); // Dynamic loading forces Rolldown to chunk this off
 
-import * as CONFIG from "./config.js";
+import * as CFG from "./config.js";
 
 const settleMS = 300;
 
 let mThree = null;
-let ready = false, running = false;
+let ready = false,
+  running = false;
 let stoppedAt = 0;
 let resumeTimer = null;
 const reasons = new Set();
 
-const { markers_per_target: n, variant_scales: scales } = CONFIG.targets;
+const { markers_per_target: n, scales } = CFG.targets;
 
 export async function init() {
   mThree = new MindARThree({
     container: document.querySelector("#container"),
-    imageTargetSrc: CONFIG.targets.src,
+    imageTargetSrc: CFG.targets.file,
     filterMinCF: 0.001,
     filterBeta: 0.001,
     warmupTolerance: 3
@@ -33,12 +34,12 @@ export async function init() {
 
   mThree.scene.add(hemLight, rimLight, dirLight);
 
-  if (scales.length !== n) {
-    console.warn(`config.toml: Expected ${n} entries in variant_scales, got ${scales.length} instead.`);
-  }
-
   const anchors = (
-    await Promise.all(CONFIG.targetList.map((entry) => createModelAnchors(mThree, entry)))
+    await Promise.all(
+      CFG.targetList
+        .filter((t) => t.enabled)
+        .map((t) => createModelAnchors(mThree, t))
+    )
   ).flat();
 
   mThree.renderer.setAnimationLoop(() => {
@@ -51,13 +52,13 @@ export async function init() {
   return { mThree, anchors };
 }
 
-async function createModelAnchors(mThree, entry) {
-  const model = await loadNormalizedModel(entry.model);
+async function createModelAnchors(mThree, target) {
+  const model = await loadNormalizedModel(target.model);
 
   return Array.from({ length: n }, (_, variant) => {
-    const anchor = mThree.addAnchor(entry.id * n + variant);
+    const anchor = mThree.addAnchor(target.id * n + variant);
 
-    // The holder compensates for the variant's framing. Add holder.position.set(x, y, 0)
+    // The holder compensates for the variant's framing
     const holder = new THREE.Group();
     holder.scale.setScalar(scales[variant] ?? 1);
     holder.add(variant === 0 ? model : clone(model)); // Clones share geometry and textures
@@ -66,7 +67,7 @@ async function createModelAnchors(mThree, entry) {
     pivot.add(holder);
     anchor.group.add(pivot);
 
-    return { id: entry.id, variant, anchor, pivot };
+    return { id: target.id, variant, anchor, pivot };
   });
 }
 

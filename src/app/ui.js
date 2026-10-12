@@ -1,6 +1,6 @@
 import { t } from "../i18n.js";
 
-import * as CONFIG from "./config.js";
+import * as CONF from "./config.js";
 import * as MAP from "./map.js";
 import * as CONTROLS from "./controls.js";
 import * as SCENE from "./scene.js";
@@ -158,7 +158,7 @@ function updateTrackingUI(dom, info) {
   pauseButton.disabled = !visible;
   pauseButton?.classList.toggle("active", CONTROLS.isPaused());
 
-  if (visible) preloadImage(CONFIG.contentImageUrl(CONFIG.getTarget(id)));
+  if (visible) preloadImage(CONF.contentImg(CONF.targetList[id]));
 
   if (justFound && !pinned && info.isOpen() && id !== displayedId) {
     renderInfo(dom, id);
@@ -170,9 +170,9 @@ function updateTrackingUI(dom, info) {
 function renderInfo(dom, id, { pin = false } = {}) {
   displayedId = id;
   pinned = pin;
-  const entry = id === null ? null : CONFIG.getTarget(id);
+  const target = id === null ? null : CONF.targetList[id];
 
-  if (!entry) {
+  if (!target) {
     setInfoText(dom, { text: t("app.info.none") });
     hideInfoImage(dom);
     return;
@@ -186,7 +186,7 @@ function renderInfo(dom, id, { pin = false } = {}) {
     text: t(`app.info.${id}`)
   });
 
-  const url = CONFIG.contentImageUrl(entry);
+  const url = CONF.contentImg(target);
   if (url) showInfoImage(dom, url, title);
   else hideInfoImage(dom);
 }

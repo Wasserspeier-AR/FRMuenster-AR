@@ -110,8 +110,9 @@ function createMap() {
 }
 
 function addBasemap(map) {
-  L.tileLayer(CONF.devEnv ? CONF.map.osm_basemap : CONF.map.basemap, {
-    attribution: CONF.devEnv ? CONF.map.osm_attribution : CONF.map.attribution,
+  const dev = import.meta.env.DEV;
+  L.tileLayer(dev ? CONF.map.osm_basemap : CONF.map.basemap, {
+    attribution: dev ? CONF.map.osm_attribution : CONF.map.attribution,
     minZoom: CONF.map.zoom.min,
     maxZoom: CONF.map.zoom.max
   }).addTo(map);
@@ -121,7 +122,7 @@ function addOutlineOverlay(map) {
   const layer = L.layerGroup().addTo(map);
   L.imageOverlay(outlineAvif, CONF.map.outline_bounds, {
     opacity: 0.85,
-    errorOverlayUrl: outlinePng,
+    errorOverlayUrl: outlinePng
   }).addTo(layer);
 }
 
