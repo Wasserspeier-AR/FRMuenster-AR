@@ -102,6 +102,6 @@ enabled = true
 
 [[target]]
 name = "17_boar_gluttony.glb"
-content_image = ""
+content_image = "17_Schwein.avif"
 coordinates = [47.995437, 7.85285]
 enabled = false
