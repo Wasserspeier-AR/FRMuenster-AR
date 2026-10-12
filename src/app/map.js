@@ -18,13 +18,19 @@ let onSelect = () => {};
 const shape = { h: 28, w: 28 };
 shape.w = (faLocationDot.icon[0] / faLocationDot.icon[1]) * shape.h;
 
-const targetIcon = L.divIcon({
-  className: "target-marker",
-  html: icon(faLocationDot).html[0],
-  iconSize: [shape.w, shape.h],
-  iconAnchor: [shape.w / 2, shape.h], // Bottom-center -> pin tip
-  popupAnchor: [0, -shape.h]
-});
+const pinIcon = (className) =>
+  L.divIcon({
+    className,
+    html: icon(faLocationDot).html[0],
+    iconSize: [shape.w, shape.h],
+    iconAnchor: [shape.w / 2, shape.h], // Bottom-center -> pin tip
+    popupAnchor: [0, -shape.h]
+  });
+
+const targetIcons = {
+  enabled: pinIcon("target-marker"),
+  disabled: pinIcon("target-marker target-marker--disabled")
+};
 
 const LocateControl = L.Control.extend({
   options: { position: "bottomright", locator: null },
@@ -86,10 +92,13 @@ export function init() {
 
   const hasCoords = ({ coordinates: [lat, lng] = [] }) =>
     lat != null && lng != null;
-  CONF.targetList.filter(hasCoords).forEach((t) => {
-    L.marker(t.coordinates, { icon: targetIcon, opacity: 0.75 })
+  CONF.targetList.filter(hasCoords).forEach((target) => {
+    const markerIcon = target.enabled
+      ? targetIcons.enabled
+      : targetIcons.disabled;
+    L.marker(target.coordinates, { icon: markerIcon, opacity: 0.75 })
       .addTo(map)
-      .bindPopup(() => buildPopup(t.id), { closeButton: false });
+      .bindPopup(() => buildPopup(target.id), { closeButton: false });
   });
 
   locator = createLocator(map);

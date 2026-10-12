@@ -2,6 +2,7 @@
 
 @theme {
   --color-brand: rgb(118 23 23);
+  --color-brand-muted: rgb(118, 73, 73);
 }
 
 [data-i18n] {
