@@ -26,8 +26,9 @@ function setLang(next) {
   lang = pick(next);
   try {
     localStorage.setItem(storageKey, lang);
-  } catch {} // Storage can be blocked (private mode). The choice then lasts for this session only
+  } catch {} // storage can be blocked (private mode); the choice then lasts for this session only
   apply();
+  document.dispatchEvent(new CustomEvent("langchange", { detail: lang }));
 }
 
 function apply() {

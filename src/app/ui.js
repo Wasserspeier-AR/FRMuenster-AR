@@ -89,6 +89,7 @@ export function init() {
   modals = { guide, info, map };
 
   dom.pauseButton.addEventListener("click", togglePause);
+  document.addEventListener("langchange", refreshInfo);
   MAP.onMarkerSelect(showPinnedInfo);
   CTRL.onChange(updateTrackingUI);
   updateTrackingUI();
@@ -179,6 +180,12 @@ function renderInfo(id, { pin = false } = {}) {
     text: tl(`app.info.${id}`)
   });
   setInfoImage(CONF.contentImg(target), title);
+}
+
+function refreshInfo() {
+  if (modals.info.isOpen()) {
+    renderInfo(state.displayedId, { pin: state.pinned });
+  }
 }
 
 function setInfoText({ title = "", date = "", material = "", text = "" }) {

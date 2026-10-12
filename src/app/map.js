@@ -35,10 +35,14 @@ const LocateControl = L.Control.extend({
     const btn = L.DomUtil.create("a", "locate-toggle", container);
     btn.href = "#";
     btn.title = tl("app.map.locate");
-    btn.setAttribute("i18n", "app.map.locate");
     btn.setAttribute("role", "button");
     btn.setAttribute("aria-label", btn.title);
     btn.setAttribute("aria-pressed", "false");
+    btn.setAttribute(
+      "data-i18n-attr",
+      "title:app.map.locate; aria-label:app.map.locate"
+    );
+    btn.setAttribute("i18n", "app.map.locate");
     btn.replaceChildren(icon(faLocationCrosshairs).node[0]);
 
     L.DomEvent.disableClickPropagation(container);
