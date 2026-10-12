@@ -18,7 +18,7 @@ export function initI18n() {
 }
 
 // Plain text (markers removed), e.g. for alerts or attributes
-export function t(key) {
+export function tl(key) {
   const dict = translations[_getLang()] || translations.de;
   return _stripMarkup(dict[key] || key);
 }

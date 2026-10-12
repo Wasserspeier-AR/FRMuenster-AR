@@ -2,6 +2,7 @@
 file = "0-17_2mpt.mind"
 markers_per_target = 2
 scales = [1, 0.7]
+scale = { min = 0.5, max = 2 }
 
 [map]
 center = [47.995437, 7.85285]

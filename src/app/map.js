@@ -6,84 +6,90 @@ import {
   faLocationDot
 } from "@fortawesome/free-solid-svg-icons";
 
-import { t } from "../i18n.js";
+import { tl } from "../i18n.js";
 import outlineAvif from "../assets/Outline_orientated.avif";
 import outlinePng from "../assets/Outline_orientated.png";
 import * as CONF from "./config.js";
 
-const marker_style = {
-  radius: 8,
-  color: "#1d4ed8",
-  fillColor: "#3b82f6",
-  fillOpacity: 0.9
-};
-const h = 28;
-const w = (faLocationDot.icon[0] / faLocationDot.icon[1]) * h;
+let map = null;
+let locator = null;
+let onSelect = () => {};
+
+const shape = { h: 28, w: 28 };
+shape.w = (faLocationDot.icon[0] / faLocationDot.icon[1]) * shape.h;
+
 const targetIcon = L.divIcon({
   className: "target-marker",
   html: icon(faLocationDot).html[0],
-  iconSize: [w, h],
-  iconAnchor: [w / 2 + 5, h], // Bottom-center -> pin tip
-  popupAnchor: [0, -h]
+  iconSize: [shape.w, shape.h],
+  iconAnchor: [shape.w / 2, shape.h], // Bottom-center -> pin tip
+  popupAnchor: [0, -shape.h]
 });
+
 const LocateControl = L.Control.extend({
-  options: { position: "bottomright" },
+  options: { position: "bottomright", locator: null },
 
   onAdd() {
+    const { locator } = this.options;
     const container = L.DomUtil.create("div", "leaflet-bar leaflet-control");
-    const button = L.DomUtil.create("a", "locate-toggle", container);
-    button.href = "#";
-    button.title = "Meinen Standort anzeigen";
-    button.setAttribute("role", "button");
-    button.setAttribute("aria-label", button.title);
-    button.setAttribute("aria-pressed", "false");
-    button.replaceChildren(icon(faLocationCrosshairs).node[0]);
+    const btn = L.DomUtil.create("a", "locate-toggle", container);
+    btn.href = "#";
+    btn.title = tl("app.map.locate");
+    btn.setAttribute("i18n", "app.map.locate");
+    btn.setAttribute("role", "button");
+    btn.setAttribute("aria-label", btn.title);
+    btn.setAttribute("aria-pressed", "false");
+    btn.replaceChildren(icon(faLocationCrosshairs).node[0]);
 
     L.DomEvent.disableClickPropagation(container);
-    L.DomEvent.on(button, "click", (e) => {
+    L.DomEvent.on(btn, "click", (e) => {
       L.DomEvent.preventDefault(e);
-      this.toggle();
+      locator.toggle();
     });
 
-    this._button = button;
+    locator.onChange((active) => {
+      btn.classList.toggle("active", active);
+      btn.setAttribute("aria-pressed", String(active));
+    });
+
     return container;
-  },
-
-  toggle() {
-    if (locateWanted) {
-      stopLiveLocation();
-      locateWanted = false;
-    } else {
-      locateWanted = startLiveLocation(); // false if unsupported
-    }
-    this.setActive(locateWanted);
-  },
-
-  setActive(active) {
-    this._button.classList.toggle("active", active);
-    this._button.setAttribute("aria-pressed", String(active));
   }
 });
-
-let map = null;
-let locateControl = null;
-let userMarker = null;
-let geoWatchId = null;
-let locateWanted = false;
-let onSelect = () => {};
 
 export function onMarkerSelect(cb) {
   onSelect = cb;
 }
 
-export async function init() {
+export function init() {
   if (map) return map;
 
-  map = createMap();
-  addBasemap(map);
-  addOutlineOverlay(map);
-  addTargetMarkers(map);
-  locateControl = new LocateControl().addTo(map);
+  map = L.map("map", {
+    maxBounds: L.latLngBounds(...CONF.map.pan_bounds),
+    maxBoundsViscosity: 0.8
+  }).setView(CONF.map.center, CONF.map.zoom.initial);
+
+  const dev = import.meta.env.DEV;
+  L.tileLayer(dev ? CONF.map.osm_basemap : CONF.map.basemap, {
+    attribution: dev ? CONF.map.osm_attribution : CONF.map.attribution,
+    minZoom: CONF.map.zoom.min,
+    maxZoom: CONF.map.zoom.max
+  }).addTo(map);
+
+  L.imageOverlay(outlineAvif, CONF.map.outline_bounds, {
+    opacity: 0.85,
+    errorOverlayUrl: outlinePng
+  }).addTo(map);
+
+  const hasCoords = ({ coordinates: [lat, lng] = [] }) =>
+    lat != null && lng != null;
+  CONF.targetList.filter(hasCoords).forEach((t) => {
+    L.marker(t.coordinates, { icon: targetIcon, opacity: 0.75 })
+      .addTo(map)
+      .bindPopup(() => buildPopup(t.id), { closeButton: false });
+  });
+
+  locator = createLocator(map);
+  new LocateControl({ locator }).addTo(map);
 
   return map;
 }
@@ -94,55 +100,10 @@ export function refresh() {
   map.setView(CONF.map.center, map.getZoom(), { animate: false });
 }
 
-export function pauseLocation() {
-  stopLiveLocation();
-}
-
-export function resumeLocation() {
-  if (locateWanted) startLiveLocation();
-}
-
-function createMap() {
-  return L.map("map", {
-    maxBounds: L.latLngBounds(...CONF.map.pan_bounds),
-    maxBoundsViscosity: 0.8
-  }).setView(CONF.map.center, CONF.map.zoom.initial);
-}
-
-function addBasemap(map) {
-  const dev = import.meta.env.DEV;
-  L.tileLayer(dev ? CONF.map.osm_basemap : CONF.map.basemap, {
-    attribution: dev ? CONF.map.osm_attribution : CONF.map.attribution,
-    minZoom: CONF.map.zoom.min,
-    maxZoom: CONF.map.zoom.max
-  }).addTo(map);
-}
-
-function addOutlineOverlay(map) {
-  const layer = L.layerGroup().addTo(map);
-  L.imageOverlay(outlineAvif, CONF.map.outline_bounds, {
-    opacity: 0.85,
-    errorOverlayUrl: outlinePng
-  }).addTo(layer);
-}
-
-function addTargetMarkers(map) {
-  CONF.targetList
-    .filter(
-      (entry) =>
-        entry.coordinates?.[0] != null && entry.coordinates?.[1] != null
-    )
-    .forEach((entry) => {
-      L.marker(entry.coordinates, { icon: targetIcon, opacity: 0.75 })
-        .addTo(map)
-        .bindPopup(() => buildPopup(entry.id), { closeButton: false });
-    });
-}
-
 function buildPopup(id) {
   const btn = L.DomUtil.create("button", "marker-popup");
   btn.type = "button";
-  btn.textContent = t(`app.info.title.${id}`);
+  btn.textContent = tl(`app.info.title.${id}`);
   L.DomEvent.on(btn, "click", () => {
     map.closePopup();
     onSelect(id);
@@ -150,45 +111,68 @@ function buildPopup(id) {
   return btn;
 }
 
-function startLiveLocation() {
-  if (!navigator.geolocation || geoWatchId !== null) return false;
+export const pauseLocation = () => locator?.pause();
+export const resumeLocation = () => locator?.resume();
 
-  let firstFix = true;
-  geoWatchId = navigator.geolocation.watchPosition(
-    (pos) => {
-      const latlng = [pos.coords.latitude, pos.coords.longitude];
-      updateUserMarker(latlng);
+function createLocator(map) {
+  let watchId = null;
+  let marker = null;
+  let wanted = false; // User toggled it on
+  let notify = () => {};
 
-      // Pan to the user once, if they're inside the allowed area
-      if (firstFix && map.options.maxBounds.contains(latlng)) map.panTo(latlng);
-      firstFix = false;
-    },
-    (err) => {
-      console.warn("Geolocation unavailable:", err.message);
-      locateWanted = false;
-      stopLiveLocation();
-      locateControl?.setActive(false);
-    },
-    {
-      enableHighAccuracy: true,
-      maximumAge: 5000,
-      timeout: 10000
-    }
-  );
-  return true;
-}
+  function start() {
+    if (watchId !== null) return true;
+    if (!navigator.geolocation) return false;
 
-function stopLiveLocation() {
-  if (geoWatchId !== null) navigator.geolocation.clearWatch(geoWatchId);
-  geoWatchId = null;
-  userMarker?.remove();
-  userMarker = null;
-}
+    let firstFix = true;
+    watchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        const latlng = [pos.coords.latitude, pos.coords.longitude];
+        if (marker) marker.setLatLng(latlng);
+        else
+          marker = L.circleMarker(latlng, {
+            radius: 8,
+            color: "#1d4ed8",
+            fillColor: "#3b82f6",
+            fillOpacity: 0.9
+          }).addTo(map);
 
-function updateUserMarker(latlng) {
-  if (userMarker) {
-    userMarker.setLatLng(latlng);
-  } else {
-    userMarker = L.circleMarker(latlng, marker_style).addTo(map);
+        // Pan to the user once, if they're inside the allowed area
+        if (firstFix && map.options.maxBounds.contains(latlng)) {
+          map.panTo(latlng);
+        }
+        firstFix = false;
+      },
+      (err) => {
+        console.warn("Geolocation unavailable:", err.message);
+        setWanted(false);
+      },
+      { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
+    );
+    return true;
   }
+
+  function stop() {
+    if (watchId !== null) navigator.geolocation.clearWatch(watchId);
+    watchId = null;
+    marker?.remove();
+    marker = null;
+  }
+
+  function setWanted(value) {
+    wanted = value && start();
+    if (!wanted) stop();
+    notify(wanted);
+  }
+
+  return {
+    toggle: () => setWanted(!wanted),
+    pause: stop,
+    resume: () => {
+      if (wanted) start();
+    },
+    onChange: (cb) => {
+      notify = cb;
+    }
+  };
 }

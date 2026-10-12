@@ -1,19 +1,48 @@
 import * as THREE from "three";
 
+const rotateSpeed = 0.01; // Radians per pixel dragged
+const maxTilt = Math.PI / 2;
+const scale = { min: 0.2, max: 5 };
+
 let currentRecord = null;
 let paused = false;
 let targetVisible = false;
-let sceneRef = null;
-
+let scene = null;
 let onTrackingChange = () => {};
+
 export function onChange(cb) {
   onTrackingChange = cb;
 }
 
 export function init({ mThree, anchors }) {
-  const { scene, renderer } = mThree;
-  sceneRef = scene;
+  scene = mThree.scene;
+  bindAnchors(anchors);
+  bindGestures(mThree.renderer.domElement);
+}
 
+export function pauseTracking() {
+  if (paused || !currentRecord || !targetVisible) return;
+  paused = true;
+  scene.attach(currentRecord.pivot);
+  onTrackingChange();
+}
+export function unpauseTracking() {
+  if (!paused) return;
+  paused = false;
+  currentRecord.anchor.group.attach(currentRecord.pivot);
+  onTrackingChange();
+}
+export function getCurrentTarget() {
+  return currentRecord?.id ?? null;
+}
+export function isPaused() {
+  return paused;
+}
+export function isTargetVisible() {
+  return targetVisible;
+}
+
+function bindAnchors(anchors) {
   for (const record of anchors) {
     record.anchor.onTargetFound = () => {
       if (paused && record !== currentRecord) return;
@@ -27,93 +56,60 @@ export function init({ mThree, anchors }) {
       onTrackingChange();
     };
   }
+}
 
-  let lastX = null, lastY = null, lastDist = null;
-  const el = renderer.domElement;
-  el.addEventListener(
-    "touchstart",
-    (e) => {
-      if (e.touches.length === 1) {
-        lastX = e.touches[0].clientX;
-        lastY = e.touches[0].clientY;
-      } else if (e.touches.length === 2) {
-        lastDist = Math.hypot(
-          e.touches[0].clientX - e.touches[1].clientX,
-          e.touches[0].clientY - e.touches[1].clientY
-        );
-      }
-    },
-    { passive: true }
-  );
+function touchDistance([a, b]) {
+  return Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+}
+
+function bindGestures(el) {
+  let last = null;
+  let lastDist = null;
+
+  // Resume single-finger tracking cleanly when lifting only one finger
+  const syncGesture = (touches) => {
+    last =
+      touches.length === 1
+        ? { x: touches[0].clientX, y: touches[0].clientY }
+        : null;
+    lastDist = touches.length === 2 ? touchDistance(touches) : null;
+  };
+
+  const onTouchChange = (e) => syncGesture(e.touches);
+  el.addEventListener("touchstart", onTouchChange, { passive: true });
+  el.addEventListener("touchend", onTouchChange, { passive: true });
+  el.addEventListener("touchcancel", onTouchChange, { passive: true });
 
   el.addEventListener(
     "touchmove",
     (e) => {
-      const pivot = getGesturePivot();
+      const pivot = getActivePivot();
       if (!pivot) return;
+      const { touches } = e;
 
-      if (e.touches.length === 1 && lastX !== null) {
-        const dx = e.touches[0].clientX - lastX;
-        const dy = e.touches[0].clientY - lastY;
-        lastX = e.touches[0].clientX;
-        lastY = e.touches[0].clientY;
-
-        pivot.rotation.y += dx * 0.01;
+      if (touches.length === 1 && last !== null) {
+        const x = touches[0].clientX;
+        const y = touches[0].clientY;
+        pivot.rotation.y += (x - last.x) * rotateSpeed;
         pivot.rotation.x = THREE.MathUtils.clamp(
-          pivot.rotation.x + dy * 0.01,
-          -Math.PI / 2,
-          Math.PI / 2
+          pivot.rotation.x + (y - last.y) * rotateSpeed,
+          -maxTilt,
+          maxTilt
         );
-      } else if (e.touches.length === 2 && lastDist !== null) {
-        const newDist = Math.hypot(
-          e.touches[0].clientX - e.touches[1].clientX,
-          e.touches[0].clientY - e.touches[1].clientY
-        );
-        pivot.scale.multiplyScalar(newDist / lastDist);
-        pivot.scale.clampScalar(0.2, 5);
-        lastDist = newDist;
-      }
-    },
-    { passive: true }
-  );
-
-  el.addEventListener(
-    "touchend",
-    (e) => {
-      if (e.touches.length === 0) {
-        lastX = null;
-        lastY = null;
-        lastDist = null;
-      } else if (e.touches.length === 1) {
-        // Resume single-finger tracking cleanly when lifting only one finger
-        lastDist = null;
-        lastX = e.touches[0].clientX;
-        lastY = e.touches[0].clientY;
+        last = { x, y };
+      } else if (touches.length === 2 && lastDist !== null) {
+        const dist = touchDistance(touches);
+        pivot.scale.multiplyScalar(dist / lastDist);
+        pivot.scale.clampScalar(scale.min, scale.max);
+        lastDist = dist;
       }
     },
     { passive: true }
   );
 }
 
-export function pauseTracking() {
-  if (paused || !currentRecord || !targetVisible || !currentRecord) return;
-  paused = true;
-  sceneRef.attach(currentRecord.pivot);
-  onTrackingChange();
-}
-
-export function unpauseTracking() {
-  if (!paused) return;
-  paused = false;
-  currentRecord.anchor.group.attach(currentRecord.pivot);
-  onTrackingChange();
-}
-
-export function getActivePivot() { return getGesturePivot(); }
-export function getCurrentTarget() { return currentRecord?.id ?? null; }
-export function isPaused() { return paused; }
-export function isTargetVisible() { return targetVisible; }
-
-function getGesturePivot() {
-  return currentRecord && (paused || targetVisible) ? currentRecord.pivot : null;
+function getActivePivot() {
+  return currentRecord && (paused || targetVisible)
+    ? currentRecord.pivot
+    : null;
 }

@@ -47,6 +47,8 @@
   "app.back-button": "Back",
   "app.close-button": "Close",
 
+  "app.map.locate": "Show my location",
+
   "app.info.title.none": "?",
   "app.info.title.0": "Unicorn",
   "app.info.title.1": "Man with an open book",

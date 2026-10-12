@@ -47,6 +47,8 @@
   "app.back-button": "Zurück",
   "app.close-button": "Schließen",
 
+  "app.map.locate": "Meinen Standort anzeigen",
+
   "app.info.title.none": "?",
   "app.info.title.0": "Einhorn auf dem Rücken eines Mannes",
   "app.info.title.1": "Mann mit Buch",

@@ -1,6 +1,6 @@
 # Münster AR
 
-🌐 [**Webseite**](https://wasserspeier-ar.github.io/FRMuenster-AR)
+🌐 [**Website**](https://wasserspeier-ar.github.io/FRMuenster-AR)
 
 > [!NOTE]
 > Deutsche version in [README.md](README.md).
