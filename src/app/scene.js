@@ -52,7 +52,7 @@ export async function init() {
 }
 
 async function createModelAnchors(mThree, entry) {
-  const model = await loadNormalizedModel(CONFIG.targets.model_path + entry.model);
+  const model = await loadNormalizedModel(entry.model);
 
   return Array.from({ length: n }, (_, variant) => {
     const anchor = mThree.addAnchor(entry.id * n + variant);

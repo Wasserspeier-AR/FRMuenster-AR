@@ -3,7 +3,6 @@
 src = "targets/0-17_2mpt.mind"
 markers_per_target = 2
 variant_scales = [1, 0.7]
-model_path = "models/"
 
 [map]
 center = [47.995437, 7.85285]

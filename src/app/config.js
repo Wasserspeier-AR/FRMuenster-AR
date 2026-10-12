@@ -9,6 +9,7 @@ export const targetList = parse(listRaw)
 
 const targetsById = new Map(targetList.map((t) => [t.id, t]));
 export const getTarget = (id) => targetsById.get(id) ?? null;
+targets.src = import.meta.env.BASE_URL + targets.src;
 
 const contentImages = import.meta.glob("../assets/content/*", {
   eager: true,
@@ -20,9 +21,5 @@ export const contentImageUrl = (entry) =>
   entry?.content_image
     ? contentImages[`../assets/content/${entry.content_image}`] ?? null
     : null;
-
-for (const k of ["src", "model_path", "content_image_path"]) {
-  targets[k] = import.meta.env.BASE_URL + targets[k];
-}
 
 export const devEnv = import.meta.env.DEV;
