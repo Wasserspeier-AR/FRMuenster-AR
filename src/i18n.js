@@ -2,91 +2,94 @@ import en from "./locales/en.json";
 import de from "./locales/de.json";
 
 const translations = { en, de };
-const storage = "lang";
+const defaultLang = "de";
+const storageKey = "lang";
+
+let lang = pick(readStored());
+let switchButtons = [];
 
 export function initI18n() {
-  const lang = _getLang();
-  document.documentElement.lang = lang;
-  _applyTranslations(lang);
-  _updateActiveLangButton(lang);
-
-  document.querySelectorAll("[data-lang-switch]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      _setLang(btn.getAttribute("data-lang-switch"));
-    });
-  });
+  switchButtons = [...document.querySelectorAll("[data-lang-switch]")];
+  for (const btn of switchButtons) {
+    btn.addEventListener("click", () => setLang(btn.dataset.langSwitch));
+  }
+  apply();
 }
 
-// Plain text (markers removed), e.g. for alerts or attributes
-export function tl(key) {
-  const dict = translations[_getLang()] || translations.de;
-  return _stripMarkup(dict[key] || key);
-}
+// Plain text (markers removed), e.g. for alerts, attributes or textContent
+export const tl = (keys) => stripMarkup(lookup(keys));
 
 // HTML with <strong>/<em>, e.g. for el.innerHTML
-export function tHtml(key) {
-  const dict = translations[_getLang()] || translations.de;
-  return _format(dict[key] || key);
+export const tHtml = (keys) => format(lookup(keys));
+
+function setLang(next) {
+  lang = pick(next);
+  try {
+    localStorage.setItem(storageKey, lang);
+  } catch {} // Storage can be blocked (private mode). The choice then lasts for this session only
+  apply();
 }
 
-function _getLang() {
-  return localStorage.getItem(storage) || "de";
-}
-
-function _setLang(lang) {
-  localStorage.setItem(storage, lang);
-  _applyTranslations(lang);
+function apply() {
   document.documentElement.lang = lang;
-  _updateActiveLangButton(lang);
+
+  for (const btn of switchButtons) {
+    btn.classList.toggle("active", btn.dataset.langSwitch === lang);
+  }
+
+  for (const el of document.querySelectorAll("[data-i18n]")) {
+    el.innerHTML = tHtml(el.dataset.i18n);
+  }
+
+  // Placeholders, titles, etc. Format: "title:key -> aria-label:key"
+  for (const el of document.querySelectorAll("[data-i18n-attr]")) {
+    for (const pair of el.dataset.i18nAttr.split(";")) {
+      const [attr, keys] = pair.split(":");
+      el.setAttribute(attr.trim(), tl(keys));
+    }
+  }
 }
 
-function _updateActiveLangButton(lang) {
-  document.querySelectorAll("[data-lang-switch]").forEach((btn) => {
-    btn.classList.toggle(
-      "active",
-      btn.getAttribute("data-lang-switch") === lang
-    );
-  });
+function readStored() {
+  try {
+    return localStorage.getItem(storageKey);
+  } catch {
+    return null;
+  }
 }
 
-function _join(dict, keyString) {
-  return keyString
+function pick(candidate) {
+  return Object.hasOwn(translations, candidate) ? candidate : defaultLang;
+}
+
+// "a.b + a.c" joins several keys. Missing keys fall back to the default language, then to the key itself.
+function lookup(keys) {
+  return keys
     .split("+")
-    .map((k) => dict[k.trim()] ?? k.trim())
+    .map((k) => {
+      const key = k.trim();
+      return translations[lang][key] ?? translations[defaultLang][key] ?? key;
+    })
     .join("");
 }
 
-function _escape(str) {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
+const escapes = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;"
+};
 
 // ***bold italic***, **bold**, *italic*
-function _format(str) {
-  return _escape(str)
+function format(str) {
+  return str
+    .replace(/[&<>"']/g, (c) => escapes[c])
     .replace(/\*\*\*(.+?)\*\*\*/g, "<strong><em>$1</em></strong>")
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\*(.+?)\*/g, "<em>$1</em>");
 }
 
-function _stripMarkup(str) {
+function stripMarkup(str) {
   return str.replace(/\*{1,3}(.+?)\*{1,3}/g, "$1");
-}
-
-function _applyTranslations(lang) {
-  const dict = translations[lang] || translations.de;
-
-  document.querySelectorAll("[data-i18n]").forEach((el) => {
-    el.innerHTML = _format(_join(dict, el.getAttribute("data-i18n")));
-  });
-
-  // for placeholders, titles, etc. (attributes can't contain markup)
-  document.querySelectorAll("[data-i18n-attr]").forEach((el) => {
-    const [attr, keys] = el.getAttribute("data-i18n-attr").split(":");
-    el.setAttribute(attr, _stripMarkup(_join(dict, keys)));
-  });
 }
