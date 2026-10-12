@@ -4,6 +4,16 @@ markers_per_target = 2
 scales = [1, 0.7]
 scale = { min = 0.5, max = 2 }
 
+[scene]
+filter_minCF = 0.001
+filter_beta = 1000
+warmup_tolerance = 5
+
+[smoothing]
+enabled = true
+rate_min = 2
+rate_max = 60
+
 [map]
 center = [47.995437, 7.85285]
 pan_bounds = [[47.993437, 7.84985], [47.997437, 7.85585]]

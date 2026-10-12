@@ -7,6 +7,11 @@ import * as CFG from "./config.js";
 
 const { markers_per_target: n, scales } = CFG.targets;
 
+// Pose smoothing on top of MindAR's own filter
+// const smoothing = true;     // false = follow the anchor exactly
+// const smoothingRateMin = 2; // Follow speed when nearly still. Lower is calmer
+// const smootingRateMax = 60; // Extra follow speed per radian of error
+
 const gate = createGate();
 export const suspend = gate.suspend;
 export const resume = gate.resume;
@@ -16,8 +21,8 @@ export async function init() {
     container: document.querySelector("#container"),
     imageTargetSrc: CFG.targets.file,
     filterMinCF: 0.001,
-    filterBeta: 0.001,
-    warmupTolerance: 3
+    filterBeta: 1000,
+    warmupTolerance: 5
   });
 
   const hemLight = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 0.3);
@@ -35,7 +40,12 @@ export async function init() {
     )
   ).flat();
 
-  mThree.renderer.setAnimationLoop(() => {
+  let prev = performance.now();
+  mThree.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  mThree.renderer.setAnimationLoop((now) => {
+    const dt = Math.min((now - prev) / 1000, 0.1);
+    prev = now;
+    for (const record of anchors) follow(record, dt);
     mThree.renderer.render(mThree.scene, mThree.camera);
   });
   await mThree.start();
@@ -73,10 +83,46 @@ async function createModelAnchors(mThree, target) {
 
     const pivot = new THREE.Group();
     pivot.add(holder);
-    anchor.group.add(pivot);
 
-    return { id: target.id, variant, anchor, pivot };
+    // MindAR overwrites anchor.group every update, so the pivot lives under
+    // a separate group in the scene that chases the anchor's pose instead.
+    const smoother = new THREE.Group();
+    smoother.visible = false;
+    smoother.add(pivot);
+    mThree.scene.add(smoother);
+
+    return { id: target.id, variant, anchor, smoother, pivot };
   });
+}
+
+const pos = new THREE.Vector3();
+const quat = new THREE.Quaternion();
+const scl = new THREE.Vector3();
+
+// Moves the smoother toward the anchor's world pose: slowly for jitter,
+// quickly for real motion.
+function follow({ anchor, smoother }, dt) {
+  if (!anchor.group.visible) {
+    smoother.visible = false;
+    return;
+  }
+  anchor.group.updateWorldMatrix(true, false);
+  anchor.group.matrixWorld.decompose(pos, quat, scl);
+
+  if (!smoother.visible || !CFG.smoothing.enabled) {
+    // First frame after detection: snap instead of gliding in from the old pose
+    smoother.position.copy(pos);
+    smoother.quaternion.copy(quat);
+    smoother.scale.copy(scl);
+    smoother.visible = true;
+    return;
+  }
+
+  const rate = CFG.smoothing.rate_min + CFG.smoothing.rate_max * smoother.quaternion.angleTo(quat);
+  const k = 1 - Math.exp(-dt * rate);
+  smoother.position.lerp(pos, k);
+  smoother.quaternion.slerp(quat, k);
+  smoother.scale.lerp(scl, k);
 }
 
 async function loadNormalizedModel(uri) {

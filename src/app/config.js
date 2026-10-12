@@ -6,7 +6,7 @@ const config = parse(confRaw);
 const list = parse(listRaw);
 const resolve = (dir, file) => `${import.meta.env.BASE_URL}${dir}/${file}`;
 
-export const map = config.map;
+export const { map, scene, smoothing } = config;
 export const targets = {
   ...config.targets,
   file: resolve("targets", config.targets.file)

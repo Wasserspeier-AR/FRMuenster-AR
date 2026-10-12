@@ -42,7 +42,7 @@ export function pauseTracking() {
 export function unpauseTracking() {
   if (!paused) return;
   paused = false;
-  currentRecord.anchor.group.attach(currentRecord.pivot);
+  currentRecord.smoother.attach(currentRecord.pivot);
   onTrackingChange();
 }
 
