@@ -1,9 +1,17 @@
-# See wiki for more information
 [targets]
-src = "targets/0-17_2mpt.mind"
+file = "0-17_2mpt.mind"
 markers_per_target = 2
-variant_scales = [1, 0.7]
-model_path = "models/"
+scales = [1, 0.7]
+
+[scene]
+filter_minCF = 0.001
+filter_beta = 1000
+warmup_tolerance = 5
+
+[smoothing]
+enabled = true
+rate_min = 2
+rate_max = 60
 
 [map]
 center = [47.995437, 7.85285]

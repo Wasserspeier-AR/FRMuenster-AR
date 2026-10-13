@@ -58,6 +58,9 @@
 .target-marker svg {
   display: block;
 }
+.target-marker.target-marker--disabled {
+  color: var(--color-brand-muted);
+}
 
 .locate-toggle {
   display: flex;

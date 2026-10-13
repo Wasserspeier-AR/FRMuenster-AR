@@ -2,27 +2,23 @@ import { parse } from "smol-toml";
 import confRaw from "./config.toml?raw";
 import listRaw from "./targetlist.toml?raw";
 
-export const { targets, map } = parse(confRaw);
-export const targetList = parse(listRaw)
-  .target.map((t, id) => ({ ...t, id }))
-  .filter((t) => t.enabled);
+const config = parse(confRaw);
+const list = parse(listRaw);
+const resolve = (dir, file) => `${import.meta.env.BASE_URL}${dir}/${file}`;
 
-const targetsById = new Map(targetList.map((t) => [t.id, t]));
-export const getTarget = (id) => targetsById.get(id) ?? null;
+export const { map, scene, smoothing } = config;
+export const targets = {
+  ...config.targets,
+  file: resolve("targets", config.targets.file)
+};
+export const targetList = list.target.map((t, id) => ({
+  ...t,
+  id,
+  model: resolve("models", t.model)
+}));
 
-const contentImages = import.meta.glob("../assets/content/*", {
-  eager: true,
-  query: "?url",
-  import: "default"
-});
-
-export const contentImageUrl = (entry) =>
-  entry?.content_image
-    ? contentImages[`../assets/content/${entry.content_image}`] ?? null
+// Needed to guarantee at build
+export const contentImg = (t) =>
+  t?.content_image
+    ? new URL(`../assets/content/${t.content_image}`, import.meta.url).href
     : null;
-
-for (const k of ["src", "model_path", "content_image_path"]) {
-  targets[k] = import.meta.env.BASE_URL + targets[k];
-}
-
-export const devEnv = import.meta.env.DEV;

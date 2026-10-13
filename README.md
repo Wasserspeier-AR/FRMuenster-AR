@@ -3,7 +3,7 @@
 🌐 [**Webseite**](https://wasserspeier-ar.github.io/FRMuenster-AR)
 
 > [!NOTE]
-> For an English version reference [README_en.md](README_en.md). **!TODO: DATEI ERSTELLEN**
+> English version available at [README_en.md](README_en.md).
 
 
 **Ein Wasserspeier kommt selten allein** ist eine WebAR-Anwendung zur interaktiven Erkundung der Wasserspeier des [Freiburger Münsters](https://www.freiburgermuenster.info). Mithilfe der Smartphone-Kamera werden die Wasserspeier vor Ort in Augmented Reality zum Leben erweckt. So können Nutzerinnen und Nutzer ihre Geschichte und Besonderheiten näher kennenlernen.
@@ -20,7 +20,7 @@ Der [erste Prototyp](https://hannguyen10.github.io/AR_FR_Muenster/homepage.html)
 
 ## Pflege und Anpassung
 
-Für Instruktionen zur Pflege der App besuche das [Wiki](https://github.com/Wasserspeier-AR/FRMuenster-AR/wiki/Start).
+Für Instruktionen zur Pflege der App besuche das [Wiki](https://github.com/Wasserspeier-AR/FRMuenster-AR/wiki).
 
 ## Lokale Entwicklung
 
@@ -68,11 +68,20 @@ Die Seite wird automatisch auf Github Pages bereitgestellt.
 
 ### Projektstruktur
 
-**!TODO: AKTUELLE STRUKTUR HINZUFÜGEN̶̶**
-
+```
+.
+├── public
+│   ├── models
+│   └── targets
+└── src
+    ├── app
+    ├── assets
+    │   ├── content
+    │   └── logos
+    └── locales
 ```
 
-```
+Für mehr Information siehe [Projektstruktur](https://github.com/Wasserspeier-AR/FRMuenster-AR/wiki/Projektstruktur).
 
 ### Verwendete Projekte
 
