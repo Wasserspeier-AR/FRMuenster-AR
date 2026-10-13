@@ -48,6 +48,7 @@
   "app.close-button": "Close",
 
   "app.map.locate": "Show my location",
+  "app.map.inaccessible": "(cur. inaccessible)",
 
   "app.info.title.none": "?",
   "app.info.title.0": "Unicorn",

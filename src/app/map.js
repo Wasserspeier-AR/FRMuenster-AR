@@ -2,6 +2,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { icon } from "@fortawesome/fontawesome-svg-core";
 import {
+  faChevronRight,
   faLocationCrosshairs,
   faLocationDot
 } from "@fortawesome/free-solid-svg-icons";
@@ -15,8 +16,8 @@ let map = null;
 let locator = null;
 let onSelect = () => {};
 
-const shape = { h: 28, w: 28 };
-shape.w = (faLocationDot.icon[0] / faLocationDot.icon[1]) * shape.h;
+const shape = { h: 28 };
+shape.w = Math.round((faLocationDot.icon[0] / faLocationDot.icon[1]) * shape.h); // 21
 
 const pinIcon = (className) =>
   L.divIcon({
@@ -48,7 +49,6 @@ const LocateControl = L.Control.extend({
       "data-i18n-attr",
       "title:app.map.locate; aria-label:app.map.locate"
     );
-    btn.setAttribute("i18n", "app.map.locate");
     btn.replaceChildren(icon(faLocationCrosshairs).node[0]);
 
     L.DomEvent.disableClickPropagation(container);
@@ -78,6 +78,19 @@ export function init() {
     maxBoundsViscosity: 0.8
   }).setView(CONF.map.center, CONF.map.zoom.initial);
 
+  // Fix popup sizing
+  map.on("popupopen", ({ popup }) => {
+    const title = popup.getElement()?.querySelector(".marker-popup-title");
+    if (!title) return;
+
+    const range = document.createRange();
+    range.selectNodeContents(title);
+    const lines = Array.from(range.getClientRects(), (r) => r.width);
+    if (!lines.length) return;
+
+    title.style.width = `${Math.ceil(Math.max(...lines)) + 1}px`;
+  });
+
   const dev = import.meta.env.DEV;
   L.tileLayer(dev ? CONF.map.osm_basemap : CONF.map.basemap, {
     attribution: dev ? CONF.map.osm_attribution : CONF.map.attribution,
@@ -98,7 +111,10 @@ export function init() {
       : targetIcons.disabled;
     L.marker(target.coordinates, { icon: markerIcon, opacity: 0.75 })
       .addTo(map)
-      .bindPopup(() => buildPopup(target.id), { closeButton: false });
+      .bindPopup(() => buildPopup(target), {
+        closeButton: false,
+        className: "marker-popup-box"
+      });
   });
 
   locator = createLocator(map);
@@ -113,10 +129,21 @@ export function refresh() {
   map.setView(CONF.map.center, map.getZoom(), { animate: false });
 }
 
-function buildPopup(id) {
+function buildPopup({ id, enabled }) {
   const btn = L.DomUtil.create("button", "marker-popup");
   btn.type = "button";
-  btn.textContent = tl(`app.info.title.${id}`);
+  btn.classList.toggle("marker-popup--disabled", !enabled);
+
+  const label = L.DomUtil.create("span", "marker-popup-label", btn);
+  const title = L.DomUtil.create("span", "marker-popup-title", label);
+  title.textContent = tl(`app.info.title.${id}`);
+  if (!enabled) {
+    const note = L.DomUtil.create("span", "marker-popup-note", label);
+    note.textContent = tl("app.map.inaccessible");
+  }
+
+  btn.append(icon(faChevronRight).node[0]);
+
   L.DomEvent.on(btn, "click", () => {
     map.closePopup();
     onSelect(id);
