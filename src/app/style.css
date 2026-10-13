@@ -3,12 +3,11 @@
   inset: 0 !important;
   object-fit: cover;
 }
-/* Needed for dynamically added element from mindAR */
+/* Needed for the dynamically added canvas from MindAR */
 #container canvas {
   z-index: 10 !important;
   touch-action: none !important;
 }
-
 .mindar-ui-scanning .scanning .inner {
   border-radius: 10px;
   overflow: hidden;
@@ -16,7 +15,7 @@
 
 #ui button.active,
 #ui button.active i {
-  color: rgb(118, 23, 23);
+  color: var(--color-brand);
 }
 #ui button:disabled {
   pointer-events: none;
@@ -25,10 +24,11 @@
 
 #info-img {
   opacity: 0;
-}
-#info-img[data-loaded] {
-  opacity: 1;
-  transition: opacity 200ms;
+
+  &[data-loaded] {
+    opacity: 1;
+    transition: opacity 200ms;
+  }
 }
 
 /* Size needed statically for OSM */
@@ -39,36 +39,103 @@
 .map-is-open #container {
   pointer-events: none;
 }
-.marker-popup {
-  font-weight: 600;
-  color: #1d4ed8;
-  padding: 0.25rem 0.5rem;
-}
-.target-marker {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  color: var(--color-brand);
-  font-size: 28px;
-  line-height: 1;
-  filter: drop-shadow(
-    0 1px 2px rgb(0 0 0 / 0.4)
-  ); /* keeps the pin legible on the basemap */
-}
-.target-marker svg {
-  display: block;
-}
-.target-marker.target-marker--disabled {
-  color: var(--color-brand-muted);
-}
 
 .locate-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
   color: #333;
+
+  &.active {
+    color: var(--color-brand);
+    background-color: #eff6ff;
+  }
 }
-.locate-toggle.active {
+
+.target-marker {
   color: var(--color-brand);
-  background-color: #eff6ff;
+  filter: drop-shadow(
+    0 1px 2px rgb(0 0 0 / 0.4)
+  );
+
+  /* Fill the marker box Leaflet positions, so the tip sits on the anchor */
+  & svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+.target-marker--disabled {
+  color: var(--color-brand-muted);
+}
+
+.marker-popup-box {
+  left: 0 !important;
+  translate: -50% 0;
+  & .leaflet-popup-content-wrapper {
+    border-radius: 1rem;
+  }
+  & .leaflet-popup-content {
+    margin: 4px;
+    /* Leaflet writes a measured pixel width inline. Let layout decide instead. */
+    width: fit-content !important;
+  }
+}
+.marker-popup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border: 0;
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.875rem;
+  background: var(--color-brand);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    filter 150ms,
+    transform 100ms;
+
+  & svg {
+    flex-shrink: 0;
+    font-size: 0.75em;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      filter: brightness(1.15);
+    }
+  }
+  &:active {
+    transform: scale(0.97);
+    filter: brightness(0.9);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+}
+.marker-popup--disabled {
+  background: var(--color-brand-muted);
+}
+
+.marker-popup-label {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  max-width: min(20ch, calc(100vw - 8rem));
+}
+.marker-popup-title {
+  overflow-wrap: break-word;
+  hyphens: manual;
+  text-wrap: balance;
+}
+.marker-popup-note {
+  font-size: 0.85em;
+  font-weight: 500;
+  opacity: 0.85;
 }

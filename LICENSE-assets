@@ -1,0 +1,33 @@
+# Assets License
+
+*Münster AR - Assets*
+
+Copyright © 2026 Freiburger Münsterbauverein e.V.
+
+Unless otherwise noted, the media assets identified below are licensed under the [Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/).
+
+## Scope
+
+This license applies to image, text, and 3D model assets located in the following directories, including their subdirectories:
+
+- `.master/`
+- `public/models/`
+- `src/assets/`
+- `src/locales/`
+
+## Exclusions
+
+This license does not apply to assets located in:
+
+- `.master/assets/logos/`
+- `src/assets/logos/`
+
+These excluded assets may be subject to separate copyright, trademark, or licensing terms.
+
+## Attribution and ShareAlike
+
+When sharing licensed assets or adaptations of them, provide appropriate credit to the original creator(s), retain applicable copyright and license notices, link to the license, and indicate whether changes were made.
+
+Adaptations that are shared must be licensed under CC BY-SA 4.0 or another license permitted by its ShareAlike terms.
+
+For full terms and conditions, see the [CC BY-SA 4.0 legal code](https://creativecommons.org/licenses/by-sa/4.0/legalcode).
