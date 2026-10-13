@@ -48,6 +48,7 @@
   "app.close-button": "Schließen",
 
   "app.map.locate": "Meinen Standort anzeigen",
+  "app.map.inaccessible": "(z.Zt. unzugänglich)",
 
   "app.info.title.none": "?",
   "app.info.title.0": "Einhorn auf dem Rücken eines Mannes",
