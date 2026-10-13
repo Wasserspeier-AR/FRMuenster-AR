@@ -11,7 +11,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node -e \"require('fs').copyFileSync('dist/NOTICE.md','NOTICE.md')\"",
     "preview": "vite preview"
   },
   "devDependencies": {
@@ -19,10 +19,13 @@
     "vite": "^8.0.10"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.3.1",
+    "@fortawesome/free-brands-svg-icons": "^7.3.1",
+    "@fortawesome/free-solid-svg-icons": "^7.3.1",
     "@tailwindcss/vite": "^4.3.0",
-    "js-yaml": "^5.4.2",
     "leaflet": "^1.9.4",
     "mind-ar": "1.2.5",
+    "smol-toml": "^1.9.0",
     "tailwindcss": "^4.3.0",
     "three": "0.149.0"
   },

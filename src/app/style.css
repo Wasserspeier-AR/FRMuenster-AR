@@ -1,0 +1,74 @@
+#container video,
+#container canvas {
+  inset: 0 !important;
+  object-fit: cover;
+}
+/* Needed for dynamically added element from mindAR */
+#container canvas {
+  z-index: 10 !important;
+  touch-action: none !important;
+}
+
+.mindar-ui-scanning .scanning .inner {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#ui button.active,
+#ui button.active i {
+  color: rgb(118, 23, 23);
+}
+#ui button:disabled {
+  pointer-events: none;
+  color: #888;
+}
+
+#info-img {
+  opacity: 0;
+}
+#info-img[data-loaded] {
+  opacity: 1;
+  transition: opacity 200ms;
+}
+
+/* Size needed statically for OSM */
+#map {
+  width: 100vw;
+  height: 100dvh;
+}
+.map-is-open #container {
+  pointer-events: none;
+}
+.marker-popup {
+  font-weight: 600;
+  color: #1d4ed8;
+  padding: 0.25rem 0.5rem;
+}
+.target-marker {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  color: var(--color-brand);
+  font-size: 28px;
+  line-height: 1;
+  filter: drop-shadow(
+    0 1px 2px rgb(0 0 0 / 0.4)
+  ); /* keeps the pin legible on the basemap */
+}
+.target-marker svg {
+  display: block;
+}
+.target-marker.target-marker--disabled {
+  color: var(--color-brand-muted);
+}
+
+.locate-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+}
+.locate-toggle.active {
+  color: var(--color-brand);
+  background-color: #eff6ff;
+}

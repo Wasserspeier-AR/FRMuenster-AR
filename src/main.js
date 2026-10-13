@@ -1,4 +1,35 @@
-import { initI18n } from './i18n.js';
+import { library, dom } from "@fortawesome/fontawesome-svg-core";
+import {
+  faBatteryHalf,
+  faBookOpen,
+  faCamera,
+  faChevronDown,
+  faChurch,
+  faCircleExclamation,
+  faCircleInfo,
+  faCirclePause,
+  faLocationDot,
+  faMap,
+  faPlay
+} from "@fortawesome/free-solid-svg-icons"; // Importing it this way, allows for tree-shaking
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import { initI18n } from "./i18n.js";
+
+library.add(
+  faBatteryHalf,
+  faBookOpen,
+  faCamera,
+  faChevronDown,
+  faChurch,
+  faCircleExclamation,
+  faCircleInfo,
+  faCirclePause,
+  faLocationDot,
+  faMap,
+  faPlay,
+  faGithub
+);
+dom.watch();
 initI18n();
 
 //Slider animation
@@ -8,19 +39,11 @@ const dots = document.querySelectorAll("#manual-dots span");
 if (slider && dots.length > 0) {
   slider.addEventListener("scroll", () => {
     const slideWidth = slider.clientWidth;
-    const currentSlide = Math.round(
-      slider.scrollLeft / slideWidth
-    );
-    
-    dots.forEach((dot, index) => {
-      if (index === currentSlide) {
-        dot.classList.remove("bg-stone-300");
-        dot.classList.add("bg-[rgb(118,23,23)]");
-      } else {
-        dot.classList.remove("bg-[rgb(118,23,23)]");
-        dot.classList.add("bg-stone-300");
-      }
-    });
+    const currentSlide = Math.round(slider.scrollLeft / slideWidth);
 
+    dots.forEach((dot, index) => {
+      dot.classList.toggle("bg-brand", index === currentSlide);
+      dot.classList.toggle("bg-stone-300", index !== currentSlide);
+    });
   });
 }
