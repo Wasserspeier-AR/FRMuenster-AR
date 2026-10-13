@@ -123,8 +123,8 @@ Das Projekt wurde gefördert von der [BBBank](https://www.bbbank.de) und der [Er
 
 ## Lizenz
 
-Dieses Projekt ist [LIZENZNAME](LICENSE) lizenziert. **!TODO: LIZENZNAME EINFÜGEN**
+Die Software dieses Projekts unterliegt den in [LICENSE](LICENSE) festgelegten Bedingungen.
 
-Teile des Projektes basieren auf externen Abhängigkeiten. Siehe [NOTICE.md](NOTICE.md) für deren Lizenzen.
+Die in den unter [LICENSE-assets](LICENSE-assets) angegebenen Verzeichnissen enthaltenen Assets unterliegen der [Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/), mit Ausnahme der dort ausdrücklich ausgeschlossenen Assets.
 
-Die Namen und Logos der BBBank, der Erzbischof Hermann Stiftung, der Hochschule Furtwangen und des Freiburger Münsters sind Marken bzw. geschützte Kennzeichen ihrer jeweiligen Inhaber. Ihre Nutzung bedarf der vorherigen schriftlichen Zustimmung der jeweiligen Rechteinhaber. Eine unbefugte Nutzung, Vervielfältigung, Bearbeitung oder Darstellung der Marken ist nicht gestattet.
+Die Namen und Logos der BBBank, der Erzbischof Hermann Stiftung, der Hochschule Furtwangen und des Freiburger Münsters sind Marken bzw. geschützte Kennzeichen ihrer jeweiligen Inhaber. Ihre Verwendung kann gesonderten markenrechtlichen und sonstigen rechtlichen Beschränkungen unterliegen. Diese Lizenz gewährt keine Erlaubnis zur Nutzung dieser Marken oder Logos.

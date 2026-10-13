@@ -123,8 +123,10 @@ The project was funded by [BBBank](https://www.bbbank.de) and the [Archbishop He
 
 ## License
 
-This project is licensed under [LICENSE NAME](LICENSE). **!TODO: INSERT LICENSE NAME**
+This project’s software is licensed under the terms specified in [LICENSE](LICENSE).
 
-Parts of this project are based on external dependencies. See [NOTICE.md](NOTICE.md) for their licenses.
+Assets in the directories specified in [LICENSE-media](LICENSE-media) are licensed under the [Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/), except for the assets explicitly excluded therein.
 
-The names and logos of BBBank, the Archbishop Hermann Foundation, Furtwangen University, and Freiburg Cathedral are marks or registered trademarks of their respective owners. Their use requires the prior written consent of the respective rights holders. Unauthorized use, reproduction, modification, or display of the trademarks is prohibited.
+Parts of this project are based on external dependencies. See [NOTICE.md](NOTICE.md) for information about their licenses and attributions.
+
+The names and logos of BBBank, the Archbishop Hermann Foundation, Furtwangen University, and Freiburg Minster are marks or registered trademarks of their respective owners. Their use may be subject to separate trademark and other legal restrictions. This license does not grant permission to use these marks or logos.
