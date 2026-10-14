@@ -45,17 +45,8 @@ export function bindGestures(el, getPivot) {
         last = { x, y };
       } else if (touches.length === 2 && lastDist !== null) {
         const dist = touchDistance(touches);
-
-        // Remember the scale the pivot had when pinching began
-        const base = (pivot.userData.baseScale ??= pivot.scale.clone());
-        const zoom = THREE.MathUtils.clamp(
-          (pivot.userData.zoom ?? 1) * (dist / lastDist),
-          scale.min,
-          scale.max
-        );
-        pivot.userData.zoom = zoom;
-        pivot.scale.copy(base).multiplyScalar(zoom);
-
+        pivot.scale.multiplyScalar(dist / lastDist);
+        pivot.scale.clampScalar(scale.min, scale.max);
         lastDist = dist;
       }
     },

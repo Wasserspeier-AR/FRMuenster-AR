@@ -90,7 +90,7 @@ export function init() {
 
   dom.pauseButton.addEventListener("click", togglePause);
   document.addEventListener("langchange", refreshInfo);
-  MAP.onMarkerSelect(showPinnedInfo);
+  MAP.onMarkerSelect(showPinned);
   CTRL.onChange(updateTrackingUI);
   updateTrackingUI();
 }
@@ -133,9 +133,10 @@ function togglePause() {
   if (CTRL.isPaused()) SCENE.suspend("pause");
 }
 
-function showPinnedInfo(id) {
-  modals.map.close(); // The map would otherwise cover the info modal
+function showPinned(id) {
   renderInfo(id, { pin: true });
+  if (CTRL.showModel(id)) SCENE.suspend("pause");
+  modals.map.close(); // The map would otherwise cover the info modal
   modals.info.open();
 }
 

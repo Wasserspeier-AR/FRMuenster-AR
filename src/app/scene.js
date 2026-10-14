@@ -52,7 +52,10 @@ export async function init() {
 
   // Applies anything requested while the scene was still loading
   gate.activate({
-    stop: () => mThree.controller.stopProcessVideo(),
+    stop: () => {
+      mThree.controller.stopProcessVideo();
+      mThree.ui?.hideScanning?.();
+    },
     start: () => {
       // Drop stale detections so targets re-trigger cleanly
       for (const a of mThree.anchors) {
@@ -118,7 +121,9 @@ function follow({ anchor, smoother }, dt) {
     return;
   }
 
-  const rate = CFG.smoothing.rate_min + CFG.smoothing.rate_max * smoother.quaternion.angleTo(quat);
+  const rate =
+    CFG.smoothing.rate_min +
+    CFG.smoothing.rate_max * smoother.quaternion.angleTo(quat);
   const k = 1 - Math.exp(-dt * rate);
   smoother.position.lerp(pos, k);
   smoother.quaternion.slerp(quat, k);
