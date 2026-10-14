@@ -9,8 +9,8 @@ function touchDistance([a, b]) {
 }
 
 export function bindGestures(el, getPivot) {
-  let last = null; // last single-finger position
-  let lastDist = null; // last two-finger distance
+  let last = null;
+  let lastDist = null;
 
   // Re-baseline from whatever fingers are down, so lifting or adding a finger never causes a jump
   const sync = (touches) => {
