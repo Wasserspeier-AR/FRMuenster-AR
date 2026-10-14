@@ -9,8 +9,8 @@ function touchDistance([a, b]) {
 }
 
 export function bindGestures(el, getPivot) {
-  let last = null; // last single-finger position
-  let lastDist = null; // last two-finger distance
+  let last = null;
+  let lastDist = null;
 
   // Re-baseline from whatever fingers are down, so lifting or adding a finger never causes a jump
   const sync = (touches) => {
@@ -45,8 +45,17 @@ export function bindGestures(el, getPivot) {
         last = { x, y };
       } else if (touches.length === 2 && lastDist !== null) {
         const dist = touchDistance(touches);
-        pivot.scale.multiplyScalar(dist / lastDist);
-        pivot.scale.clampScalar(scale.min, scale.max);
+
+        // Remember the scale the pivot had when pinching began
+        const base = (pivot.userData.baseScale ??= pivot.scale.clone());
+        const zoom = THREE.MathUtils.clamp(
+          (pivot.userData.zoom ?? 1) * (dist / lastDist),
+          scale.min,
+          scale.max
+        );
+        pivot.userData.zoom = zoom;
+        pivot.scale.copy(base).multiplyScalar(zoom);
+
         lastDist = dist;
       }
     },

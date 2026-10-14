@@ -36,6 +36,7 @@ export function pauseTracking() {
   if (paused || !currentRecord || !targetVisible) return;
   paused = true;
   scene.attach(currentRecord.pivot);
+  resetZoom(currentRecord.pivot);
   onTrackingChange();
 }
 
@@ -43,7 +44,13 @@ export function unpauseTracking() {
   if (!paused) return;
   paused = false;
   currentRecord.smoother.attach(currentRecord.pivot);
+  resetZoom(currentRecord.pivot);
   onTrackingChange();
+}
+
+function resetZoom(pivot) {
+  delete pivot.userData.baseScale;
+  delete pivot.userData.zoom;
 }
 
 export const getCurrentTarget = () => currentRecord?.id ?? null;
