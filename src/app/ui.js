@@ -116,9 +116,6 @@ function createModal({ el, button, closeBtn, onButtonClick, onOpen, onClose }) {
   el.style.display = "none";
   button.addEventListener("click", onButtonClick ?? modal.toggle);
   closeBtn.addEventListener("click", modal.close);
-  el.addEventListener("click", (e) => {
-    if (e.target === el) modal.close();
-  });
 
   return modal;
 }
