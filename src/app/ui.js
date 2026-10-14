@@ -133,11 +133,14 @@ function togglePause() {
   if (CTRL.isPaused()) SCENE.suspend("pause");
 }
 
-function showPinned(id) {
+async function showPinned(id) {
   renderInfo(id, { pin: true });
-  if (CTRL.showModel(id)) SCENE.suspend("pause");
-  modals.map.close(); // The map would otherwise cover the info modal
+  SCENE.suspend("pause");
+  modals.map.close();
   modals.info.open();
+
+  const shown = await CTRL.showModel(id);
+  if (!shown && !CTRL.isPaused()) SCENE.resume("pause");
 }
 
 function updateTrackingUI() {

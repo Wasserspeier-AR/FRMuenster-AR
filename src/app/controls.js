@@ -1,16 +1,21 @@
 import * as THREE from "three";
 import { bindGestures } from "./gestures.js";
+import { loadPreview } from "./scene.js";
 
 const fill = 0.4;
 
-let currentRecord = null;
-let paused = false;
-let virtual = false;
-let targetVisible = false;
+let showTicket = 0;
 let scene = null;
 let camera = null;
 let records = [];
+let current = null;
+let mode = "live"; // "live" | "frozen" | "virtual"
+let detected = false;
 let onTrackingChange = () => {};
+
+export const isPaused = () => mode !== "live";
+export const isTargetVisible = () => isPaused() || detected;
+export const getCurrentTarget = () => current?.id ?? null;
 
 export function onChange(cb) {
   onTrackingChange = cb;
@@ -23,52 +28,60 @@ export function init({ mThree, anchors }) {
 
   for (const record of anchors) {
     record.anchor.onTargetFound = () => {
-      if (paused && record !== currentRecord) return;
-      currentRecord = record;
-      targetVisible = true;
+      if (isPaused()) return;
+      current = record;
+      detected = true;
       onTrackingChange();
     };
     record.anchor.onTargetLost = () => {
-      if (paused || record !== currentRecord) return;
-      targetVisible = false;
+      if (isPaused() || record !== current) return;
+      detected = false;
       onTrackingChange();
     };
   }
 
   bindGestures(mThree.renderer.domElement, () =>
-    currentRecord && (paused || targetVisible) ? currentRecord.pivot : null
+    current && isTargetVisible() ? current.pivot : null
   );
 }
 
 export function pauseTracking() {
-  if (paused || !currentRecord || !targetVisible) return;
-  paused = true;
-  freezeAtSmoother(currentRecord);
+  if (isPaused() || !current || !detected) return;
+  mode = "frozen";
+  freezeAtSmoother(current);
   onTrackingChange();
 }
 
 export function unpauseTracking() {
-  if (!paused) return;
-  paused = false;
-  release(currentRecord);
-  if (virtual) {
-    virtual = false;
-    targetVisible = false;
-  }
+  if (!isPaused()) return;
+  release(current);
+  mode = "live";
+  detected = false;
   onTrackingChange();
 }
 
-export function showModel(id) {
-  const record = records.find((r) => r.id === id && r.variant === 0);
+function release(record) {
+  resetPivot(record.pivot);
+  if (record.smoother) record.smoother.add(record.pivot);
+  else record.frozen.remove(record.pivot);
+  scene.remove(record.frozen);
+  record.frozen = null;
+}
+
+export async function showModel(id) {
+  const ticket = ++showTicket;
+  const record =
+    records.find((r) => r.id === id && r.variant === 0) ??
+    (await loadPreview(id));
+
+  if (ticket !== showTicket) return true;
   if (!record) return false;
 
-  if (paused) release(currentRecord);
-  hideLiveModels();
+  if (isPaused()) release(current);
+  hideLiveModels(); // One model on screen at all times
 
-  currentRecord = record;
-  paused = true;
-  virtual = true;
-  targetVisible = true;
+  current = record;
+  mode = "virtual";
   freezeInFront(record);
   onTrackingChange();
   return true;
@@ -91,16 +104,14 @@ function createFrozen(record) {
 }
 
 function freezeAtSmoother(record) {
-  const { smoother } = record;
   const frozen = createFrozen(record);
-  frozen.position.copy(smoother.position);
-  frozen.quaternion.copy(smoother.quaternion);
-  frozen.scale.copy(smoother.scale);
+  frozen.position.copy(record.smoother.position);
+  frozen.quaternion.copy(record.smoother.quaternion);
+  frozen.scale.copy(record.smoother.scale);
 }
 
 function freezeInFront(record) {
-  const { pivot } = record;
-  resetPivot(pivot);
+  resetPivot(record.pivot);
   const frozen = createFrozen(record);
 
   camera.updateWorldMatrix(true, false);
@@ -111,18 +122,10 @@ function freezeInFront(record) {
   frozen.updateMatrixWorld(true);
 
   const size = new THREE.Box3()
-    .setFromObject(pivot)
+    .setFromObject(record.pivot)
     .getSize(new THREE.Vector3());
   const viewH = 2 * dist * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
   frozen.scale.setScalar((viewH * fill) / Math.max(size.x, size.y, size.z));
-}
-
-function release(record) {
-  const { pivot, smoother, frozen } = record;
-  resetPivot(pivot);
-  smoother.add(pivot);
-  scene.remove(frozen);
-  record.frozen = null;
 }
 
 function resetPivot(pivot) {
@@ -130,7 +133,3 @@ function resetPivot(pivot) {
   pivot.quaternion.identity();
   pivot.scale.setScalar(1);
 }
-
-export const getCurrentTarget = () => currentRecord?.id ?? null;
-export const isPaused = () => paused;
-export const isTargetVisible = () => targetVisible;

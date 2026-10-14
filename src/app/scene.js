@@ -7,11 +7,6 @@ import * as CFG from "./config.js";
 
 const { markers_per_target: n, scales } = CFG.targets;
 
-// Pose smoothing on top of MindAR's own filter
-// const smoothing = true;     // false = follow the anchor exactly
-// const smoothingRateMin = 2; // Follow speed when nearly still. Lower is calmer
-// const smootingRateMax = 60; // Extra follow speed per radian of error
-
 const gate = createGate();
 export const suspend = gate.suspend;
 export const resume = gate.resume;
@@ -78,17 +73,8 @@ async function createModelAnchors(mThree, target) {
 
   return Array.from({ length: n }, (_, variant) => {
     const anchor = mThree.addAnchor(target.id * n + variant);
+    const pivot = createPivot(variant === 0 ? model : clone(model), variant);
 
-    // The holder compensates for the variant's framing
-    const holder = new THREE.Group();
-    holder.scale.setScalar(scales[variant] ?? 1);
-    holder.add(variant === 0 ? model : clone(model)); // Clones share geometry and textures
-
-    const pivot = new THREE.Group();
-    pivot.add(holder);
-
-    // MindAR overwrites anchor.group every update, so the pivot lives under
-    // a separate group in the scene that chases the anchor's pose instead.
     const smoother = new THREE.Group();
     smoother.visible = false;
     smoother.add(pivot);
@@ -98,12 +84,47 @@ async function createModelAnchors(mThree, target) {
   });
 }
 
+function createPivot(model, variant) {
+  const holder = new THREE.Group();
+  holder.scale.setScalar(scales[variant] ?? 1);
+  holder.add(model);
+
+  const pivot = new THREE.Group();
+  pivot.add(holder);
+  return pivot;
+}
+
+const previews = new Map();
+
+export function loadPreview(id) {
+  if (!previews.has(id)) {
+    const target = CFG.targetList.find((t) => t.id === id);
+    if (!target) return Promise.resolve(null);
+
+    previews.set(
+      id,
+      loadNormalizedModel(target.model)
+        .then((model) => ({
+          id,
+          variant: 0,
+          anchor: null,
+          smoother: null,
+          pivot: createPivot(model, 0)
+        }))
+        .catch((err) => {
+          console.warn("Preview load failed:", err);
+          previews.delete(id); // Allow a retry
+          return null;
+        })
+    );
+  }
+  return previews.get(id);
+}
+
 const pos = new THREE.Vector3();
 const quat = new THREE.Quaternion();
 const scl = new THREE.Vector3();
 
-// Moves the smoother toward the anchor's world pose: slowly for jitter,
-// quickly for real motion.
 function follow({ anchor, smoother }, dt) {
   if (!anchor.group.visible) {
     smoother.visible = false;
@@ -113,7 +134,6 @@ function follow({ anchor, smoother }, dt) {
   anchor.group.matrixWorld.decompose(pos, quat, scl);
 
   if (!smoother.visible || !CFG.smoothing.enabled) {
-    // First frame after detection: snap instead of gliding in from the old pose
     smoother.position.copy(pos);
     smoother.quaternion.copy(quat);
     smoother.scale.copy(scl);
@@ -146,7 +166,6 @@ async function loadNormalizedModel(uri) {
   return model;
 }
 
-// Run detection only while nothing has asked for suspension
 function createGate() {
   const SETTLE_MS = 300;
   const reasons = new Set();
