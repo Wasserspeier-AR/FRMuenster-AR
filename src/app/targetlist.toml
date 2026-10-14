@@ -103,5 +103,5 @@ enabled = true
 [[target]]
 model = "17_boar_gluttony.glb"
 content_image = "17_Schwein.avif"
-coordinates = [47.995437, 7.85285]
+coordinates = [47.99562, 7.85226]
 enabled = false
