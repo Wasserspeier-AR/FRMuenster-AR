@@ -4,6 +4,11 @@ import de from "./locales/de.json";
 const translations = { en, de };
 const defaultLang = "de";
 const storageKey = "lang";
+const manualImages = import.meta.glob("./assets/manual/*.{avif,png}", {
+  eager: true,
+  query: "?url",
+  import: "default"
+});
 
 let lang = pick(readStored());
 let switchButtons = [];
@@ -31,6 +36,11 @@ function setLang(next) {
   document.dispatchEvent(new CustomEvent("langchange", { detail: lang }));
 }
 
+function manualUrl(step, ext) {
+  const file = (l) => `./assets/manual/${l.toUpperCase()}_Anleitung_Schritt_${step}.${ext}`;
+  return manualImages[file(lang)] ?? manualImages[file(defaultLang)];
+}
+
 function apply() {
   document.documentElement.lang = lang;
 
@@ -49,6 +59,16 @@ function apply() {
       el.setAttribute(attr.trim(), tl(keys));
     }
   }
+
+  for (const pic of document.querySelectorAll("picture[data-manual-step]")) {
+      const step = pic.dataset.manualStep;
+      const avif = manualUrl(step, "avif");
+      const png = manualUrl(step, "png");
+      const source = pic.querySelector("source[type='image/avif']");
+      const img = pic.querySelector("img");
+      if (source && avif) source.srcset = avif;
+      if (img && png) img.src = png;
+    }
 }
 
 function readStored() {
